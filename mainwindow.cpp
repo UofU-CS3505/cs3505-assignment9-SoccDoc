@@ -2,6 +2,14 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QProgressBar>
+#include <QDockWidget>
+#include <QListWidget>
+#include <QMenu>
+#include <QMenuBar>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Add grouped dragging to dock options (the rest are default)
     //setDockOptions(GroupedDragging|AnimatedDocks|AllowTabbedDocks);
 
+   createDockWindows();
 
     // Title and resize the window
     setWindowTitle("Train");
@@ -65,3 +74,80 @@ void MainWindow::createActions() {
     aboutAct = new QAction(tr("&About"), this);
     connect(aboutAct, &QAction::triggered, this, &MainWindow::about);
 }
+
+
+void MainWindow::createDockWindows() {
+   createLeftDockWindow();
+   createRightDockWindow();
+   createBottomDockWindow();
+}
+
+
+void MainWindow::createLeftDockWindow() {
+    // Setup dock widget for changing the frames
+    QDockWidget* LeftDock = new QDockWidget("Left Dock", this);
+    QWidget* leftMultiWidget = new QWidget();
+    QVBoxLayout* LeftLayout = new QVBoxLayout();
+    QProgressBar* progressBar = new QProgressBar();
+    progressBar->setMaximum(100);
+    progressBar->setValue(50);
+
+
+    // Add all the frame buttons and label to the vertical layout
+    LeftLayout->addWidget(progressBar);
+
+    // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
+    leftMultiWidget->setLayout(LeftLayout);
+    LeftDock->setWidget(leftMultiWidget);
+
+    // Dock the frame buttons on the left side
+    LeftLayout->setAlignment(Qt::AlignTop);
+    this->addDockWidget(Qt::LeftDockWidgetArea, LeftDock);
+    LeftDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+}
+
+void MainWindow::createRightDockWindow() {
+    // Setup dock widget for changing the frames
+    QDockWidget* rightDock = new QDockWidget("Right Dock", this);
+    QWidget* rightMultiWidget = new QWidget();
+    QVBoxLayout* rightLayout = new QVBoxLayout();
+
+
+
+    // Add all the frame buttons and label to the vertical layout
+    //rightLayout->addWidget(progressBar);
+
+    // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
+    rightMultiWidget->setLayout(rightLayout);
+    rightDock->setWidget(rightMultiWidget);
+
+    // Dock the frame buttons on the left side
+    rightLayout->setAlignment(Qt::AlignTop);
+    this->addDockWidget(Qt::RightDockWidgetArea, rightDock);
+    rightDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+}
+
+
+void MainWindow::createBottomDockWindow() {
+    // Setup dock widget for changing the frames
+    QDockWidget* bottomDock = new QDockWidget("Bottom Dock", this);
+    QWidget* bottomMultiWidget = new QWidget();
+    QHBoxLayout* bottomLayout = new QHBoxLayout();
+
+
+
+    // Add all the frame buttons and label to the vertical layout
+    //rightLayout->addWidget(progressBar);
+
+    // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
+    bottomMultiWidget->setLayout(bottomLayout);
+    bottomDock->setWidget(bottomMultiWidget);
+
+    // Dock the frame buttons on the left side
+    bottomLayout->setAlignment(Qt::AlignTop);
+    this->addDockWidget(Qt::BottomDockWidgetArea, bottomDock);
+    bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+}
+
+
+

@@ -31,6 +31,10 @@ private:
     Control *control;
     void createActions();
 
+    void createLeftDockWindow();
+    void createRightDockWindow();
+    void createBottomDockWindow();
+    void createDockWindows();
     /**
      * @brief action to tell the user about the application
      */
