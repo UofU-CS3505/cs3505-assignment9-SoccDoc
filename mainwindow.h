@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QProgressBar>
 #include "control.h"
 
 QT_BEGIN_NAMESPACE
@@ -35,6 +36,8 @@ private:
     void createRightDockWindow();
     void createBottomDockWindow();
     void createDockWindows();
+
+    QProgressBar* progressBar;
     /**
      * @brief action to tell the user about the application
      */

@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QCloseEvent>
-#include <QProgressBar>
 #include <QDockWidget>
 #include <QListWidget>
 #include <QMenu>
@@ -88,7 +87,7 @@ void MainWindow::createLeftDockWindow() {
     QDockWidget* LeftDock = new QDockWidget("Left Dock", this);
     QWidget* leftMultiWidget = new QWidget();
     QVBoxLayout* LeftLayout = new QVBoxLayout();
-    QProgressBar* progressBar = new QProgressBar();
+    progressBar = new QProgressBar();
     progressBar->setMaximum(100);
     progressBar->setValue(50);
 
