@@ -4,6 +4,10 @@
 #include <QPoint>
 #include "passenger.h"
 
+/**
+ * @brief The Station class
+ * @authors
+ */
 class Station : public QObject
 {
     Q_OBJECT

@@ -11,6 +11,10 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+/**
+ * @brief The MainWindow class
+ * @authors
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
