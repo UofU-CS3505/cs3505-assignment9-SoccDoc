@@ -36,6 +36,10 @@ private:
     MapModel *map;
     void createActions();
 
+    // Docks for managing train and station details
+    QDockWidget* trainDetailsDock;
+    QDockWidget* stationDetailsDock;
+
     void createLeftDockWindow();
     void createRightDockWindow();
     void createBottomDockWindow();
@@ -56,5 +60,8 @@ public slots:
      * @brief gives a short description of this application
      */
     void about();
+
+    void updateTrainDetailsDock(QString);
+    void updateStationDetailsDock(QString);
 };
 #endif // MAINWINDOW_H

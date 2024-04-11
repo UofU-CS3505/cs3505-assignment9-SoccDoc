@@ -34,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
     // Title and resize the window
     setWindowTitle("Train");
     resize(875, 700);
+
+    // Connect updating detail dock widgets
+    connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainDetailsDock);
+    connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationDetailsDock);
 }
 
 MainWindow::~MainWindow(){
@@ -76,7 +80,6 @@ void MainWindow::createActions() {
     aboutAct = new QAction(tr("&About"), this);
     connect(aboutAct, &QAction::triggered, this, &MainWindow::about);
 }
-
 
 void MainWindow::createDockWindows() {
    createLeftDockWindow();
@@ -159,7 +162,7 @@ void MainWindow::createLeftDockWindow() {
     QWidget* trainWidget = new QWidget();
     trainWidget->setLayout(trainLayout);
 
-    // Create station layout and add radio buttons
+    // Create station layout and add radio buttons ---------------------------------
     QRadioButton* square = new QRadioButton("Square station");
     QRadioButton* circle = new QRadioButton("Circle station");
 
@@ -209,7 +212,7 @@ void MainWindow::createRightDockWindow() {
     QWidget* trainWidget = new QWidget();
     trainWidget->setLayout(trainLayout);
 
-    // Create station details labels
+    // Create station details labels --------------------------------
     QLabel* stationThroughput = new QLabel("throughput: ");
     QLabel* stationTrains = new QLabel("trains: ");
 
@@ -223,18 +226,18 @@ void MainWindow::createRightDockWindow() {
     stationWidget->setLayout(stationLayout);
 
     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    QDockWidget* trainDock = new QDockWidget("Train Details", this);
-    QDockWidget* stationDock = new QDockWidget("Station Details", this);
+    trainDetailsDock = new QDockWidget("Orange Train Details", this);     // Default train
+    stationDetailsDock = new QDockWidget("Square Station Details", this); // Default station
 
-    trainDock->setWidget(trainWidget);
-    stationDock->setWidget(stationWidget);
+    trainDetailsDock->setWidget(trainWidget);
+    stationDetailsDock->setWidget(stationWidget);
 
     // Dock the frame buttons on the left side
-    this->addDockWidget(Qt::RightDockWidgetArea, trainDock);
-    this->addDockWidget(Qt::RightDockWidgetArea, stationDock);
+    this->addDockWidget(Qt::RightDockWidgetArea, trainDetailsDock);
+    this->addDockWidget(Qt::RightDockWidgetArea, stationDetailsDock);
 
-    trainDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    stationDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    trainDetailsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    stationDetailsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
 
 
@@ -259,5 +262,10 @@ void MainWindow::createBottomDockWindow() {
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
 
+void MainWindow::updateTrainDetailsDock(QString newDetails) {
+    trainDetailsDock->setWindowTitle(newDetails);
+}
 
-
+void MainWindow::updateStationDetailsDock(QString newDetails) {
+    stationDetailsDock->setWindowTitle(newDetails);
+}

@@ -36,8 +36,8 @@ public slots:
     void stationButtonClicked(int);
 
 signals:
-    void updateTrainDetails(int);
-    void updateStationDetails(int);
+    void updateTrainDetails(QString);
+    void updateStationDetails(QString);
 };
 
 #endif // MAPMODEL_H
