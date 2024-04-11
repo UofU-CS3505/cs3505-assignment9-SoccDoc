@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QProgressBar>
 #include "mapmodel.h"
+#include "TrainDrawer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
