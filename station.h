@@ -6,7 +6,7 @@
 
 /**
  * @brief The Station class
- * @authors
+ * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class Station : public QObject
 {

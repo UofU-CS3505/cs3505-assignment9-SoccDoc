@@ -4,6 +4,10 @@
 #include "passenger.h"
 #include "station.h"
 
+/**
+ * @brief The Train class
+ * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
+ */
 class Train : public QObject
 {
     Q_OBJECT

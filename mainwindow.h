@@ -13,7 +13,7 @@ QT_END_NAMESPACE
 
 /**
  * @brief The MainWindow class
- * @authors
+ * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class MainWindow : public QMainWindow
 {
@@ -22,7 +22,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 
 protected:
     /**
@@ -50,9 +49,6 @@ private:
      * @brief action to exit the application
      */
     QAction *exitAct;
-
-
-
 
 public slots:
     /**

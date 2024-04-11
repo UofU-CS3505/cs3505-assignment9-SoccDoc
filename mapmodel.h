@@ -7,7 +7,7 @@
 
 /**
  * @brief The MapModel class
- * @authors
+ * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class MapModel: public QWidget
 {
