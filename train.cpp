@@ -1,3 +1,3 @@
 #include "train.h"
 
-Train::Train() {}
+Train::Train(QObject *parent) : QObject(parent) {}

@@ -13,7 +13,7 @@ class Station : public QObject
     Q_OBJECT
 
 public:
-    Station();
+    Station(QObject *parent = nullptr);
 
 private:
     Passenger stationType;

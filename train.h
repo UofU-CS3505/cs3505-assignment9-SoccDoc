@@ -13,7 +13,7 @@ class Train : public QObject
     Q_OBJECT
 
 public:
-    Train();
+    Train(QObject *parent = nullptr);
 
     void addStations(QList<Station> stations);
     void clearStations();

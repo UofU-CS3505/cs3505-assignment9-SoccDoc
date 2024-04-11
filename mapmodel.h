@@ -16,6 +16,7 @@ class MapModel: public QWidget
 
 public:
     MapModel(QWidget *parent = nullptr);
+
     TrainDrawer* getDrawer();
 
 private:
@@ -23,6 +24,13 @@ private:
     QList<Train> trains;
     QList<Station> stations;
     TrainDrawer *drawer;
+    const int MILISECONDS_TO_UPDATE = 1000;
+
+public slots:
+    /**
+     * @brief updates data
+     */
+    void updateFrame();
 };
 
 #endif // MAPMODEL_H
