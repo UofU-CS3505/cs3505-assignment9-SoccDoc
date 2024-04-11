@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Set our canvas as the central widget
-    setCentralWidget(map);
+    setCentralWidget(map->getDrawer());
 
 
 

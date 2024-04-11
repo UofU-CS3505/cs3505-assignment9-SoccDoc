@@ -4,6 +4,7 @@
 #include <QTimer>
 #include "station.h"
 #include "train.h"
+#include "TrainDrawer.h"
 
 /**
  * @brief The MapModel class
@@ -15,12 +16,13 @@ class MapModel: public QWidget
 
 public:
     MapModel(QWidget *parent = nullptr);
+    TrainDrawer* getDrawer();
 
 private:
     QTimer updateTimer;
     QList<Train> trains;
     QList<Station> stations;
-
+    TrainDrawer *drawer;
 };
 
 #endif // MAPMODEL_H
