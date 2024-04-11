@@ -55,9 +55,11 @@ SOURCES += \
     Box2D/Dynamics/b2World.cpp \
     Box2D/Dynamics/b2WorldCallbacks.cpp \
     Box2D/Rope/b2Rope.cpp \
-    control.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    mapmodel.cpp \
+    station.cpp \
+    train.cpp
 
 HEADERS += \
     Box2D/Box2D.h \
@@ -107,8 +109,11 @@ HEADERS += \
     Box2D/Dynamics/b2World.h \
     Box2D/Dynamics/b2WorldCallbacks.h \
     Box2D/Rope/b2Rope.h \
-    control.h \
-    mainwindow.h
+    mainwindow.h \
+    mapmodel.h \
+    passenger.h \
+    station.h \
+    train.h
 
 FORMS += \
     mainwindow.ui

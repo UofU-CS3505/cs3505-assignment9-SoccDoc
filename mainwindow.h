@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QProgressBar>
-#include "control.h"
+#include "mapmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,7 +29,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    Control *control;
+    MapModel *map;
     void createActions();
 
     void createLeftDockWindow();
