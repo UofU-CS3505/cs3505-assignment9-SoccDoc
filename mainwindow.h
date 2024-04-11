@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QProgressBar>
-#include "control.h"
+#include "mapmodel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -11,6 +11,10 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+/**
+ * @brief The MainWindow class
+ * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,7 +22,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 
 protected:
     /**
@@ -29,7 +32,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    Control *control;
+    MapModel *map;
     void createActions();
 
     void createLeftDockWindow();
@@ -46,9 +49,6 @@ private:
      * @brief action to exit the application
      */
     QAction *exitAct;
-
-
-
 
 public slots:
     /**

@@ -10,14 +10,15 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), control(new Control(this))
+    , ui(new Ui::MainWindow), map(new MapModel(this))
 {
     ui->setupUi(this);
 
     // Set our canvas as the central widget
-    setCentralWidget(control);
+    setCentralWidget(map);
 
 
 
