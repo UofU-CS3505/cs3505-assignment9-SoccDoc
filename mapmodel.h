@@ -31,6 +31,13 @@ public slots:
      * @brief updates data
      */
     void updateFrame();
+
+    void trainButtonClicked(int);
+    void stationButtonClicked(int);
+
+signals:
+    void updateTrainDetails(int);
+    void updateStationDetails(int);
 };
 
 #endif // MAPMODEL_H

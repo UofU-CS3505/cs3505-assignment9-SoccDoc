@@ -16,6 +16,14 @@ void MapModel::updateFrame() {
 
 }
 
+void MapModel::trainButtonClicked(int id) {
+
+}
+
+void MapModel::stationButtonClicked(int id) {
+
+}
+
 TrainDrawer* MapModel::getDrawer(){
     return drawer;
 }

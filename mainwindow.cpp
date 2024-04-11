@@ -10,7 +10,8 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QRadioButton>
-
+#include <QButtonGroup>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -134,15 +135,21 @@ void MainWindow::createDockWindows() {
 // }
 
 void MainWindow::createLeftDockWindow() {
-    // Setup dock widget for changing the frames
-    QDockWidget* trainDock = new QDockWidget("Trains", this);
-    QDockWidget* stationDock = new QDockWidget("Stations", this);
-
     // Create train layout and add radio buttons
     QRadioButton* orange = new QRadioButton("Orange Line");
     QRadioButton* blue = new QRadioButton("Blue Line");
     QRadioButton* red = new QRadioButton("Red Line");
 
+    orange->setChecked(true); // Check default option
+
+    // Add train buttons to button group
+    QButtonGroup* trainButtonGroup = new QButtonGroup();
+    trainButtonGroup->addButton(orange, 0);
+    trainButtonGroup->addButton(blue, 1);
+    trainButtonGroup->addButton(red, 2);
+    connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
+
+    // Put train buttons in a vertical layout
     QVBoxLayout* trainLayout = new QVBoxLayout();
     trainLayout->setAlignment(Qt::AlignTop);
     trainLayout->addWidget(orange);
@@ -156,6 +163,15 @@ void MainWindow::createLeftDockWindow() {
     QRadioButton* square = new QRadioButton("Square station");
     QRadioButton* circle = new QRadioButton("Circle station");
 
+    square->setChecked(true); // Check default option
+
+    // Add station buttons to button group
+    QButtonGroup* stationButtonGroup = new QButtonGroup();
+    stationButtonGroup->addButton(square, 0);
+    stationButtonGroup->addButton(circle, 1);
+    connect(stationButtonGroup, &QButtonGroup::idClicked, map, &MapModel::stationButtonClicked);
+
+    // Put station buttons in a vertical layout
     QVBoxLayout* stationLayout = new QVBoxLayout();
     stationLayout->setAlignment(Qt::AlignTop);
     stationLayout->addWidget(square);
@@ -165,6 +181,9 @@ void MainWindow::createLeftDockWindow() {
     stationWidget->setLayout(stationLayout);
 
     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
+    QDockWidget* trainDock = new QDockWidget("Trains", this);
+    QDockWidget* stationDock = new QDockWidget("Stations", this);
+
     trainDock->setWidget(trainWidget);
     stationDock->setWidget(stationWidget);
 
@@ -177,24 +196,45 @@ void MainWindow::createLeftDockWindow() {
 }
 
 void MainWindow::createRightDockWindow() {
-    // Setup dock widget for changing the frames
-    QDockWidget* rightDock = new QDockWidget("Details", this);
-    QWidget* rightMultiWidget = new QWidget();
-    QVBoxLayout* rightLayout = new QVBoxLayout();
+    // Create train details labels
+    QLabel* trainThroughput = new QLabel("throughput: ");
+    QLabel* trainStations = new QLabel("stations: ");
 
+    // Put train buttons in a vertical layout
+    QVBoxLayout* trainLayout = new QVBoxLayout();
+    trainLayout->setAlignment(Qt::AlignTop);
+    trainLayout->addWidget(trainThroughput);
+    trainLayout->addWidget(trainStations);
 
+    QWidget* trainWidget = new QWidget();
+    trainWidget->setLayout(trainLayout);
 
-    // Add all the frame buttons and label to the vertical layout
-    //rightLayout->addWidget(progressBar);
+    // Create station details labels
+    QLabel* stationThroughput = new QLabel("throughput: ");
+    QLabel* stationTrains = new QLabel("trains: ");
+
+    // Put station buttons in a vertical layout
+    QVBoxLayout* stationLayout = new QVBoxLayout();
+    stationLayout->setAlignment(Qt::AlignTop);
+    stationLayout->addWidget(stationThroughput);
+    stationLayout->addWidget(stationTrains);
+
+    QWidget* stationWidget = new QWidget();
+    stationWidget->setLayout(stationLayout);
 
     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    rightMultiWidget->setLayout(rightLayout);
-    rightDock->setWidget(rightMultiWidget);
+    QDockWidget* trainDock = new QDockWidget("Train Details", this);
+    QDockWidget* stationDock = new QDockWidget("Station Details", this);
+
+    trainDock->setWidget(trainWidget);
+    stationDock->setWidget(stationWidget);
 
     // Dock the frame buttons on the left side
-    rightLayout->setAlignment(Qt::AlignTop);
-    this->addDockWidget(Qt::RightDockWidgetArea, rightDock);
-    rightDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    this->addDockWidget(Qt::RightDockWidgetArea, trainDock);
+    this->addDockWidget(Qt::RightDockWidgetArea, stationDock);
+
+    trainDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    stationDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
 
 
