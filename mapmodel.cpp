@@ -5,10 +5,12 @@ MapModel::MapModel(QWidget *parent) :
     QWidget(parent), updateTimer(this),
     drawer(new TrainDrawer(this))
 {
+    trains.append(new Train());
+    stations.append(new Station());
+
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
-    //updateTimer.callOnTimeout(&MapModel::updateFrame);                   // this doesn't work for some reason??
-    connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame); // but this does
+    connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
     updateTimer.start();
 }
 

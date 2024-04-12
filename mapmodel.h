@@ -21,8 +21,8 @@ public:
 
 private:
     QTimer updateTimer;
-    QList<Train> trains;
-    QList<Station> stations;
+    QList<Train*> trains;
+    QList<Station*> stations;
     TrainDrawer *drawer;
     const int MILISECONDS_TO_UPDATE = 1000;
 
