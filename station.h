@@ -2,6 +2,7 @@
 #define STATION_H
 #include <QObject>
 #include <QPoint>
+#include <QRandomGenerator>
 #include "passenger.h"
 
 /**
@@ -14,11 +15,15 @@ class Station : public QObject
 
 public:
     Station(QObject *parent = nullptr);
+    void update();
+    int generatePassengerProbability = 8;
 
 private:
     Passenger stationType;
     QList<Passenger> waitingPassengers;
     QPoint location;
+    QRandomGenerator rand;
+    void generatePassenger();
 };
 
 #endif // STATION_H
