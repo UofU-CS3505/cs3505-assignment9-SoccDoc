@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QProgressBar>
+#include <QLabel>
 #include "mapmodel.h"
 #include "TrainDrawer.h"
 
@@ -40,6 +41,10 @@ private:
     QDockWidget* trainDetailsDock;
     QDockWidget* stationDetailsDock;
 
+    //data variables to be updated.
+    QLabel* throughput;
+    QLabel* waitTime;
+
     void createLeftDockWindow();
     void createRightDockWindow();
     void createBottomDockWindow();
@@ -60,7 +65,7 @@ public slots:
      * @brief gives a short description of this application
      */
     void about();
-
+    void updateData(int, int);
     void updateTrainDetailsDock(QString);
     void updateStationDetailsDock(QString);
 };

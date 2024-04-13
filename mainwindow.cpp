@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Connect updating detail dock widgets
     connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainDetailsDock);
     connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationDetailsDock);
+    connect(map, &MapModel::updateData, this, &MainWindow::updateData);
 }
 
 MainWindow::~MainWindow(){
@@ -249,9 +250,11 @@ void MainWindow::createBottomDockWindow() {
 
 
     QVBoxLayout* dataLayout = new QVBoxLayout();
-    QLabel* throughput = new QLabel("throughput: ");
+     throughput = new QLabel("throughput: ");
+     waitTime = new QLabel("WaitTime: ");
     bottomLayout->addItem(dataLayout);
     dataLayout->addWidget(throughput);
+    dataLayout->addWidget(waitTime);
 
     // Add all the frame buttons and label to the vertical layout
     //rightLayout->addWidget(progressBar);
@@ -273,4 +276,9 @@ void MainWindow::updateTrainDetailsDock(QString newDetails) {
 
 void MainWindow::updateStationDetailsDock(QString newDetails) {
     stationDetailsDock->setWindowTitle(newDetails);
+}
+
+void MainWindow::updateData(int newThroughput, int newWaitTime){
+    throughput->setText("throughput: " + newThroughput);
+    waitTime->setText("WaitTime " + newWaitTime);
 }

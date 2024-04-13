@@ -36,6 +36,7 @@ public slots:
     void stationButtonClicked(int);
 
 signals:
+    void updateData(int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
 };
