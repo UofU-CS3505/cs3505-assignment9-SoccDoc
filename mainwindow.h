@@ -5,6 +5,9 @@
 #include <QProgressBar>
 #include <QLabel>
 #include "mapmodel.h"
+#include <QQueue>
+#include <QMetaMethod>
+#include <QMessageBox>
 #include "TrainDrawer.h"
 
 QT_BEGIN_NAMESPACE
@@ -37,6 +40,8 @@ private:
     MapModel *map;
     void createActions();
 
+    QQueue<void (MainWindow::*)()> tipQueue; // queue for signals
+
     // Docks for managing train and station details
     QDockWidget* trainDetailsDock;
     QDockWidget* stationDetailsDock;
@@ -61,6 +66,9 @@ private:
      */
     QAction *exitAct;
 
+    // Tips
+    QMessageBox* starterTip;
+
 public slots:
     /**
      * @brief gives a short description of this application
@@ -70,5 +78,8 @@ public slots:
     void updateTrainDetailsDock(QString);
     void updateStationDetailsDock(QString);
     void showTip();
+
+signals:
+    void starterTipSignal();
 };
 #endif // MAINWINDOW_H
