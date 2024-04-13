@@ -248,6 +248,10 @@ void MainWindow::createBottomDockWindow() {
     QHBoxLayout* bottomLayout = new QHBoxLayout();
 
 
+    QVBoxLayout* dataLayout = new QVBoxLayout();
+    QLabel* throughput = new QLabel("throughput: ");
+    bottomLayout->addItem(dataLayout);
+    dataLayout->addWidget(throughput);
 
     // Add all the frame buttons and label to the vertical layout
     //rightLayout->addWidget(progressBar);
@@ -257,7 +261,8 @@ void MainWindow::createBottomDockWindow() {
     bottomDock->setWidget(bottomMultiWidget);
 
     // Dock the frame buttons on the left side
-    bottomLayout->setAlignment(Qt::AlignTop);
+    dataLayout->setAlignment(Qt::AlignTop);
+    bottomLayout->setAlignment(Qt::AlignLeft);
     this->addDockWidget(Qt::BottomDockWidgetArea, bottomDock);
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
