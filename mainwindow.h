@@ -44,12 +44,15 @@ private:
     //data variables to be updated.
     QLabel* throughput;
     QLabel* waitTime;
+    QPixmap image;
 
     void createLeftDockWindow();
     void createRightDockWindow();
     void createBottomDockWindow();
     void createDockWindows();
     void createTipPopups();
+    void trainKillingSimulator();
+    void deleteTrain(QLabel* image);
 
     QProgressBar* progressBar;
     /**
