@@ -16,6 +16,8 @@ class Station : public QObject
 public:
     Station(QObject *parent = nullptr);
     void update();
+    Passenger getStationType();
+    QPoint getLocation();
     int generatePassengerProbability = 8;
 
 private:

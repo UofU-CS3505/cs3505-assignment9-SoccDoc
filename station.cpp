@@ -23,3 +23,11 @@ void Station::generatePassenger(){
 
     waitingPassengers.append(passengerToAdd);
 }
+
+Passenger Station::getStationType(){
+
+}
+
+QPoint Station::getLocation(){
+
+}

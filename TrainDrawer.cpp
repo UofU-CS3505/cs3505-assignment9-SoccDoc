@@ -1,4 +1,5 @@
 #include "TrainDrawer.h"
+#include "passenger.h"
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
@@ -6,23 +7,39 @@
 
 TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     setAttribute(Qt::WA_StaticContents);
+    resizeImage(&image, QSize(750, 500));
+    resizeImage(&baseImage, QSize(750, 500));
+    redrawLine = false;
 }
 
 void TrainDrawer::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QRect dirtyRect = event->rect();
-    painter.drawImage(dirtyRect, image, dirtyRect);
+    if(!redrawLine){
+        painter.drawImage(dirtyRect, baseImage, dirtyRect);
+    }
+    else
+    {
+        QPixmap base = QPixmap::fromImage(baseImage);
+        QPixmap overlay = QPixmap::fromImage(image);
+        QPixmap result(base.width(), base.height());
+        result.fill(Qt::transparent);
+        //we don't know if result is the one being shown
+        QPainter painter(&result);
+        painter.drawPixmap(0, 0, base);
+        painter.drawPixmap(0, 0, overlay);
+    }
 }
 
-void TrainDrawer::resizeEvent(QResizeEvent *event)
-{
-    if (width() > image.width() || height() > image.height()) {
-        resizeImage(&image, QSize(width(), height()));
-        update();
-    }
-    QWidget::resizeEvent(event);
-}
+// void TrainDrawer::resizeEvent(QResizeEvent *event)
+// {
+//     if (width() > image.width() || height() > image.height()) {
+//         resizeImage(&image, QSize(width(), height()));
+//         update();
+//     }
+//     QWidget::resizeEvent(event);
+// }
 
 void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 {
@@ -69,4 +86,14 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
     update(QRect(lastPoint, endPoint).normalized()
                .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
+}
+
+void TrainDrawer::drawStations(Station* station){
+    QPainter painter(&baseImage);
+    if(station->getStationType() == Passenger::Circle){
+        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), 60, 60);
+    }
+    else if(station->getStationType() == Passenger::Square){
+        painter.drawRect(station->getLocation().x(), station->getLocation().y(), 60, 60);
+    }
 }
