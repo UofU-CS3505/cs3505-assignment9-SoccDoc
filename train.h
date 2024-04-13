@@ -17,9 +17,9 @@ public:
 
     void addStations(QList<Station> stations);
     void clearStations();
+    QList<Passenger> cargo;
 
 private:
-    QList<Passenger> cargo;
     QList<Station> connectedStations;
     Station currentDestination;
 
