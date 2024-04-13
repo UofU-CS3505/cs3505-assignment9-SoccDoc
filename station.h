@@ -4,7 +4,6 @@
 #include <QPoint>
 #include <QRandomGenerator>
 #include "passenger.h"
-class Train;
 
 /**
  * @brief The Station class
@@ -16,12 +15,11 @@ class Station : public QObject
 
 public:
     Station(QObject *parent = nullptr);
-    Passenger stationType;
     void update();
     int generatePassengerProbability = 8;
-    void updateTrainPassengers(Train trainToLoad);
 
 private:
+    Passenger stationType;
     QList<Passenger> waitingPassengers;
     QPoint location;
     QRandomGenerator rand;
