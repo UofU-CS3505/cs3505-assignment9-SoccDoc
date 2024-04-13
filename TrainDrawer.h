@@ -10,6 +10,7 @@ public:
     TrainDrawer(QWidget *parent = nullptr);
 protected:
     void paintEvent(QPaintEvent *event) override;
+    //commented out because we don't want the canvas to be resized
     // void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;

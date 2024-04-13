@@ -55,7 +55,7 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton && redrawLine) {
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -63,13 +63,13 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
-    if ((event->buttons() & Qt::LeftButton) && scribbling)
+    if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine)
         drawLineTo(event->position().toPoint());
 }
 
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && scribbling) {
+    if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
         drawLineTo(event->position().toPoint());
         scribbling = false;
     }
