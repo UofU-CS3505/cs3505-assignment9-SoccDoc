@@ -68,5 +68,6 @@ public slots:
     void updateData(int, int);
     void updateTrainDetailsDock(QString);
     void updateStationDetailsDock(QString);
+    void showTip();
 };
 #endif // MAINWINDOW_H

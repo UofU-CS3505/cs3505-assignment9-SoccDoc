@@ -250,9 +250,14 @@ void MainWindow::createBottomDockWindow() {
 
 
     QVBoxLayout* dataLayout = new QVBoxLayout();
-     throughput = new QLabel("throughput: ");
-     waitTime = new QLabel("WaitTime: ");
+    throughput = new QLabel("Throughput: ");
+    waitTime = new QLabel("WaitTime: ");
+
+    QPushButton* tip = new QPushButton("Tip 1");
+    connect(tip, &QPushButton::clicked, this, &MainWindow::showTip);
+
     bottomLayout->addItem(dataLayout);
+    bottomLayout->addWidget(tip);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
 
@@ -279,6 +284,20 @@ void MainWindow::updateStationDetailsDock(QString newDetails) {
 }
 
 void MainWindow::updateData(int newThroughput, int newWaitTime){
-    throughput->setText("throughput: " + newThroughput);
-    waitTime->setText("WaitTime " + newWaitTime);
+    throughput->setText(&"Throughput: " [newThroughput]);
+    waitTime->setText(&"WaitTime: " [newWaitTime]);
+}
+
+void MainWindow::showTip() {
+    // Make the pop up for a tip
+    QMessageBox* tip = new QMessageBox(this);
+
+    // Define the message box details
+    tip->setWindowTitle("Tip 1");
+    tip->setText("Some info");
+    tip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    tip->setStandardButtons(QMessageBox::Ok);
+
+    // Execute the popup
+    tip->exec();
 }
