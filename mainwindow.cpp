@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     // Add grouped dragging to dock options (the rest are default)
     //setDockOptions(GroupedDragging|AnimatedDocks|AllowTabbedDocks);
 
-   createDockWindows();
+    createDockWindows();
+    //createTipPopups();
 
     // Title and resize the window
     setWindowTitle("Train");
@@ -87,56 +88,6 @@ void MainWindow::createDockWindows() {
    createRightDockWindow();
    createBottomDockWindow();
 }
-
-// Example showing tab widget
-// TODO delete me :)
-// void MainWindow::createLeftDockWindow() {
-//     // Setup dock widget for changing the frames
-//     QDockWidget* LeftDock = new QDockWidget("Trains and Stations", this);
-//     QTabWidget* tabWidget = new QTabWidget();
-
-//     progressBar = new QProgressBar();
-//     progressBar->setMaximum(100);
-//     progressBar->setValue(50);
-
-//     // Create train layout and add radio buttons
-//     QRadioButton* orange = new QRadioButton("Orange Line");
-//     QRadioButton* blue = new QRadioButton("Blue Line");
-//     QRadioButton* red = new QRadioButton("Red Line");
-
-//     QVBoxLayout* trainLayout = new QVBoxLayout();
-//     trainLayout->setAlignment(Qt::AlignTop);
-//     trainLayout->addWidget(orange);
-//     trainLayout->addWidget(blue);
-//     trainLayout->addWidget(red);
-
-//     QWidget* trainWidget = new QWidget();
-//     trainWidget->setLayout(trainLayout);
-
-//     // Create station layout and add radio buttons
-//     QRadioButton* square = new QRadioButton("Square station");
-//     QRadioButton* circle = new QRadioButton("Circle station");
-
-//     QVBoxLayout* stationLayout = new QVBoxLayout();
-//     stationLayout->setAlignment(Qt::AlignTop);
-//     stationLayout->addWidget(square);
-//     stationLayout->addWidget(circle);
-
-//     QWidget* stationWidget = new QWidget();
-//     stationWidget->setLayout(stationLayout);
-
-//     // Add all the frame buttons and label to the vertical layout
-//     trainLayout->addWidget(progressBar);
-
-//     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-//     tabWidget->addTab(trainWidget, "Trains");
-//     tabWidget->addTab(stationWidget, "Stations");
-//     LeftDock->setWidget(tabWidget);
-
-//     // Dock the frame buttons on the left side
-//     this->addDockWidget(Qt::LeftDockWidgetArea, LeftDock);
-//     LeftDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-// }
 
 void MainWindow::createLeftDockWindow() {
     // Create train layout and add radio buttons
@@ -241,38 +192,67 @@ void MainWindow::createRightDockWindow() {
     stationDetailsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 }
 
-
 void MainWindow::createBottomDockWindow() {
-    // Setup dock widget for changing the frames
-    QDockWidget* bottomDock = new QDockWidget("Library", this);
-    QWidget* bottomMultiWidget = new QWidget();
-    QHBoxLayout* bottomLayout = new QHBoxLayout();
-
-
-    QVBoxLayout* dataLayout = new QVBoxLayout();
-    throughput = new QLabel("Throughput: ");
-    waitTime = new QLabel("WaitTime: ");
-
+    // Setup a tip popup
     QPushButton* tip = new QPushButton("Tip 1");
     connect(tip, &QPushButton::clicked, this, &MainWindow::showTip);
 
-    bottomLayout->addItem(dataLayout);
-    bottomLayout->addWidget(tip);
+    // Put the tips into a layout
+    QHBoxLayout* tipLayout = new QHBoxLayout();
+    tipLayout->addWidget(tip);
+
+    // Put the tips into a widget
+    QWidget* tipWidget = new QWidget();
+    tipWidget->setLayout(tipLayout);
+
+    // Setup progress bar
+    progressBar = new QProgressBar();
+    progressBar->setMaximum(100);
+    progressBar->setValue(50);
+
+    // Setup data
+    throughput = new QLabel("Throughput: ");
+    waitTime = new QLabel("WaitTime: ");
+
+    // Put the data into a layout
+    QVBoxLayout* dataLayout = new QVBoxLayout();
+    tipLayout->addItem(dataLayout);
+    dataLayout->addWidget(progressBar);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
 
-    // Add all the frame buttons and label to the vertical layout
-    //rightLayout->addWidget(progressBar);
+    // Put the data into a widget
+    QWidget* dataWidget = new QWidget();
+    dataWidget->setLayout(dataLayout);
 
-    // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    bottomMultiWidget->setLayout(bottomLayout);
-    bottomDock->setWidget(bottomMultiWidget);
+    // Add the data and tip widgets to the tab widget
+    QTabWidget* bottomTabWidget = new QTabWidget();
+    bottomTabWidget->addTab(dataWidget, "Data");
+    bottomTabWidget->addTab(tipWidget, "Tips");
 
-    // Dock the frame buttons on the left side
+    // Dock the tab widget
+    QDockWidget* bottomDock = new QDockWidget("Library", this);
+    bottomDock->setWidget(bottomTabWidget);
+
+    // Dock the frame buttons on the left side and set alignment
     dataLayout->setAlignment(Qt::AlignTop);
-    bottomLayout->setAlignment(Qt::AlignLeft);
+    tipLayout->setAlignment(Qt::AlignLeft);
     this->addDockWidget(Qt::BottomDockWidgetArea, bottomDock);
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+}
+
+void MainWindow::createTipPopups() {
+    // Make the pop up for a tip
+    QMessageBox* tip = new QMessageBox(this);
+
+    // Define the message box details
+    tip->setWindowTitle("Tip 1");
+    tip->setText("Some info");
+    tip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    tip->setStandardButtons(QMessageBox::Ok);
+
+    // Execute the popup
+    tip->exec();
 }
 
 void MainWindow::updateTrainDetailsDock(QString newDetails) {

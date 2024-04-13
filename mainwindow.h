@@ -49,6 +49,7 @@ private:
     void createRightDockWindow();
     void createBottomDockWindow();
     void createDockWindows();
+    void createTipPopups();
 
     QProgressBar* progressBar;
     /**
