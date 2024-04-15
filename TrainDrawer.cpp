@@ -9,13 +9,14 @@
 
 TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     //create the world with correct gravity
-    b2Vec2 gravity(0.0f, -10.0f);
+    b2Vec2 gravity(0.0f, 10.0f);
     _world = new b2World(gravity);
 
     setAttribute(Qt::WA_StaticContents);
     resizeImage(&image, QSize(750, 500));
     resizeImage(&baseImage, QSize(750, 500));
     redrawLine = false;
+
 }
 
 void TrainDrawer::paintEvent(QPaintEvent *event)
@@ -39,7 +40,7 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     }
 
     
-    _world->Step(1.0f/60.0f, 8, 3);
+    _world->Step(1.0f/10.0f, 8, 3);
     foreach(const struct confetti& o, allConfetti) {
             drawConfetti(&painter, o);
     }
@@ -106,8 +107,8 @@ void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)
     allConfetti.clear();
     //add new confetti at the correct location on the screen, position will need adjusting.
-    for (int i = 0; i < 30; ++i) {
-        allConfetti.append(createConfetti(b2Vec2(250, 250)));
+    for (int i = 0; i < 500; ++i) {
+        allConfetti.append(createConfetti(b2Vec2(rand.bounded(0, baseImage.width()), rand.bounded(-30, 30))));
     }
 
 }
@@ -115,19 +116,21 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
     struct confetti o;
     // body of the confetti, make dynamic for the effect, will cause them to fall and interact with each other
     b2BodyDef bd;
+    o.direction = (rand.bounded(100)%2)*rand.bounded(-1, 1);
     bd.type = b2_dynamicBody;
     bd.position = pos;
     o.body = _world->CreateBody(&bd);
 
     // create the shape of the object
     b2PolygonShape shape;
-    shape.SetAsBox(5, 10);
+    shape.SetAsBox(2, 5);
+
 
     // fixture defines its movement/interactions as related to physics
     b2FixtureDef fd;
     fd.shape = &shape;
     fd.density = 1.0f;
-    fd.friction = 1.0f;
+    fd.friction = 10.0f;
     fd.restitution = 0.6f;
     o.fixture = o.body->CreateFixture(&fd);
     return o;
@@ -135,7 +138,7 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
 
 void TrainDrawer::drawConfetti(QPainter *painter, const struct TrainDrawer::confetti& confetti) {
     //get the position and angle of the coffetti
-    float32 x = confetti.body->GetPosition().x;
+    float32 x = confetti.body->GetPosition().x + confetti.direction*500;
     float32 y = confetti.body->GetPosition().y;
     float32 angle = confetti.body->GetAngle();
 
@@ -151,11 +154,13 @@ void TrainDrawer::drawConfetti(QPainter *painter, const struct TrainDrawer::conf
     painter->translate(rect.center());
     painter->rotate(angle*180/b2_pi);
     painter->translate(-rect.center());
-    painter->fillRect(rect, (Qt::green, 15) );
+    painter->fillRect(rect, QColor(rand.bounded(254), rand.bounded(254), rand.bounded(254), 255) );
     painter->restore();
 }
 
 void TrainDrawer::updateImage(){
+    update(0, 0, baseImage.width(), baseImage.height());
+}
 
 void TrainDrawer::drawStations(Station* station){
     QPainter painter(&baseImage);

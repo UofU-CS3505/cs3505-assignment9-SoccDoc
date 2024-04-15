@@ -27,7 +27,7 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
-    const int MILISECONDS_TO_UPDATE = 1000;
+    const int MILISECONDS_TO_UPDATE = (1000/60);
 
 public slots:
     /**

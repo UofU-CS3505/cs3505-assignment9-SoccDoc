@@ -17,7 +17,7 @@ MapModel::MapModel(QWidget *parent) :
 }
 
 void MapModel::updateFrame() {
-    update();
+   drawer->updateImage();
 }
 
 void MapModel::trainButtonClicked(int id) {
@@ -50,5 +50,4 @@ TrainDrawer* MapModel::getDrawer(){
 }
 void MapModel::confetti() {
     drawer->confetti();
-    update();
 }

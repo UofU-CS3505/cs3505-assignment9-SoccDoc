@@ -11,6 +11,7 @@ class TrainDrawer: public QWidget
 public:
     TrainDrawer(QWidget *parent = nullptr);
     void confetti();
+    void updateImage();
 protected:
     void paintEvent(QPaintEvent *event) override;
     //commented out because we don't want the canvas to be resized
@@ -28,10 +29,12 @@ private:
 
 
 
+
     QRandomGenerator rand;
 
     struct confetti
     {
+        int direction;
         b2Body *body;
         b2Fixture *fixture;
     };
