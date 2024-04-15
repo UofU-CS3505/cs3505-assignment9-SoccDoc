@@ -8,6 +8,9 @@ class TrainDrawer: public QWidget
     Q_OBJECT
 public:
     TrainDrawer(QWidget *parent = nullptr);
+
+    QSize size();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     //commented out because we don't want the canvas to be resized

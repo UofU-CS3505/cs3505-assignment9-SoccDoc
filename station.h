@@ -15,7 +15,8 @@ class Station : public QObject
     Q_OBJECT
 
 public:
-    Station(QObject *parent = nullptr);
+    Station(QObject *parent = nullptr, QPoint location = QPoint(0,0));
+
     Passenger stationType;
     void update();
     Passenger getStationType();
