@@ -51,6 +51,7 @@ TrainDrawer* MapModel::getDrawer(){
 }
 void MapModel::confetti() {
     drawer->confetti();
+}
 
 void MapModel::spawnStation() {
     // Create initial random location
