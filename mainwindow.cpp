@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
-    //connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
 }
 
 MainWindow::~MainWindow(){
@@ -348,7 +348,7 @@ void MainWindow::showTip() {
 }
 
 void MainWindow::fillProgressBar() {
-    progressBar->setValue(progressBar->value() + 5);
+    progressBar->setValue(100);
 }
 
 void MainWindow::resetProgressBar() {
