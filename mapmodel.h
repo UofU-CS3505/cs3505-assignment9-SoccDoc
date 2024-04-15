@@ -49,7 +49,7 @@ public slots:
     void updateFrame();
     void trainButtonClicked(int);
     void stationButtonClicked(int);
-    void checkForStations(QList<QPoint>);
+    // void checkForStations(QList<QPoint>);
 
 signals:
     void updateData(int, int);

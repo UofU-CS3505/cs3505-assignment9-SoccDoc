@@ -17,10 +17,8 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QRect dirtyRect = event->rect();
     if(!redrawLine){
-        qDebug() << "hello";
         painter.drawImage(dirtyRect, baseImage, dirtyRect);
     }else{
-        qDebug() << "hi";
         painter.drawImage(dirtyRect, overlayImage, dirtyRect);
     }
 }
@@ -92,14 +90,21 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
 
 void TrainDrawer::drawStations(Station* station){
     QPainter painter(&baseImage);
+    painter.setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
     if(station->getStationType() == Passenger::Circle){
-        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), 60, 60);
+        qDebug() << "hi";
+        painter.setBrush(Qt::black);
+        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), 30, 30);
+        update();
     }
     else if(station->getStationType() == Passenger::Square){
-        painter.drawRect(station->getLocation().x(), station->getLocation().y(), 60, 60);
+        qDebug() << "hey";
+        painter.drawRect(station->getLocation().x(), station->getLocation().y(), 30, 30);
+        update();
     }
 }
 
 QSize TrainDrawer::size() {
-    return image.size();
+    return baseImage.size();
 }
