@@ -46,3 +46,6 @@ void MapModel::stationButtonClicked(int id) {
 TrainDrawer* MapModel::getDrawer(){
     return drawer;
 }
+void MapModel::confetti() {
+    drawer->confetti();
+}
