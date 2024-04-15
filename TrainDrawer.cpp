@@ -61,6 +61,7 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
+    overlayImage = baseImage;
     redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
         points.append(event->position().toPoint());
@@ -172,14 +173,23 @@ void TrainDrawer::updateImage(){
 
 void TrainDrawer::drawStations(Station* station){
     QPainter painter(&baseImage);
+    painter.setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
     if(station->getStationType() == Passenger::Circle){
-        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), 60, 60);
+        painter.setBrush(Qt::black);
+        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
+        update();
     }
     else if(station->getStationType() == Passenger::Square){
-        painter.drawRect(station->getLocation().x(), station->getLocation().y(), 60, 60);
+        painter.drawRect(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
+        update();
     }
 }
 
 QSize TrainDrawer::size() {
     return overlayImage.size();
+}
+
+int TrainDrawer::getWidth(){
+    return STATION_WIDTH;
 }

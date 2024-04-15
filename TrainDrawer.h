@@ -10,9 +10,9 @@ class TrainDrawer: public QWidget
     Q_OBJECT
 public:
     TrainDrawer(QWidget *parent = nullptr);
+    int getWidth();
     void confetti();
     void updateImage();
-
     QSize size();
 
 protected:
@@ -30,6 +30,7 @@ private:
     QPoint lastPoint;
     QList<QPoint> points;
     bool scribbling;
+    const int STATION_WIDTH = 30;
 
 
 

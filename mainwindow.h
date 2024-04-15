@@ -8,6 +8,7 @@
 #include <QQueue>
 #include <QMetaMethod>
 #include <QMessageBox>
+#include <QHBoxLayout>
 #include "TrainDrawer.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,13 +29,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    /**
-     * @brief closeEvent is a method that gets invoked when user closes the mainwindow
-     * @param event - captures when the user clicks close
-     */
-    void closeEvent(QCloseEvent *event) override;
-
 private:
     Ui::MainWindow *ui;
     MapModel *map;
@@ -51,6 +45,8 @@ private:
     QLabel* throughput;
     QLabel* waitTime;
     QPixmap image;
+    QHBoxLayout* tipLayout = new QHBoxLayout();
+    int tipNum = 1;
 
     void createLeftDockWindow();
     void createRightDockWindow();
@@ -71,7 +67,12 @@ private:
     QAction *exitAct;
 
     // Tips
+    QList<QMessageBox*> tipList;
     QMessageBox* starterTip;
+    QMessageBox* secondTip;
+    QMessageBox* thirdTip;
+    QMessageBox* fourthTip;
+    QMessageBox* fifthTip;
 
 public slots:
     /**
@@ -87,5 +88,9 @@ public slots:
 
 signals:
     void starterTipSignal();
+    void secondTipSignal();
+    void thirdTipSignal();
+    void fourthTipSignal();
+    void fifthTipSignal();
 };
 #endif // MAINWINDOW_H
