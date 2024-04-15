@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     //setDockOptions(GroupedDragging|AnimatedDocks|AllowTabbedDocks);
 
     createDockWindows();
-    //createTipPopups();
+    createTipPopups();
 
     // Title and resize the window
     setWindowTitle("Train");
@@ -265,16 +265,19 @@ void MainWindow::createBottomDockWindow() {
 
 void MainWindow::createTipPopups() {
     // Make the pop up for a tip
-    QMessageBox* tip = new QMessageBox(this);
+    starterTip = new QMessageBox(this);
 
     // Define the message box details
-    tip->setWindowTitle("Tip 1");
-    tip->setText("Some info");
-    tip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
-    tip->setStandardButtons(QMessageBox::Ok);
+    starterTip->setWindowTitle("Tip 1");
+    starterTip->setText("Some info");
+    starterTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    starterTip->setStandardButtons(QMessageBox::Ok);
 
-    // Execute the popup
-    tip->exec();
+    // Connect signals for popups
+    connect(this, &MainWindow::starterTipSignal, starterTip, &QMessageBox::exec);
+
+    // Enqueue signals for popups
+    tipQueue.enqueue(&MainWindow::starterTipSignal);
 }
 
 void MainWindow::updateTrainDetailsDock(QString newDetails) {
@@ -291,15 +294,13 @@ void MainWindow::updateData(int newThroughput, int newWaitTime){
 }
 
 void MainWindow::showTip() {
-    // Make the pop up for a tip
-    QMessageBox* tip = new QMessageBox(this);
+    // Check if there are more tip signals
+    if (tipQueue.isEmpty()) {
+        qDebug() << "Out of tips!";
+        return;
+    }
 
-    // Define the message box details
-    tip->setWindowTitle("Tip 1");
-    tip->setText("Some info");
-    tip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
-    tip->setStandardButtons(QMessageBox::Ok);
-
-    // Execute the popup
-    tip->exec();
+    // Get the pointer to next tip signal and call it
+    signalPointer func = tipQueue.dequeue();
+    ((*this).*(func))(); // C++ at its best
 }
