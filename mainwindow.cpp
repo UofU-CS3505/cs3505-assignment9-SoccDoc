@@ -277,5 +277,6 @@ void MainWindow::showTip() {
         return;
     }
 
-    emit (tipQueue.dequeue());
+    signalPointer func = tipQueue.dequeue();
+    (func)();
 }

@@ -40,7 +40,8 @@ private:
     MapModel *map;
     void createActions();
 
-    QQueue<void (MainWindow::*)()> tipQueue; // queue for signals
+    typedef void (MainWindow::*signalPointer)();
+    QQueue<signalPointer> tipQueue; // queue for signals
 
     // Docks for managing train and station details
     QDockWidget* trainDetailsDock;
