@@ -29,13 +29,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
-    /**
-     * @brief closeEvent is a method that gets invoked when user closes the mainwindow
-     * @param event - captures when the user clicks close
-     */
-    void closeEvent(QCloseEvent *event) override;
-
 private:
     Ui::MainWindow *ui;
     MapModel *map;

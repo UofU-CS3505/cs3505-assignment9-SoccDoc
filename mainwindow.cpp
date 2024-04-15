@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-#include <QCloseEvent>
 #include <QDockWidget>
 #include <QListWidget>
 #include <QMenu>
@@ -67,16 +66,6 @@ void MainWindow::trainKillingSimulator(){
 
     connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
 }
-
- void MainWindow::closeEvent(QCloseEvent *event) {
-//     // Check if the user has unsaved progress before closing and prompt them to save
-// //     if (maybeSave())
-        event->accept();
-// //     else
-// //         event->ignore(); // they chose to cancel closing
- }
-
-
 
 void MainWindow::about() {
     QMessageBox::about(this, "About Sprite Editor",
