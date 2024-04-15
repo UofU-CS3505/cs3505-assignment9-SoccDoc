@@ -9,6 +9,7 @@ MapModel::MapModel(QWidget *parent) :
     stations.append(new Station());
 
     connect(this, &MapModel::drawNewStation, drawer, &TrainDrawer::drawStations);
+    connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
 
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
@@ -42,6 +43,12 @@ void MapModel::stationButtonClicked(int id) {
     case 1:
         emit updateStationDetails("Circle Station Details");
         break;
+    }
+}
+
+void MapModel::checkForStations(QList<QPoint> points){
+    foreach(Station* stations, stations){
+
     }
 }
 

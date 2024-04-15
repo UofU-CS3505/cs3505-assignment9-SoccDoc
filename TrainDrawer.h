@@ -18,13 +18,16 @@ protected:
 private:
     void resizeImage(QImage *image, const QSize &newSize);
     void drawLineTo(const QPoint &endPoint);
-    QImage image;
+    QImage overlayImage;
     QImage baseImage;
     QPoint lastPoint;
+    QList<QPoint> points;
     bool scribbling;
     bool redrawLine;
 public slots:
     void drawStations(Station* station);
+signals:
+    void checkForStations(QList<QPoint>);
 };
 
 #endif // TRAINDRAWER_H
