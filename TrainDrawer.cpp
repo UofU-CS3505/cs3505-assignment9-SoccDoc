@@ -18,10 +18,10 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     QRect dirtyRect = event->rect();
     painter.drawImage(dirtyRect, image, dirtyRect);
 
+     _world->Step(1.0f/60.0f, 8, 3);
     foreach(const struct confetti& o, allConfetti) {
             drawConfetti(&painter, o);
-        }
-
+    }
 
 
 
@@ -88,8 +88,8 @@ void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)
     allConfetti.clear();
     //add new confetti at the correct location on the screen, position will need adjusting.
-    for (int i = 0; i < 100; ++i) {
-        allConfetti.append(createConfetti(b2Vec2(i, 0)));
+    for (int i = 0; i < 30; ++i) {
+        allConfetti.append(createConfetti(b2Vec2(250, 250)));
     }
 
 }
@@ -103,7 +103,7 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
 
     // create the shape of the object
     b2PolygonShape shape;
-    shape.SetAsBox(20, 40);
+    shape.SetAsBox(5, 10);
 
     // fixture defines its movement/interactions as related to physics
     b2FixtureDef fd;
@@ -115,7 +115,7 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
     return o;
 }
 
-void TrainDrawer::drawConfetti(QPainter *p, const struct TrainDrawer::confetti& confetti) {
+void TrainDrawer::drawConfetti(QPainter *painter, const struct TrainDrawer::confetti& confetti) {
     //get the position and angle of the coffetti
     float32 x = confetti.body->GetPosition().x;
     float32 y = confetti.body->GetPosition().y;
@@ -125,13 +125,18 @@ void TrainDrawer::drawConfetti(QPainter *p, const struct TrainDrawer::confetti& 
     const b2PolygonShape *shape = dynamic_cast<b2PolygonShape*>(confetti.fixture->GetShape());
     float32 hx = shape->GetVertex(1).x;
     float32 hy = shape->GetVertex(2).y;
-    QRectF r(x-hx, y-hy, 2*hx, 2*hy);
+    QRectF rect(x-hx, y-hy, 2*hx, 2*hy);
+
 
     //save the painter, move the rectangle onto the image, and set its correct orientation
-    p->save();
-    p->translate(r.center());
-    p->rotate(angle*180/b2_pi);
-    p->translate(-r.center());
-    p->drawRect(r);
-    p->restore();
+    painter->save();
+    painter->translate(rect.center());
+    painter->rotate(angle*180/b2_pi);
+    painter->translate(-rect.center());
+    painter->fillRect(rect, (Qt::green, 15) );
+    painter->restore();
+}
+
+void TrainDrawer::updateImage(){
+
 }
