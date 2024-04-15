@@ -99,8 +99,8 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
     painter.drawLine(lastPoint, endPoint);
 
     int rad = (10 / 2) + 2;
-    update(QRect(lastPoint, endPoint).normalized()
-               .adjusted(-rad, -rad, +rad, +rad));
+    // update(QRect(lastPoint, endPoint).normalized()
+    //            .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
 }
 
@@ -139,8 +139,8 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
     fd.shape = &shape;
     fd.density = 0.01f;
     fd.friction = 0.0f;
-    fd.restitution = 2.0f;
-    o.body->ApplyTorque((900.0f *rand.bounded(-2, 2)), false);
+    fd.restitution = 2.0f; //how bouncy the body is
+    o.body->ApplyTorque((900.0f *rand.bounded(-2, 2)), false); // apply forces to the body here to adjust confetti
     o.fixture = o.body->CreateFixture(&fd);
     return o;
 }
