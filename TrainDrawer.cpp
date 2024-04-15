@@ -17,10 +17,8 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QRect dirtyRect = event->rect();
     if(!redrawLine){
-        qDebug() << "hello";
         painter.drawImage(dirtyRect, baseImage, dirtyRect);
     }else{
-        qDebug() << "hi";
         painter.drawImage(dirtyRect, overlayImage, dirtyRect);
     }
 }
@@ -101,5 +99,5 @@ void TrainDrawer::drawStations(Station* station){
 }
 
 QSize TrainDrawer::size() {
-    return image.size();
+    return overlayImage.size();
 }

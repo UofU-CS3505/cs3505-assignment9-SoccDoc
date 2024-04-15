@@ -99,3 +99,8 @@ void MapModel::checkProgressBar(int progressValue) {
     emit restartProgressBar();
     emit showNewTip();
 }
+
+// not implemented
+void MapModel::checkForStations(QList<QPoint>) {
+
+}
