@@ -7,6 +7,9 @@ MapModel::MapModel(QWidget *parent) :
 {
     trains.append(new Train());
 
+    // Get the securely seeded generator
+    rand = *QRandomGenerator::global();
+
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
@@ -52,18 +55,20 @@ TrainDrawer* MapModel::getDrawer(){
 
 void MapModel::spawnStation() {
     // Create initial random location
-    QRandomGenerator random;
-    int x = random.bounded(drawer->size().width());
-    int y = random.bounded(drawer->size().height());
+    int x = rand.bounded(drawer->size().width());
+    int y = rand.bounded(drawer->size().height());
 
     QPoint newStationLocation;
     newStationLocation.setX(x);
     newStationLocation.setY(y);
+    qDebug() << x << ", " << y;
 
     // Check if new station location is too close to other stations
     while(!stationLocationIsGood(newStationLocation)) {
-        x = random.bounded(drawer->size().width());
-        y = random.bounded(drawer->size().height());
+        x = rand.bounded(drawer->size().width());
+        y = rand.bounded(drawer->size().height());
+
+        qDebug() << x << ", " << y;
 
         newStationLocation.setX(x);
         newStationLocation.setY(y);

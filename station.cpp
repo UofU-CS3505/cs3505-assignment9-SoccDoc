@@ -3,6 +3,7 @@
 
 
 Station::Station(QObject *parent, QPoint location) : QObject(parent), location(location) {
+    rand = *QRandomGenerator::global();
     stationType = Passenger(rand() % last);
 }
 
