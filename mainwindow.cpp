@@ -68,16 +68,6 @@ void MainWindow::trainKillingSimulator(){
     connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
 }
 
- void MainWindow::closeEvent(QCloseEvent *event) {
-//     // Check if the user has unsaved progress before closing and prompt them to save
-// //     if (maybeSave())
-        event->accept();
-// //     else
-// //         event->ignore(); // they chose to cancel closing
- }
-
-
-
 void MainWindow::about() {
     QMessageBox::about(this, "About Sprite Editor",
                        "<p>This <b>Sprite Editor</b> enables users to create sprites"
@@ -93,8 +83,6 @@ void MainWindow::about() {
 }
 
 void MainWindow::createActions() {
-
-
     // Connect the exit action to closing the application
     exitAct = new QAction(tr("E&xit"), this);
     exitAct->setShortcuts(QKeySequence::Quit);
