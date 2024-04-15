@@ -107,8 +107,8 @@ void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)
     allConfetti.clear();
     //add new confetti at the correct location on the screen, position will need adjusting.
-    for (int i = 0; i < 500; ++i) {
-        allConfetti.append(createConfetti(b2Vec2(rand.bounded(0, baseImage.width()), rand.bounded(-30, 30))));
+    for (int i = 0; i < 300; ++i) {
+        allConfetti.append(createConfetti(b2Vec2(rand.bounded(0, baseImage.width()), rand.bounded(-50, 50))));
     }
 
 }
@@ -123,7 +123,7 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
 
     // create the shape of the object
     b2PolygonShape shape;
-    shape.SetAsBox(2, 5);
+    shape.SetAsBox(rand.bounded(2,3), rand.bounded(4,6));
 
 
     // fixture defines its movement/interactions as related to physics
@@ -138,7 +138,7 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
 
 void TrainDrawer::drawConfetti(QPainter *painter, const struct TrainDrawer::confetti& confetti) {
     //get the position and angle of the coffetti
-    float32 x = confetti.body->GetPosition().x + confetti.direction*500;
+    float32 x = confetti.body->GetPosition().x;
     float32 y = confetti.body->GetPosition().y;
     float32 angle = confetti.body->GetAngle();
 
