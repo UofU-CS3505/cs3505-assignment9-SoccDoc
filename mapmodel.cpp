@@ -57,9 +57,13 @@ void MapModel::confetti() {
 }
 
 void MapModel::spawnStation() {
+    // Get canvas dimensions
+    int canvasWidth = drawer->size().width();
+    int canvasHeight = drawer->size().height();
+
     // Create initial random location
-    int x = rand.bounded(drawer->size().width());
-    int y = rand.bounded(drawer->size().height());
+    int x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+    int y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
 
     QPoint newStationLocation;
     newStationLocation.setX(x);
@@ -68,8 +72,8 @@ void MapModel::spawnStation() {
 
     // Check if new station location is too close to other stations
     while(!stationLocationIsGood(newStationLocation)) {
-        x = rand.bounded(drawer->size().width());
-        y = rand.bounded(drawer->size().height());
+        x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+        y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
 
         qDebug() << x << ", " << y;
 
