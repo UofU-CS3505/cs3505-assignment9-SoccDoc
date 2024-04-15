@@ -104,13 +104,31 @@ bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
 }
 
 void MapModel::checkProgressBar(int progressValue) {
-    // Check if progress is full
-    if (progressValue != 100)
+    if (progressValue == 20){
+        emit showNewTip();
         return;
+    }
 
-    confetti();
-    emit restartProgressBar();
-    emit showNewTip();
+    if (progressValue == 40){
+        emit showNewTip();
+        return;
+    }
+
+    if (progressValue == 60){
+        emit showNewTip();
+        return;
+    }
+
+    if (progressValue == 80){
+        emit showNewTip();
+        return;
+    }
+
+    if (progressValue == 100){
+        emit showNewTip();
+        confetti();
+        return;
+    }
 }
 
 // not implemented
