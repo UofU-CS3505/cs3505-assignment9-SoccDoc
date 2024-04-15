@@ -74,6 +74,7 @@ private:
     QAction *exitAct;
 
     // Tips
+    QList<QMessageBox*> tipList;
     QMessageBox* starterTip;
     QMessageBox* secondTip;
     QMessageBox* thirdTip;
