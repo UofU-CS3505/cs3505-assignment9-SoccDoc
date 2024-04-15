@@ -27,7 +27,7 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
-    const int MILISECONDS_TO_UPDATE = 1000;
+    const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 15;
 
     /**
@@ -49,12 +49,17 @@ public slots:
     void updateFrame();
     void trainButtonClicked(int);
     void stationButtonClicked(int);
-    // void checkForStations(QList<QPoint>);
+    void confetti();
+    void checkForStations(QList<QPoint>);
+
+    void checkProgressBar(int);
 
 signals:
     void updateData(int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
+    void showNewTip();
+    void restartProgressBar();
 };
 
 #endif // MAPMODEL_H
