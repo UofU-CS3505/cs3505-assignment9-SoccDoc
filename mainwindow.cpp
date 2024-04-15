@@ -42,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainDetailsDock);
     connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationDetailsDock);
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
+    connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
+    connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
+    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
 }
 
 MainWindow::~MainWindow(){
@@ -216,8 +219,8 @@ void MainWindow::createRightDockWindow() {
 
 void MainWindow::createBottomDockWindow() {
     // Setup a tip popup
-    QPushButton* tip = new QPushButton("Tip 1");
-    connect(tip, &QPushButton::clicked, this, &MainWindow::showTip);
+    QPushButton* tip = new QPushButton("Fill progress bar");
+    connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
 
     // Put the tips into a layout
     QHBoxLayout* tipLayout = new QHBoxLayout();
@@ -303,4 +306,12 @@ void MainWindow::showTip() {
     // Get the pointer to next tip signal and call it
     signalPointer func = tipQueue.dequeue();
     ((*this).*(func))(); // C++ at its best
+}
+
+void MainWindow::fillProgressBar() {
+    progressBar->setValue(100);
+}
+
+void MainWindow::resetProgressBar() {
+    progressBar->setValue(1);
 }

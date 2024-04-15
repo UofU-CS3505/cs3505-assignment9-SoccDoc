@@ -82,6 +82,8 @@ public slots:
     void updateTrainDetailsDock(QString);
     void updateStationDetailsDock(QString);
     void showTip();
+    void fillProgressBar();
+    void resetProgressBar();
 
 signals:
     void starterTipSignal();

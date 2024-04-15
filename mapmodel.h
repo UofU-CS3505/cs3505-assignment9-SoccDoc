@@ -51,10 +51,14 @@ public slots:
     void trainButtonClicked(int);
     void stationButtonClicked(int);
 
+    void checkProgressBar(int);
+
 signals:
     void updateData(int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
+    void showNewTip();
+    void restartProgressBar();
 };
 
 #endif // MAPMODEL_H

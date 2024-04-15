@@ -90,3 +90,12 @@ bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
 
     return true;
 }
+
+void MapModel::checkProgressBar(int progressValue) {
+    // Check if progress is full
+    if (progressValue != 100)
+        return;
+
+    emit restartProgressBar();
+    emit showNewTip();
+}
