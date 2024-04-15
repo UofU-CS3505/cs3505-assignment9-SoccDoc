@@ -13,8 +13,8 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     _world = new b2World(gravity);
 
     setAttribute(Qt::WA_StaticContents);
-    resizeImage(&image, QSize(750, 500));
     resizeImage(&baseImage, QSize(750, 500));
+    overlayImage = baseImage;
     redrawLine = false;
 
 }
@@ -26,17 +26,8 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
 
     if(!redrawLine){
         painter.drawImage(dirtyRect, baseImage, dirtyRect);
-    }
-    else
-    {
-        QPixmap base = QPixmap::fromImage(baseImage);
-        QPixmap overlay = QPixmap::fromImage(image);
-        QPixmap result(base.width(), base.height());
-        result.fill(Qt::transparent);
-        //we don't know if result is the one being shown
-        QPainter painter(&result);
-        painter.drawPixmap(0, 0, base);
-        painter.drawPixmap(0, 0, overlay);
+    }else{
+        painter.drawImage(dirtyRect, overlayImage, dirtyRect);
     }
 
     
@@ -69,7 +60,9 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
+    redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
+        points.append(event->position().toPoint());
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -77,21 +70,28 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
-    if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine)
+    if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine){
+        points.append(event->position().toPoint());
         drawLineTo(event->position().toPoint());
+    }
 }
 
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
+        points.append(event->position().toPoint());
         drawLineTo(event->position().toPoint());
         scribbling = false;
+        redrawLine = false;
+        update();
+        overlayImage = baseImage;
+        //emit checkForStations(points);
     }
 }
 
 void TrainDrawer::drawLineTo(const QPoint &endPoint)
 {
-    QPainter painter(&image);
+    QPainter painter(&overlayImage);
     painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
@@ -173,5 +173,5 @@ void TrainDrawer::drawStations(Station* station){
 }
 
 QSize TrainDrawer::size() {
-    return image.size();
+    return overlayImage.size();
 }
