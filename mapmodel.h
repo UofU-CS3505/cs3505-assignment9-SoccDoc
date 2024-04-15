@@ -28,6 +28,19 @@ private:
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
     const int MILISECONDS_TO_UPDATE = (1000/60);
+    const int STATION_DISTANCE = 15;
+
+    /**
+     * @brief spawns a new station and draws it
+     */
+    void spawnStation();
+
+    /**
+     * @brief Checks if a given point is too close to current stations
+     * @param the point to check
+     * @return false if station is too close, true otherwise
+     */
+    bool stationLocationIsGood(QPoint newStationLocation);
 
 public slots:
     /**
@@ -43,7 +56,6 @@ signals:
     void updateData(int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
-    void drawNewStation(Station*);
 };
 
 #endif // MAPMODEL_H

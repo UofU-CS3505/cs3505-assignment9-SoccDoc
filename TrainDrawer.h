@@ -12,6 +12,9 @@ public:
     TrainDrawer(QWidget *parent = nullptr);
     void confetti();
     void updateImage();
+
+    QSize size();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     //commented out because we don't want the canvas to be resized
