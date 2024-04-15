@@ -2,8 +2,9 @@
 #include "train.h"
 
 
-Station::Station(QObject *parent, QPoint location) : QObject(parent), location(location) {
-    rand = *QRandomGenerator::global();
+Station::Station(QObject *parent, QPoint location, QRandomGenerator randomGenerator) :
+    QObject(parent), location(location), rand(randomGenerator)
+{
     stationType = Passenger(rand() % last);
 }
 

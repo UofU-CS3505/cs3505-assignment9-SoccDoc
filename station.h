@@ -15,7 +15,9 @@ class Station : public QObject
     Q_OBJECT
 
 public:
-    Station(QObject *parent = nullptr, QPoint location = QPoint(0,0));
+    Station(QObject *parent = nullptr,
+            QPoint location = QPoint(0,0),
+            QRandomGenerator randomGenerator = *QRandomGenerator::global());
 
     Passenger stationType;
     void update();

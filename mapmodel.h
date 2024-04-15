@@ -30,6 +30,7 @@ private:
     const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 15;
 
+
     /**
      * @brief spawns a new station and draws it
      */

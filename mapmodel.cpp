@@ -8,7 +8,7 @@ MapModel::MapModel(QWidget *parent) :
     trains.append(new Train());
 
     // Get the securely seeded generator
-    rand = *QRandomGenerator::global();
+    rand = QRandomGenerator::securelySeeded();
 
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
@@ -78,7 +78,7 @@ void MapModel::spawnStation() {
     }
 
     // Create station and add it to station list
-    Station* newStation = new Station(this, newStationLocation);
+    Station* newStation = new Station(this, newStationLocation, rand);
     stations.append(newStation);
     drawer->drawStations(newStation);
 }
