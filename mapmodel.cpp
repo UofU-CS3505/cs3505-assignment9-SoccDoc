@@ -21,7 +21,7 @@ MapModel::MapModel(QWidget *parent) :
 }
 
 void MapModel::updateFrame() {
-
+   drawer->updateImage();
 }
 
 void MapModel::trainButtonClicked(int id) {
@@ -51,6 +51,9 @@ void MapModel::stationButtonClicked(int id) {
 
 TrainDrawer* MapModel::getDrawer(){
     return drawer;
+}
+void MapModel::confetti() {
+    drawer->confetti();
 }
 
 void MapModel::spawnStation() {
@@ -101,6 +104,7 @@ void MapModel::checkProgressBar(int progressValue) {
     if (progressValue != 100)
         return;
 
+    confetti();
     emit restartProgressBar();
     emit showNewTip();
 }

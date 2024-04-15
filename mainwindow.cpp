@@ -238,6 +238,8 @@ void MainWindow::createBottomDockWindow() {
     // Setup data
     throughput = new QLabel("Throughput: ");
     waitTime = new QLabel("WaitTime: ");
+    QPushButton* confetti = new QPushButton("confetti", this);
+     connect(confetti, &QPushButton::clicked, map, &MapModel::confetti);
 
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
@@ -245,6 +247,7 @@ void MainWindow::createBottomDockWindow() {
     dataLayout->addWidget(progressBar);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
+    dataLayout->addWidget(confetti);
 
     // Put the data into a widget
     QWidget* dataWidget = new QWidget();
