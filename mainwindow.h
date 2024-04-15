@@ -8,6 +8,7 @@
 #include <QQueue>
 #include <QMetaMethod>
 #include <QMessageBox>
+#include <QHBoxLayout>
 #include "TrainDrawer.h"
 
 QT_BEGIN_NAMESPACE
@@ -51,6 +52,8 @@ private:
     QLabel* throughput;
     QLabel* waitTime;
     QPixmap image;
+    QHBoxLayout* tipLayout = new QHBoxLayout();
+    int tipNum = 1;
 
     void createLeftDockWindow();
     void createRightDockWindow();
@@ -72,6 +75,10 @@ private:
 
     // Tips
     QMessageBox* starterTip;
+    QMessageBox* secondTip;
+    QMessageBox* thirdTip;
+    QMessageBox* fourthTip;
+    QMessageBox* fifthTip;
 
 public slots:
     /**
@@ -87,5 +94,9 @@ public slots:
 
 signals:
     void starterTipSignal();
+    void secondTipSignal();
+    void thirdTipSignal();
+    void fourthTipSignal();
+    void fifthTipSignal();
 };
 #endif // MAINWINDOW_H

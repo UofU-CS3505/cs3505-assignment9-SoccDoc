@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
-    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    //connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
 }
 
 MainWindow::~MainWindow(){
@@ -223,7 +223,6 @@ void MainWindow::createBottomDockWindow() {
     connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
 
     // Put the tips into a layout
-    QHBoxLayout* tipLayout = new QHBoxLayout();
     tipLayout->addWidget(tip);
 
     // Put the tips into a widget
@@ -233,7 +232,7 @@ void MainWindow::createBottomDockWindow() {
     // Setup progress bar
     progressBar = new QProgressBar();
     progressBar->setMaximum(100);
-    progressBar->setValue(50);
+    progressBar->setValue(0);
 
     // Setup data
     throughput = new QLabel("Throughput: ");
@@ -242,7 +241,7 @@ void MainWindow::createBottomDockWindow() {
 
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
-    tipLayout->addItem(dataLayout);
+    //tipLayout->addItem(dataLayout);
     dataLayout->addWidget(progressBar);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
@@ -282,6 +281,38 @@ void MainWindow::createTipPopups() {
 
     // Enqueue signals for popups
     tipQueue.enqueue(&MainWindow::starterTipSignal);
+
+    secondTip = new QMessageBox(this);
+    secondTip->setWindowTitle("Tip 2");
+    secondTip->setText("Part 2 Info:");
+    secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    secondTip->setStandardButtons(QMessageBox::Ok);
+    connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
+    tipQueue.enqueue(&MainWindow::secondTipSignal);
+
+    thirdTip = new QMessageBox(this);
+    thirdTip->setWindowTitle("Tip 3");
+    thirdTip->setText("Part 3 Info:");
+    thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    thirdTip->setStandardButtons(QMessageBox::Ok);
+    connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
+    tipQueue.enqueue(&MainWindow::thirdTipSignal);
+
+    fourthTip = new QMessageBox(this);
+    fourthTip->setWindowTitle("Tip 4");
+    fourthTip->setText("Part 4 Info:");
+    fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    fourthTip->setStandardButtons(QMessageBox::Ok);
+    connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
+    tipQueue.enqueue(&MainWindow::fourthTipSignal);
+
+    fifthTip = new QMessageBox(this);
+    fifthTip->setWindowTitle("Tip 5");
+    fifthTip->setText("Part 5 Info:");
+    fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    fifthTip->setStandardButtons(QMessageBox::Ok);
+    connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
+    tipQueue.enqueue(&MainWindow::fifthTipSignal);
 }
 
 void MainWindow::updateTrainDetailsDock(QString newDetails) {
@@ -304,15 +335,22 @@ void MainWindow::showTip() {
         return;
     }
 
+    QString s = QString::number(tipNum);
+    QPushButton* tip = new QPushButton("Tip " + s);
+    connect(tip, &QPushButton::clicked, starterTip, &QMessageBox::exec);
+    tipLayout->addWidget(tip);
+
     // Get the pointer to next tip signal and call it
     signalPointer func = tipQueue.dequeue();
     ((*this).*(func))(); // C++ at its best
+
+    tipNum++;
 }
 
 void MainWindow::fillProgressBar() {
-    progressBar->setValue(100);
+    progressBar->setValue(progressBar->value() + 5);
 }
 
 void MainWindow::resetProgressBar() {
-    progressBar->setValue(1);
+    progressBar->setValue(0);
 }

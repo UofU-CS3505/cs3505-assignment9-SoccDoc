@@ -106,7 +106,13 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
 
 void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)
-    allConfetti.clear();
+    for(int i = 0; i < allConfetti.size(); i++)
+    {
+
+        _world->DestroyBody(allConfetti.at(i).body);
+        allConfetti.removeAt(i);
+
+    }
     //add new confetti at the correct location on the screen, position will need adjusting.
     for (int i = 0; i < 300; ++i) {
         allConfetti.append(createConfetti(b2Vec2(rand.bounded(0, baseImage.width()), rand.bounded(-50, 50))));
