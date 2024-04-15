@@ -99,6 +99,7 @@ void MapModel::checkProgressBar(int progressValue) {
     if (progressValue != 100)
         return;
 
+    confetti();
     emit restartProgressBar();
     emit showNewTip();
 }
