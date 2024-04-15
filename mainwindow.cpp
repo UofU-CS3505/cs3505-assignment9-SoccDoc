@@ -272,11 +272,13 @@ void MainWindow::updateData(int newThroughput, int newWaitTime){
 }
 
 void MainWindow::showTip() {
+    // Check if there are more tip signals
     if (tipQueue.isEmpty()) {
         qDebug() << "Out of tips!";
         return;
     }
 
+    // Get the pointer to next tip signal and call it
     signalPointer func = tipQueue.dequeue();
-    (func)();
+    ((*this).*(func))(); // C++ at its best
 }
