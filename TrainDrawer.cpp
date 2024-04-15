@@ -97,3 +97,7 @@ void TrainDrawer::drawStations(Station* station){
         painter.drawRect(station->getLocation().x(), station->getLocation().y(), 60, 60);
     }
 }
+
+QSize TrainDrawer::size() {
+    return image.size();
+}
