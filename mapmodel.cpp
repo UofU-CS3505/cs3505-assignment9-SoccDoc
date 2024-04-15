@@ -88,10 +88,11 @@ void MapModel::spawnStation() {
 }
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
+    int width = drawer->getWidth();
     foreach(Station station, stations) {
         // Calculate the distance between the station and the possible new station
-        double xCord = std::pow(newStationLocation.x() - station.getLocation().x(), 2);
-        double yCord = std::pow(newStationLocation.y() - station.getLocation().y(), 2);
+        double xCord = std::pow(newStationLocation.x() + width - station.getLocation().x() + width, 2);
+        double yCord = std::pow(newStationLocation.y() + width - station.getLocation().y() + width, 2);
 
         double distance = std::sqrt(xCord + yCord);
 
