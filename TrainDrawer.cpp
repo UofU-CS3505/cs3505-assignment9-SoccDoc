@@ -11,6 +11,7 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     //create the world with correct gravity
     b2Vec2 gravity(0.0f, 10.0f);
     _world = new b2World(gravity);
+    _world->SetAutoClearForces(true);
 
     setAttribute(Qt::WA_StaticContents);
     resizeImage(&baseImage, QSize(750, 500));
@@ -107,14 +108,13 @@ void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)
     for(int i = 0; i < allConfetti.size(); i++)
     {
-
         _world->DestroyBody(allConfetti.at(i).body);
         allConfetti.removeAt(i);
-
     }
-    //add new confetti at the correct location on the screen, position will need adjusting.
+
+    //add new confetti at the correct location on the screen, position will need adjusting. rand.bounded(0, baseImage.width())
     for (int i = 0; i < 300; ++i) {
-        allConfetti.append(createConfetti(b2Vec2(rand.bounded(0, baseImage.width()), rand.bounded(-50, 50))));
+        allConfetti.append(createConfetti(b2Vec2(baseImage.width()/2, rand.bounded(-50, 50))));
     }
 
 }
@@ -134,10 +134,12 @@ struct TrainDrawer::confetti TrainDrawer::createConfetti(const b2Vec2& pos) {
 
     // fixture defines its movement/interactions as related to physics
     b2FixtureDef fd;
+
     fd.shape = &shape;
-    fd.density = 1.0f;
-    fd.friction = 10.0f;
-    fd.restitution = 0.6f;
+    fd.density = 0.01f;
+    fd.friction = 0.0f;
+    fd.restitution = 2.0f;
+    o.body->ApplyTorque((900.0f *rand.bounded(-2, 2)), false);
     o.fixture = o.body->CreateFixture(&fd);
     return o;
 }
