@@ -18,6 +18,8 @@ public:
     Station(QObject *parent = nullptr);
     Passenger stationType;
     void update();
+    Passenger getStationType();
+    QPoint getLocation();
     int generatePassengerProbability = 8;
     void updateTrainPassengers(Train trainToLoad);
 

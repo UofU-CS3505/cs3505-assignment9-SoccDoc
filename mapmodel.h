@@ -2,6 +2,7 @@
 #define MAPMODEL_H
 #include <QWidget>
 #include <QTimer>
+#include <QRandomGenerator>
 #include "station.h"
 #include "train.h"
 #include "TrainDrawer.h"
@@ -24,6 +25,8 @@ private:
     QList<Train*> trains;
     QList<Station*> stations;
     TrainDrawer *drawer;
+    QList<QPoint> stationPoints;
+    QRandomGenerator rand;
     const int MILISECONDS_TO_UPDATE = 1000;
 
 public slots:
@@ -40,7 +43,7 @@ signals:
     void updateData(int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
-
+    void drawNewStation(Station*);
 };
 
 #endif // MAPMODEL_H

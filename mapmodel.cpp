@@ -8,6 +8,8 @@ MapModel::MapModel(QWidget *parent) :
     trains.append(new Train());
     stations.append(new Station());
 
+    connect(this, &MapModel::drawNewStation, drawer, &TrainDrawer::drawStations);
+
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);

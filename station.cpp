@@ -54,5 +54,12 @@ void Station::updateTrainPassengers(Train trainToLoad){
         }
     }
 
+}
+
+Passenger Station::getStationType(){
+
+}
+
+QPoint Station::getLocation(){
 
 }

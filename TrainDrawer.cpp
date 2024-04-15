@@ -1,4 +1,5 @@
 #include "TrainDrawer.h"
+#include "passenger.h"
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
@@ -10,31 +11,48 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     //create the world with correct gravity
     b2Vec2 gravity(0.0f, -10.0f);
     _world = new b2World(gravity);
+
+    setAttribute(Qt::WA_StaticContents);
+    resizeImage(&image, QSize(750, 500));
+    resizeImage(&baseImage, QSize(750, 500));
+    redrawLine = false;
 }
 
 void TrainDrawer::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     QRect dirtyRect = event->rect();
-    painter.drawImage(dirtyRect, image, dirtyRect);
 
-     _world->Step(1.0f/60.0f, 8, 3);
+    if(!redrawLine){
+        painter.drawImage(dirtyRect, baseImage, dirtyRect);
+    }
+    else
+    {
+        QPixmap base = QPixmap::fromImage(baseImage);
+        QPixmap overlay = QPixmap::fromImage(image);
+        QPixmap result(base.width(), base.height());
+        result.fill(Qt::transparent);
+        //we don't know if result is the one being shown
+        QPainter painter(&result);
+        painter.drawPixmap(0, 0, base);
+        painter.drawPixmap(0, 0, overlay);
+    }
+
+    
+    _world->Step(1.0f/60.0f, 8, 3);
     foreach(const struct confetti& o, allConfetti) {
             drawConfetti(&painter, o);
     }
-
-
-
 }
 
-void TrainDrawer::resizeEvent(QResizeEvent *event)
-{
-    if (width() > image.width() || height() > image.height()) {
-        resizeImage(&image, QSize(width(), height()));
-        update();
-    }
-    QWidget::resizeEvent(event);
-}
+// void TrainDrawer::resizeEvent(QResizeEvent *event)
+// {
+//     if (width() > image.width() || height() > image.height()) {
+//         resizeImage(&image, QSize(width(), height()));
+//         update();
+//     }
+//     QWidget::resizeEvent(event);
+// }
 
 void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 {
@@ -50,7 +68,7 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton && redrawLine) {
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -58,13 +76,13 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
-    if ((event->buttons() & Qt::LeftButton) && scribbling)
+    if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine)
         drawLineTo(event->position().toPoint());
 }
 
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && scribbling) {
+    if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
         drawLineTo(event->position().toPoint());
         scribbling = false;
     }
@@ -139,4 +157,12 @@ void TrainDrawer::drawConfetti(QPainter *painter, const struct TrainDrawer::conf
 
 void TrainDrawer::updateImage(){
 
+void TrainDrawer::drawStations(Station* station){
+    QPainter painter(&baseImage);
+    if(station->getStationType() == Passenger::Circle){
+        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), 60, 60);
+    }
+    else if(station->getStationType() == Passenger::Square){
+        painter.drawRect(station->getLocation().x(), station->getLocation().y(), 60, 60);
+    }
 }
