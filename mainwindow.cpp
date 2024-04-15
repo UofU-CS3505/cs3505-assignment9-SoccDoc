@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
-    //connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
 }
 
 MainWindow::~MainWindow(){
@@ -82,8 +82,6 @@ void MainWindow::about() {
 }
 
 void MainWindow::createActions() {
-
-
     // Connect the exit action to closing the application
     exitAct = new QAction(tr("E&xit"), this);
     exitAct->setShortcuts(QKeySequence::Quit);
@@ -95,9 +93,9 @@ void MainWindow::createActions() {
 }
 
 void MainWindow::createDockWindows() {
-   createLeftDockWindow();
-   createRightDockWindow();
-   createBottomDockWindow();
+    createLeftDockWindow();
+    createRightDockWindow();
+    createBottomDockWindow();
 }
 
 void MainWindow::createLeftDockWindow() {
@@ -270,6 +268,7 @@ void MainWindow::createTipPopups() {
 
     // Enqueue signals for popups
     tipQueue.enqueue(&MainWindow::starterTipSignal);
+    tipList.append(starterTip);
 
     secondTip = new QMessageBox(this);
     secondTip->setWindowTitle("Tip 2");
@@ -278,6 +277,7 @@ void MainWindow::createTipPopups() {
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::secondTipSignal);
+    tipList.append(secondTip);
 
     thirdTip = new QMessageBox(this);
     thirdTip->setWindowTitle("Tip 3");
@@ -286,6 +286,7 @@ void MainWindow::createTipPopups() {
     thirdTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::thirdTipSignal);
+    tipList.append(thirdTip);
 
     fourthTip = new QMessageBox(this);
     fourthTip->setWindowTitle("Tip 4");
@@ -294,6 +295,7 @@ void MainWindow::createTipPopups() {
     fourthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::fourthTipSignal);
+    tipList.append(fourthTip);
 
     fifthTip = new QMessageBox(this);
     fifthTip->setWindowTitle("Tip 5");
@@ -302,6 +304,7 @@ void MainWindow::createTipPopups() {
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::fifthTipSignal);
+    tipList.append(fifthTip);
 }
 
 void MainWindow::updateTrainDetailsDock(QString newDetails) {
@@ -326,7 +329,8 @@ void MainWindow::showTip() {
 
     QString s = QString::number(tipNum);
     QPushButton* tip = new QPushButton("Tip " + s);
-    connect(tip, &QPushButton::clicked, starterTip, &QMessageBox::exec);
+
+    connect(tip, &QPushButton::clicked, tipList[tipNum - 1], &QMessageBox::exec);
     tipLayout->addWidget(tip);
 
     // Get the pointer to next tip signal and call it
@@ -337,7 +341,7 @@ void MainWindow::showTip() {
 }
 
 void MainWindow::fillProgressBar() {
-    progressBar->setValue(progressBar->value() + 5);
+    progressBar->setValue(100);
 }
 
 void MainWindow::resetProgressBar() {
