@@ -28,7 +28,8 @@ private:
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
     const int MILISECONDS_TO_UPDATE = (1000/60);
-    const int STATION_DISTANCE = 15;
+    const int STATION_DISTANCE = 40;
+    const int STATION_EDGE_BUFFER = 40;
 
 
     /**
