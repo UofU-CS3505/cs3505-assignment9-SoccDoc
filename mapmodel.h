@@ -29,6 +29,9 @@ private:
     QRandomGenerator rand;
     const int MILISECONDS_TO_UPDATE = 1000;
 
+    void spawnStation();
+    bool checkStationProximity(QPoint newStationLocation);
+
 public slots:
     /**
      * @brief updates data

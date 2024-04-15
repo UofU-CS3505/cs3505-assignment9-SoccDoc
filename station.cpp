@@ -2,9 +2,8 @@
 #include "train.h"
 
 
-Station::Station(QObject *parent) : QObject(parent) {
+Station::Station(QObject *parent, QPoint location) : QObject(parent), location(location) {
     stationType = Passenger(rand() % last);
-
 }
 
 
