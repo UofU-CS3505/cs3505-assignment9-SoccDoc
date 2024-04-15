@@ -61,7 +61,7 @@ void MapModel::spawnStation() {
     newStationLocation.setY(y);
 
     // Check if new station location is too close to other stations
-    while(!stationIsTooClose(newStationLocation)) {
+    while(!stationLocationIsGood(newStationLocation)) {
         x = random.bounded(drawer->size().width());
         y = random.bounded(drawer->size().height());
 
@@ -75,7 +75,7 @@ void MapModel::spawnStation() {
     drawer->drawStations(newStation);
 }
 
-bool MapModel::stationIsTooClose(QPoint newStationLocation) {
+bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
     foreach(Station station, stations) {
         // Calculate the distance between the station and the possible new station
         double xCord = std::pow(newStationLocation.x() - station.getLocation().x(), 2);

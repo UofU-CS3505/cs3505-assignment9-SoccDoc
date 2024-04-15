@@ -30,8 +30,17 @@ private:
     const int MILISECONDS_TO_UPDATE = 1000;
     const int STATION_DISTANCE = 15;
 
+    /**
+     * @brief spawns a new station and draws it
+     */
     void spawnStation();
-    bool stationIsTooClose(QPoint newStationLocation);
+
+    /**
+     * @brief Checks if a given point is too close to current stations
+     * @param the point to check
+     * @return false if station is too close, true otherwise
+     */
+    bool stationLocationIsGood(QPoint newStationLocation);
 
 public slots:
     /**
