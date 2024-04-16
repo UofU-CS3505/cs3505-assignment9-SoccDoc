@@ -233,8 +233,7 @@ void MainWindow::createTipPopups() {
     connect(this, &MainWindow::firstTipSignal, firstTip, &QMessageBox::exec);
 
     // Enqueue signals for popups
-    tipQueue.enqueue(&MainWindow::firstTipSignal);
-    tipList.append(firstTip);
+    tipMessageBoxQueue.enqueue(firstTip);
 
     // Setup second tip
     secondTip = new QMessageBox(this);
@@ -245,8 +244,7 @@ void MainWindow::createTipPopups() {
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
-    tipQueue.enqueue(&MainWindow::secondTipSignal);
-    tipList.append(secondTip);
+    tipMessageBoxQueue.enqueue(secondTip);
 
     // Setup third tip
     thirdTip = new QMessageBox(this);
@@ -258,8 +256,7 @@ void MainWindow::createTipPopups() {
     thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     thirdTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
-    tipQueue.enqueue(&MainWindow::thirdTipSignal);
-    tipList.append(thirdTip);
+    tipMessageBoxQueue.enqueue(thirdTip);
 
     // Setup fourth tip
     fourthTip = new QMessageBox(this);
@@ -268,8 +265,7 @@ void MainWindow::createTipPopups() {
     fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fourthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
-    tipQueue.enqueue(&MainWindow::fourthTipSignal);
-    tipList.append(fourthTip);
+    tipMessageBoxQueue.enqueue(fourthTip);
 
     // Setup fifth tip
     fifthTip = new QMessageBox(this);
@@ -278,8 +274,7 @@ void MainWindow::createTipPopups() {
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
-    tipQueue.enqueue(&MainWindow::fifthTipSignal);
-    tipList.append(fifthTip);
+    tipMessageBoxQueue.enqueue(fifthTip);
 }
 
 void MainWindow::updateTrainData(QString newData) {
@@ -297,23 +292,22 @@ void MainWindow::updateData(int newThroughput, int newWaitTime){
 
 void MainWindow::showTip() {
     // Check if there are more tip signals
-    if (tipQueue.isEmpty()) {
+    if (tipMessageBoxQueue.isEmpty()) {
         qDebug() << "Out of tips!";
         return;
     }
 
-    // Create a button for the new tip
-    QPushButton* tipButton = new QPushButton("Tip " + QString::number(tipNum));
+    // Get the next tip message box and make a button for it
+    QMessageBox* tipMessageBox = tipMessageBoxQueue.dequeue();;
+    QPushButton* tipButton = new QPushButton(tipMessageBox->windowTitle());
 
     // Create connection to the popup for this new button
-    connect(tipButton, &QPushButton::clicked, tipList[tipNum - 1], &QMessageBox::exec);
+    connect(tipButton, &QPushButton::clicked, tipMessageBox, &QMessageBox::exec);
     tipLayout->addWidget(tipButton);
+    tipMessageBox->exec();
 
-    // Get the pointer to next tip signal and call it
-    signalPointer func = tipQueue.dequeue();
-    ((*this).*(func))(); // C++ at its best
-
-    tipNum++;
+    // C++ at its best (outdated but I worked too hard to remove this entirely)
+    // ((*this).*(signalPointer))();
 }
 
 void MainWindow::fillProgressBar() {

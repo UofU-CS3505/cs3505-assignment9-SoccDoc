@@ -68,7 +68,8 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-        }else{
+            qDebug() << "Pixel sent";
+        }else if (baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
         lastPoint = event->position().toPoint();
@@ -82,8 +83,12 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-        }else{
+            qDebug() << "Pixel sent";
+            qDebug() << "different signal";
+
+        }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
+            qDebug() << "hitBlack was set false";
         }
         drawLineTo(event->position().toPoint());
     }
@@ -95,7 +100,7 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-        }else{
+        }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
         drawLineTo(event->position().toPoint());
