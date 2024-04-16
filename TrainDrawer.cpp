@@ -218,7 +218,7 @@ void TrainDrawer::drawStations(Station* station){
 
         // End point of top line
         qreal endPointX2   = station->getLocation().x() + STATION_WIDTH/2;
-        qreal endPointY2   = station->getLocation().y() - STATION_WIDTH;
+        qreal endPointY2   = station->getLocation().y() + STATION_WIDTH;
 
         QPainterPath path;
         // Set pen to this point.
