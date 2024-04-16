@@ -9,6 +9,7 @@
 #include <QMetaMethod>
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include <QMap>
 
 /**
  * @brief The MainWindow class
@@ -55,16 +56,12 @@ private:
     QAction *exitAct;
 
     // Tips
-    QList<QMessageBox*> tipList;
+    QQueue<QMessageBox*> tipMessageBoxQueue;
     QMessageBox* firstTip;
     QMessageBox* secondTip;
     QMessageBox* thirdTip;
     QMessageBox* fourthTip;
     QMessageBox* fifthTip;
-
-    // Queue of signals to execute tips
-    typedef void (MainWindow::*signalPointer)();
-    QQueue<signalPointer> tipQueue; // queue for signals
 
 public slots:
     void updateData(int, int);
