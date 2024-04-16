@@ -17,11 +17,14 @@ public:
 
     void addStations(QList<Station> stations);
     void clearStations();
-    QList<Passenger> cargo;
-    QList<Station> connectedStations;
+    QList<Station> getConnectedStations();
+    void boardPassenger(Passenger passenger);
+    void removePassengers(Passenger passengerType);
 
 private:
     Station currentDestination;
+    QList<Passenger> cargo;
+    QList<Station> connectedStations;
 
     void deliverPassengers();
     void boardPassengers();

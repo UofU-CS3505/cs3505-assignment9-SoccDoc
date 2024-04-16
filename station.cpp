@@ -36,25 +36,19 @@ void Station::updateTrainPassengers(Train trainToLoad){
 
     //load all the passengers that can go to their correct destination on the train.
     foreach(Passenger passengerToAdd, waitingPassengers){
-         QList<Station> stations = trainToLoad.connectedStations;
+         QList<Station> stations = trainToLoad.getConnectedStations();
 
-        for(int i = 0; i < trainToLoad.connectedStations.size(); i++){
+        for(int i = 0; i < trainToLoad.getConnectedStations().size(); i++){
              const Station* connectedStation = &(stations.at(i));
 
             if(connectedStation->stationType == passengerToAdd){
-                trainToLoad.cargo.append(passengerToAdd);
+                trainToLoad.boardPassenger(passengerToAdd);
             }
         }
     }
 
-
     //unload all the passengers that have the same type as the station
-    for(int i = 0; i < trainToLoad.cargo.size(); i++){
-        if(trainToLoad.cargo[i] == stationType){
-            trainToLoad.cargo.removeAt(i);
-        }
-    }
-
+    trainToLoad.removePassengers(stationType);
 }
 
 Passenger Station::getStationType(){
