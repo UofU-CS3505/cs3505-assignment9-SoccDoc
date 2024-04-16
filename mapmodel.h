@@ -19,11 +19,13 @@ public:
     MapModel(QWidget *parent = nullptr);
 
     TrainDrawer* getDrawer();
+    Station* getStation(QPoint point);
 
 private:
     QTimer updateTimer;
     QList<Train*> trains;
     QList<Station*> stations;
+    Station* selectedStation;
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
