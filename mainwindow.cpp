@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDockWidget>
 #include <QListWidget>
@@ -15,22 +14,16 @@
 #include <QPropertyAnimation>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow), map(new MapModel(this))
+    : QMainWindow(parent), map(new MapModel(this))
 {
-    ui->setupUi(this);
-
     // Set our canvas as the central widget
     setCentralWidget(map->getDrawer());
     image.load(":/images/images/train.png");
 
-
-
-
-    // Add grouped dragging to dock options (the rest are default)
-    //setDockOptions(GroupedDragging|AnimatedDocks|AllowTabbedDocks);
-
+    // Create the window format
     createDockWindows();
+
+    // Create the tip library
     createTipPopups();
 
     // Title and resize the window
@@ -38,17 +31,15 @@ MainWindow::MainWindow(QWidget *parent)
     resize(875, 700);
 
     // Connect updating detail dock widgets
-    connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainDetailsDock);
-    connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationDetailsDock);
+    connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainData);
+    connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationData);
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
 }
 
-MainWindow::~MainWindow(){
-
-}
+MainWindow::~MainWindow() {}
 
 void MainWindow::trainKillingSimulator(){
     QLabel* label = new QLabel(map->getDrawer());
@@ -65,31 +56,6 @@ void MainWindow::trainKillingSimulator(){
     animation->start();
 
     connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
-}
-
-void MainWindow::about() {
-    QMessageBox::about(this, "About Sprite Editor",
-                       "<p>This <b>Sprite Editor</b> enables users to create sprites"
-                       "in a multitude of colors! Additionally, users can erase pixels"
-                       "and use the paint bucket tool to fill areas of their sprite. "
-                       "They can also save sprites as an ssp file and load ssp files"
-                       "regardless of number of pixels into the editor. There is a preview "
-                       "in the top left corner that has a changable frame rate. Users can "
-                       "use the buttons on the left to add and remove frames. There are "
-                       "also buttons that appear as the user add frames that will jump "
-                       "the user to the pictured frame! The user can only set the number "
-                       "of pixels upon entering the sprite editor.</p>");
-}
-
-void MainWindow::createActions() {
-    // Connect the exit action to closing the application
-    exitAct = new QAction(tr("E&xit"), this);
-    exitAct->setShortcuts(QKeySequence::Quit);
-    connect(exitAct, &QAction::triggered, this, &MainWindow::close);
-
-    // Connect the about act to a popup that describes the application to the user
-    aboutAct = new QAction(tr("&About"), this);
-    connect(aboutAct, &QAction::triggered, this, &MainWindow::about);
 }
 
 void MainWindow::createDockWindows() {
@@ -225,7 +191,6 @@ void MainWindow::createBottomDockWindow() {
     throughput = new QLabel("Throughput: ");
     waitTime = new QLabel("WaitTime: ");
 
-
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
     //tipLayout->addItem(dataLayout);
@@ -255,41 +220,50 @@ void MainWindow::createBottomDockWindow() {
 
 void MainWindow::createTipPopups() {
     // Make the pop up for a tip
-    starterTip = new QMessageBox(this);
+    firstTip = new QMessageBox(this);
 
     // Define the message box details
-    starterTip->setWindowTitle("Tip 1");
-    starterTip->setText("Some info");
-    starterTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
-    starterTip->setStandardButtons(QMessageBox::Ok);
+    firstTip->setWindowTitle("Drawing Tracks");
+    firstTip->setText("Select a train then click the 'Redraw Track' "
+                      "button to draw a new\n track for the selected train.");
+    firstTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    firstTip->setStandardButtons(QMessageBox::Ok);
 
     // Connect signals for popups
-    connect(this, &MainWindow::starterTipSignal, starterTip, &QMessageBox::exec);
+    connect(this, &MainWindow::firstTipSignal, firstTip, &QMessageBox::exec);
 
     // Enqueue signals for popups
-    tipQueue.enqueue(&MainWindow::starterTipSignal);
-    tipList.append(starterTip);
+    tipQueue.enqueue(&MainWindow::firstTipSignal);
+    tipList.append(firstTip);
 
+    // Setup second tip
     secondTip = new QMessageBox(this);
-    secondTip->setWindowTitle("Tip 2");
-    secondTip->setText("Part 2 Info:");
+    secondTip->setWindowTitle("Passenger Needs");
+    secondTip->setText("Each passenger has a different request and "
+                       "needs to go to\n a specific station. Be sure each station "
+                       "types can get to every\n type of station!");
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::secondTipSignal);
     tipList.append(secondTip);
 
+    // Setup third tip
     thirdTip = new QMessageBox(this);
-    thirdTip->setWindowTitle("Tip 3");
-    thirdTip->setText("Part 3 Info:");
+    thirdTip->setWindowTitle("Tracking Data");
+    thirdTip->setText("Each train and station tracks data that can be seen "
+                      "when\n that train is selected. Additionally, there is "
+                      "average data\n for all trains and stations in the 'Data' "
+                      "tab at the bottom.");
     thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     thirdTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
     tipQueue.enqueue(&MainWindow::thirdTipSignal);
     tipList.append(thirdTip);
 
+    // Setup fourth tip
     fourthTip = new QMessageBox(this);
-    fourthTip->setWindowTitle("Tip 4");
+    fourthTip->setWindowTitle("Consider This! (4)");
     fourthTip->setText("Part 4 Info:");
     fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fourthTip->setStandardButtons(QMessageBox::Ok);
@@ -297,8 +271,9 @@ void MainWindow::createTipPopups() {
     tipQueue.enqueue(&MainWindow::fourthTipSignal);
     tipList.append(fourthTip);
 
+    // Setup fifth tip
     fifthTip = new QMessageBox(this);
-    fifthTip->setWindowTitle("Tip 5");
+    fifthTip->setWindowTitle("Consider This! (5)");
     fifthTip->setText("Part 5 Info:");
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
@@ -307,12 +282,12 @@ void MainWindow::createTipPopups() {
     tipList.append(fifthTip);
 }
 
-void MainWindow::updateTrainDetailsDock(QString newDetails) {
-    trainDetailsDock->setWindowTitle(newDetails);
+void MainWindow::updateTrainData(QString newData) {
+    trainDetailsDock->setWindowTitle(newData);
 }
 
-void MainWindow::updateStationDetailsDock(QString newDetails) {
-    stationDetailsDock->setWindowTitle(newDetails);
+void MainWindow::updateStationData(QString newData) {
+    stationDetailsDock->setWindowTitle(newData);
 }
 
 void MainWindow::updateData(int newThroughput, int newWaitTime){
@@ -327,11 +302,12 @@ void MainWindow::showTip() {
         return;
     }
 
-    QString s = QString::number(tipNum);
-    QPushButton* tip = new QPushButton("Tip " + s);
+    // Create a button for the new tip
+    QPushButton* tipButton = new QPushButton("Tip " + QString::number(tipNum));
 
-    connect(tip, &QPushButton::clicked, tipList[tipNum - 1], &QMessageBox::exec);
-    tipLayout->addWidget(tip);
+    // Create connection to the popup for this new button
+    connect(tipButton, &QPushButton::clicked, tipList[tipNum - 1], &QMessageBox::exec);
+    tipLayout->addWidget(tipButton);
 
     // Get the pointer to next tip signal and call it
     signalPointer func = tipQueue.dequeue();

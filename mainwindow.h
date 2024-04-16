@@ -9,13 +9,6 @@
 #include <QMetaMethod>
 #include <QMessageBox>
 #include <QHBoxLayout>
-#include "TrainDrawer.h"
-
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
 
 /**
  * @brief The MainWindow class
@@ -30,12 +23,7 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
     MapModel *map;
-    void createActions();
-
-    typedef void (MainWindow::*signalPointer)();
-    QQueue<signalPointer> tipQueue; // queue for signals
 
     // Docks for managing train and station details
     QDockWidget* trainDetailsDock;
@@ -68,26 +56,26 @@ private:
 
     // Tips
     QList<QMessageBox*> tipList;
-    QMessageBox* starterTip;
+    QMessageBox* firstTip;
     QMessageBox* secondTip;
     QMessageBox* thirdTip;
     QMessageBox* fourthTip;
     QMessageBox* fifthTip;
 
+    // Queue of signals to execute tips
+    typedef void (MainWindow::*signalPointer)();
+    QQueue<signalPointer> tipQueue; // queue for signals
+
 public slots:
-    /**
-     * @brief gives a short description of this application
-     */
-    void about();
     void updateData(int, int);
-    void updateTrainDetailsDock(QString);
-    void updateStationDetailsDock(QString);
+    void updateTrainData(QString);
+    void updateStationData(QString);
     void showTip();
     void fillProgressBar();
     void resetProgressBar();
 
 signals:
-    void starterTipSignal();
+    void firstTipSignal();
     void secondTipSignal();
     void thirdTipSignal();
     void fourthTipSignal();

@@ -32,6 +32,8 @@ private:
     QList<QPoint> points;
     bool scribbling;
 
+    bool hitBlack = false;
+    const int STATION_WIDTH = 30;
 
 
 

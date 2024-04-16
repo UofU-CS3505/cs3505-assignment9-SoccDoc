@@ -65,7 +65,12 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
     overlayImage = baseImage;
     redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+            //emit signal with the point
+            hitBlack = true;
+        }else{
+            hitBlack = false;
+        }
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -74,7 +79,12 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine){
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+            //emit signal with the point
+            hitBlack = true;
+        }else{
+            hitBlack = false;
+        }
         drawLineTo(event->position().toPoint());
     }
 }
@@ -82,7 +92,12 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+            //emit signal with the point
+            hitBlack = true;
+        }else{
+            hitBlack = false;
+        }
         drawLineTo(event->position().toPoint());
         scribbling = false;
         redrawLine = false;
