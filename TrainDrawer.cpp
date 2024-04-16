@@ -2,6 +2,7 @@
 #include "passenger.h"
 #include <QWidget>
 #include <QPainter>
+#include <QPainterPath>
 #include <QMouseEvent>
 #include <QDebug>
 
@@ -61,11 +62,10 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
+    overlayImage = baseImage;
     redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
-            // qDebug() << "hi";
-        }
+        points.append(event->position().toPoint());
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -74,9 +74,7 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine){
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
-            qDebug() << "hi";
-        }
+        points.append(event->position().toPoint());
         drawLineTo(event->position().toPoint());
     }
 }
@@ -84,13 +82,11 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
-            // qDebug() << "hi";
-        }
+        points.append(event->position().toPoint());
         drawLineTo(event->position().toPoint());
         scribbling = false;
         redrawLine = false;
-        // update();
+        update();
         overlayImage = baseImage;
         //emit checkForStations(points);
     }
@@ -183,14 +179,41 @@ void TrainDrawer::drawStations(Station* station){
     if(station->getStationType() == Passenger::Circle){
         painter.setBrush(Qt::black);
         painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        // update();
+        update();
     }
     else if(station->getStationType() == Passenger::Square){
         painter.drawRect(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        // update();
-    }
+        update();
+    }else if(station->getStationType() == Passenger::Triangle){
+        // Start point of bottom line
+        qreal startPointX1 = station->getLocation().x();
+        qreal startPointY1 = station->getLocation().y();
 
-    overlayImage = baseImage;
+        // End point of bottom line
+        qreal endPointX1   = station->getLocation().x()+ STATION_WIDTH;
+        qreal endPointY1   = station->getLocation().y();
+
+
+        // End point of top line
+        qreal endPointX2   = station->getLocation().x() + STATION_WIDTH/2;
+        qreal endPointY2   = station->getLocation().y() - STATION_WIDTH;
+
+        QPainterPath path;
+        // Set pen to this point.
+        path.moveTo(startPointX1, startPointY1);
+        // Draw line from pen point to this point.
+        path.lineTo(endPointX1, endPointY1);
+
+        //path.moveTo (endPointX1, endPointY1); // <- no need to move
+        path.lineTo(endPointX2,   endPointY2);
+
+        //path.moveTo (endPointX2,   endPointY2); // <- no need to move
+        path.lineTo(startPointX1, startPointY1);
+
+         painter.drawPath(path);
+        //painter.fillPath(path, QBrush (Qt::black));
+        update();
+    }
 }
 
 QSize TrainDrawer::size() {
@@ -200,3 +223,5 @@ QSize TrainDrawer::size() {
 int TrainDrawer::getWidth(){
     return STATION_WIDTH;
 }
+
+
