@@ -2,6 +2,7 @@
 #include "passenger.h"
 #include <QWidget>
 #include <QPainter>
+#include <QPainterPath>
 #include <QMouseEvent>
 #include <QDebug>
 
@@ -183,6 +184,35 @@ void TrainDrawer::drawStations(Station* station){
     else if(station->getStationType() == Passenger::Square){
         painter.drawRect(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
         update();
+    }else if(station->getStationType() == Passenger::Triangle){
+        // Start point of bottom line
+        qreal startPointX1 = station->getLocation().x();
+        qreal startPointY1 = station->getLocation().y();
+
+        // End point of bottom line
+        qreal endPointX1   = station->getLocation().x()+ STATION_WIDTH;
+        qreal endPointY1   = station->getLocation().y();
+
+
+        // End point of top line
+        qreal endPointX2   = station->getLocation().x() + STATION_WIDTH/2;
+        qreal endPointY2   = station->getLocation().y() - STATION_WIDTH;
+
+        QPainterPath path;
+        // Set pen to this point.
+        path.moveTo(startPointX1, startPointY1);
+        // Draw line from pen point to this point.
+        path.lineTo(endPointX1, endPointY1);
+
+        //path.moveTo (endPointX1, endPointY1); // <- no need to move
+        path.lineTo(endPointX2,   endPointY2);
+
+        //path.moveTo (endPointX2,   endPointY2); // <- no need to move
+        path.lineTo(startPointX1, startPointY1);
+
+         painter.drawPath(path);
+        //painter.fillPath(path, QBrush (Qt::black));
+        update();
     }
 }
 
@@ -193,3 +223,5 @@ QSize TrainDrawer::size() {
 int TrainDrawer::getWidth(){
     return STATION_WIDTH;
 }
+
+
