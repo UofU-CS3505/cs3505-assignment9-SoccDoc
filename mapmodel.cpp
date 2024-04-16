@@ -114,3 +114,17 @@ void MapModel::checkProgressBar(int progressValue) {
 void MapModel::checkForStations(QList<QPoint>) {
 
 }
+Station* MapModel::getStation(QPoint point) {
+    foreach (Station* station, stations) {
+        if(station->getLocation().x() <= point.x() && (station->getLocation().x() + drawer->STATION_WIDTH) >= point.x()){
+            if(station->getLocation().y() >= point.y() && (station->getLocation().y() - drawer->STATION_WIDTH) <= point.y()){
+                selectedStation = station;
+                return station;
+            }
+        }
+    }
+    return selectedStation;
+
+}
+
+

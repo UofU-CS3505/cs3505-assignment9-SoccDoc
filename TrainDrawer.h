@@ -14,6 +14,7 @@ public:
     void confetti();
     void updateImage();
     QSize size();
+    const int STATION_WIDTH = 30;
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -30,7 +31,7 @@ private:
     QPoint lastPoint;
     QList<QPoint> points;
     bool scribbling;
-    const int STATION_WIDTH = 30;
+
 
 
 

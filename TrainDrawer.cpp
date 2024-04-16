@@ -178,12 +178,14 @@ void TrainDrawer::drawStations(Station* station){
                         Qt::RoundJoin));
     if(station->getStationType() == Passenger::Circle){
         painter.setBrush(Qt::black);
-        painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        update();
+        QRectF rectangle(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
+        painter.drawEllipse(rectangle);
+
     }
     else if(station->getStationType() == Passenger::Square){
-        painter.drawRect(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        update();
+        QRectF rectangle(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
+        painter.fillRect(rectangle, QBrush(Qt::black));
+
     }else if(station->getStationType() == Passenger::Triangle){
         // Start point of bottom line
         qreal startPointX1 = station->getLocation().x();
@@ -210,9 +212,8 @@ void TrainDrawer::drawStations(Station* station){
         //path.moveTo (endPointX2,   endPointY2); // <- no need to move
         path.lineTo(startPointX1, startPointY1);
 
-         painter.drawPath(path);
-        //painter.fillPath(path, QBrush (Qt::black));
-        update();
+        // painter.drawPath(path);
+        painter.fillPath(path, QBrush (Qt::black));
     }
 }
 
