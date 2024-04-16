@@ -61,10 +61,11 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
-    overlayImage = baseImage;
     redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
+            // qDebug() << "hi";
+        }
         lastPoint = event->position().toPoint();
         scribbling = true;
     }
@@ -73,7 +74,9 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine){
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
+            qDebug() << "hi";
+        }
         drawLineTo(event->position().toPoint());
     }
 }
@@ -81,11 +84,13 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
-        points.append(event->position().toPoint());
+        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black){
+            // qDebug() << "hi";
+        }
         drawLineTo(event->position().toPoint());
         scribbling = false;
         redrawLine = false;
-        update();
+        // update();
         overlayImage = baseImage;
         //emit checkForStations(points);
     }
@@ -178,12 +183,14 @@ void TrainDrawer::drawStations(Station* station){
     if(station->getStationType() == Passenger::Circle){
         painter.setBrush(Qt::black);
         painter.drawEllipse(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        update();
+        // update();
     }
     else if(station->getStationType() == Passenger::Square){
         painter.drawRect(station->getLocation().x(), station->getLocation().y(), STATION_WIDTH, STATION_WIDTH);
-        update();
+        // update();
     }
+
+    overlayImage = baseImage;
 }
 
 QSize TrainDrawer::size() {
