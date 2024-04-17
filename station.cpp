@@ -7,6 +7,9 @@ Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGener
     QObject(parent), location(_location), rand(randomGenerator)
 {
     stationType = Passenger(rand() % last);
+    waitTime = 0;
+    throughput = 0;
+    numberOfPassengerOffloaded = 0;
 }
 
 
@@ -38,7 +41,7 @@ void Station::updateTrainPassengers(Train* trainToLoad){
     if(!elapsedTimer.isValid()){
         elapsedTimer.start();
     }else{
-        waitTime  = elapsedTimer.elapsed();
+        waitTime = elapsedTimer.elapsed();
         elapsedTimer.restart();
     }
     numberOfPassengerOffloaded = 0;
@@ -72,7 +75,11 @@ QPoint Station::getLocation(){
 }
 
 double Station::getThroughput(){
-    return numberOfPassengerOffloaded/waitTime;
+    if (!waitTime || waitTime == 0){
+        return -1;
+    }
+    throughput = (numberOfPassengerOffloaded/waitTime);
+    return throughput;
 }
 
 double Station::getWaitTime(){

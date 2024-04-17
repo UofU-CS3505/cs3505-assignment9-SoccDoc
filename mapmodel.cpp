@@ -22,6 +22,8 @@ MapModel::MapModel(QWidget *parent) :
 
 void MapModel::updateFrame() {
    drawer->updateImage();
+    if(selectedStation != nullptr)
+        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
 }
 
 void MapModel::trainButtonClicked(int id) {

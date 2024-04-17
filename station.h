@@ -5,6 +5,7 @@
 #include <QRandomGenerator>
 #include "passenger.h"
 #include <QElapsedTimer>
+#include <QtGlobal>
 class Train;
 
 /**
@@ -37,9 +38,9 @@ private:
     int amountOfUnloadedPassengers;
 
     QElapsedTimer elapsedTimer;
-    int numberOfPassengerOffloaded;
-    double waitTime;
-    double throughput;
+    int numberOfPassengerOffloaded = 0;
+    quint64 waitTime = 0;
+    int throughput = 0;
 };
 
 #endif // STATION_H
