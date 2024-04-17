@@ -18,6 +18,7 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     resizeImage(&baseImage, QSize(750, 500));
     overlayImage = baseImage;
     redrawLine = false;
+    points = new QList<QPoint>{};
 
 }
 
@@ -69,6 +70,7 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
             //emit signal with the point
             hitBlack = true;
             qDebug() << "Pixel sent";
+            points->append(event->position().toPoint());
         }else if (baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
@@ -85,6 +87,7 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
             hitBlack = true;
             qDebug() << "Pixel sent";
             qDebug() << "different signal";
+            points->append(event->position().toPoint());
 
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
@@ -100,22 +103,26 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
+            points->append(event->position().toPoint());
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
+
+        hitBlack = false;
         drawLineTo(event->position().toPoint());
         scribbling = false;
         redrawLine = false;
         update();
         overlayImage = baseImage;
-        //emit checkForStations(points);
+        emit checkForStations(*points);
+        points->clear();
     }
 }
 
 void TrainDrawer::drawLineTo(const QPoint &endPoint)
 {
     QPainter painter(&overlayImage);
-    painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(Qt::blue, 5, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
 
@@ -123,6 +130,14 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
     // update(QRect(lastPoint, endPoint).normalized()
     //            .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
+}
+
+void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint){
+    QPainter painter(&baseImage);
+    painter.setPen(QPen(Qt::yellow, 3, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
+    painter.drawLine(startPoint, endPoint);
+    qDebug() << "The line is drawn";
 }
 
 
