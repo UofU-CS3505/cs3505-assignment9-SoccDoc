@@ -25,7 +25,7 @@ private:
     QTimer updateTimer;
     QList<Train*> trains;
     QList<Station*> stations;
-    Station* selectedStation;
+    Station* selectedStation = nullptr;
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;

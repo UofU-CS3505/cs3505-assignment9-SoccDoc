@@ -28,13 +28,15 @@ MapModel::MapModel(QWidget *parent) :
 }
 
 void MapModel::updateFrame() {
-    drawer->updateImage();
-
     foreach (Station* station, stations)
         station->update();
 
     foreach (Train* train, trains)
         train->update();
+
+    drawer->updateImage();
+    if(selectedStation != nullptr)
+        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
 }
 
 void MapModel::trainButtonClicked(int id) {
@@ -95,6 +97,7 @@ void MapModel::spawnStation() {
     Station* newStation = new Station(this, newStationLocation, rand);
     stations.append(newStation);
     drawer->drawStations(newStation);
+    selectedStation = newStation;
 }
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
