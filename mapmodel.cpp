@@ -84,6 +84,7 @@ void MapModel::spawnStation() {
     Station* newStation = new Station(this, newStationLocation, rand);
     stations.append(newStation);
     drawer->drawStations(newStation);
+    selectedStation = newStation;
 }
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
