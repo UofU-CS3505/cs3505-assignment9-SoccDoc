@@ -13,10 +13,9 @@ Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGener
 void Station::update(){
     //generatePassengers if the correct probability was hit.
     int randNum = rand.bounded(100);
-    if(randNum < generatePassengerProbability){
+    if(randNum < GENERATE_PASSENGER_PROBABILITY){
         generatePassenger();
     }
-
 }
 
 void Station::generatePassenger(){
@@ -26,7 +25,6 @@ void Station::generatePassenger(){
     while(passengerToAdd == stationType){
         passengerToAdd = Passenger(rand() % last);
     }
-
 
     waitingPassengers.append(passengerToAdd);
 }
@@ -55,6 +53,6 @@ Passenger Station::getStationType(){
     return stationType;
 }
 
-QPoint Station::getLocation(){
+QPoint Station::getLocation() {
     return location;
 }

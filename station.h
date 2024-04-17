@@ -23,7 +23,7 @@ public:
     void update();
     Passenger getStationType();
     QPoint getLocation();
-    int generatePassengerProbability = 8;
+    const int GENERATE_PASSENGER_PROBABILITY = 8;
     void updateTrainPassengers(Train trainToLoad);
 
 private:

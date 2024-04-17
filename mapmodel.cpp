@@ -5,8 +5,6 @@ MapModel::MapModel(QWidget *parent) :
     QWidget(parent), updateTimer(this),
     drawer(new TrainDrawer(this))
 {
-    trains.append(new Train());
-
     // Get the securely seeded generator
     rand = QRandomGenerator::securelySeeded();
 
@@ -18,10 +16,25 @@ MapModel::MapModel(QWidget *parent) :
     // Spawn some initial stations
     for (int i = 0; i < 10; i++)
         spawnStation();
+
+    // QList<Station> trainStations;
+    // trainStations.append(stations.at(0));
+    // trainStations.append(stations.at(1));
+    // trainStations.append(stations.at(3));
+
+    // Train* train = new Train();
+    // train->changeStations();
+    // trains.append(new Train());
 }
 
 void MapModel::updateFrame() {
-   drawer->updateImage();
+    drawer->updateImage();
+
+    foreach (Station* station, stations)
+        station->update();
+
+    foreach (Train* train, trains)
+        train->update();
 }
 
 void MapModel::trainButtonClicked(int id) {
