@@ -7,7 +7,7 @@ void Train::boardPassenger(Passenger passenger) {
     passengers.append(passenger);
 }
 
-QList<Station> Train::getConnectedStations() {
+QList<Station*> Train::getConnectedStations() {
     return connectedStations;
 }
 
@@ -15,30 +15,41 @@ void Train::removePassengers(Passenger passengerType) {
     passengers.removeAll(passengerType);
 }
 
-void Train::changeStations(QList<Station> stations) {
+void Train::changeStations(QList<Station*> stations) {
     // Connect the new stations and clear the passengers
     connectedStations = stations;
     passengers.clear();
 
     // Load passengers from first station
-    connectedStations.first().updateTrainPassengers(this);
+    connectedStations.first()->updateTrainPassengers(this);
 
     // Start train towards next station
-    previousStation = connectedStations.first().getLocation();
-    nextStation = connectedStations[1].getLocation();
-    location = previousStation;
+    location = connectedStations.first()->getLocation();
+    nextStation = connectedStations.at(1);
+
+    foreach (Station* s, connectedStations)
+        qDebug() << s->getLocation();
+
+    qDebug() << "next " << nextStation->getLocation();
 }
 
 void Train::update() {
-    QPoint previousStationLocation = previousStation;
-    QPoint nextStationLocation = nextStation;
+    foreach (Station* s, connectedStations)
+        qDebug() << s->getLocation();
 
-    double distance = getDistance(previousStationLocation, nextStationLocation);
+    QPoint nextStationLocation = nextStation->getLocation();
+    qDebug() << "now next " << nextStationLocation;
+
+    // Find the distance
+    double distance = getDistance(location, nextStationLocation);
     double relativeSpeed = SPEED / distance;
 
+    // Set the new train location
     QPoint newLocation = relativeSpeed * location + (1 - relativeSpeed) * nextStationLocation;
     location = newLocation;
+    qDebug() << location << " going to " << nextStation;
     qDebug() << location.x() << ", " << location.y();
+    qDebug();
 }
 
 double Train::getDistance(QPoint p1, QPoint p2) {

@@ -19,19 +19,18 @@ public:
      * @brief Replaces the current stations with the given stations.
      * @param stations the new list of stations
      */
-    void changeStations(QList<Station> stations);
+    void changeStations(QList<Station*> stations);
 
-    QList<Station> getConnectedStations();
+    QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);
     void removePassengers(Passenger passengerType);
     void update();
 
 private:
-    QPoint previousStation;
-    QPoint nextStation;
+    Station* nextStation;
     QPoint location;
     QList<Passenger> passengers;
-    QList<Station> connectedStations;
+    QList<Station*> connectedStations;
 
     double getDistance(QPoint p1, QPoint p2);
 

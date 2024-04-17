@@ -17,10 +17,9 @@ MapModel::MapModel(QWidget *parent) :
     for (int i = 0; i < 10; i++)
         spawnStation();
 
-    QList<Station> trainStations;
-    trainStations.append(stations.at(0));
-    trainStations.append(stations.at(1));
-    trainStations.append(stations.at(3));
+    trainStations.append(new Station(this, QPoint(0, 0), rand));
+    trainStations.append(new Station(this, QPoint(0, 10), rand));
+    trainStations.append(new Station(this, QPoint(10, 10), rand));
 
     Train* train = new Train();
     train->changeStations(trainStations);
