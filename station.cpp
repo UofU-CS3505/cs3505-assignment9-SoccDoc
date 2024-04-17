@@ -2,6 +2,7 @@
 #include "train.h"
 
 
+
 Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGenerator) :
     QObject(parent), location(_location), rand(randomGenerator)
 {
@@ -17,6 +18,8 @@ void Station::update(){
         generatePassenger();
     }
 
+
+
 }
 
 void Station::generatePassenger(){
@@ -31,24 +34,33 @@ void Station::generatePassenger(){
     waitingPassengers.append(passengerToAdd);
 }
 
-void Station::updateTrainPassengers(Train trainToLoad){
-
+void Station::updateTrainPassengers(Train* trainToLoad){
+    if(!elapsedTimer.isValid()){
+        elapsedTimer.start();
+    }else{
+        waitTime  = elapsedTimer.elapsed();
+        elapsedTimer.restart();
+    }
+    numberOfPassengerOffloaded = 0;
 
     //load all the passengers that can go to their correct destination on the train.
-    foreach(Passenger passengerToAdd, waitingPassengers){
-         QList<Station> stations = trainToLoad.getConnectedStations();
+    for(int j = waitingPassengers.size(); j > 0; j--){
+        Passenger passengerToAdd = waitingPassengers.at(j);
+        QList<Station> stations = trainToLoad->getConnectedStations();
 
-        for(int i = 0; i < trainToLoad.getConnectedStations().size(); i++){
+        for(int i = 0; i < trainToLoad->getConnectedStations().size(); i++){
              const Station* connectedStation = &(stations.at(i));
 
             if(connectedStation->stationType == passengerToAdd){
-                trainToLoad.boardPassenger(passengerToAdd);
+                 trainToLoad->boardPassenger(passengerToAdd);
+                waitingPassengers.removeAt(j);
+                 numberOfPassengerOffloaded++;
             }
         }
     }
 
     //unload all the passengers that have the same type as the station
-    trainToLoad.removePassengers(stationType);
+    trainToLoad->removePassengers(stationType);
 }
 
 Passenger Station::getStationType(){
@@ -57,4 +69,12 @@ Passenger Station::getStationType(){
 
 QPoint Station::getLocation(){
     return location;
+}
+
+double Station::getThroughput(){
+    return numberOfPassengerOffloaded/waitTime;
+}
+
+double Station::getWaitTime(){
+    return waitTime;
 }

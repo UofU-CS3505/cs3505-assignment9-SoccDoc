@@ -4,6 +4,7 @@
 #include <QPoint>
 #include <QRandomGenerator>
 #include "passenger.h"
+#include <QElapsedTimer>
 class Train;
 
 /**
@@ -23,14 +24,22 @@ public:
     void update();
     Passenger getStationType();
     QPoint getLocation();
+    double getThroughput();
+    double getWaitTime();
     int generatePassengerProbability = 8;
-    void updateTrainPassengers(Train trainToLoad);
+    void updateTrainPassengers(Train* trainToLoad);
 
 private:
     QList<Passenger> waitingPassengers;
     QPoint location;
     QRandomGenerator rand;
     void generatePassenger();
+    int amountOfUnloadedPassengers;
+
+    QElapsedTimer elapsedTimer;
+    int numberOfPassengerOffloaded;
+    double waitTime;
+    double throughput;
 };
 
 #endif // STATION_H
