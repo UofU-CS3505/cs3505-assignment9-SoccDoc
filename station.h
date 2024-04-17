@@ -21,6 +21,9 @@ public:
             QPoint _location = QPoint(0,0),
             QRandomGenerator randomGenerator = *QRandomGenerator::global());
 
+    Station(const Station& other);
+    Station& operator=(const Station& that);
+
     Passenger stationType;
     void update();
     Passenger getStationType();

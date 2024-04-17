@@ -21,11 +21,11 @@ void Train::changeStations(QList<Station> stations) {
     passengers.clear();
 
     // Load passengers from first station
-    //connectedStations.first().updateTrainPassengers(this);
+    connectedStations.first().updateTrainPassengers(this);
 
     // Start train towards next station
-    // previousStation = connectedStations.first().getLocation();
-    // nextStation = connectedStations[1].getLocation();
+    previousStation = connectedStations.first().getLocation();
+    nextStation = connectedStations[1].getLocation();
     location = previousStation;
 }
 

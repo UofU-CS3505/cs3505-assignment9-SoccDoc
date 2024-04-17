@@ -12,7 +12,22 @@ Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGener
     numberOfPassengerOffloaded = 0;
 }
 
+Station::Station(const Station& other) : QObject(other.parent()) {
+    location = other.location;
+    rand = other.rand;
+}
 
+Station& Station::operator=(const Station& other) {
+    // Copy
+    Station copyOther(other);
+
+    // Swap
+    this->setParent(other.parent());
+    std::swap(location, copyOther.location);
+    std::swap(rand, copyOther.rand);
+
+    return *this;
+}
 
 void Station::update(){
     //generatePassengers if the correct probability was hit.
