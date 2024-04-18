@@ -134,7 +134,7 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
 
 void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint){
     QPainter painter(&baseImage);
-    painter.setPen(QPen(Qt::yellow, 3, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(startPoint, endPoint);
     qDebug() << "The line is drawn";
