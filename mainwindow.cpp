@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
     connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
+    connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
+
 }
 
 MainWindow::~MainWindow() {}
@@ -349,4 +351,8 @@ void MainWindow::fillProgressBar() {
 
 void MainWindow::resetProgressBar() {
     progressBar->setValue(0);
+}
+void MainWindow::updateProgressBar(int newValue) {
+    qDebug()<< newValue <<"\n";
+    progressBar->setValue(newValue);
 }

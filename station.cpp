@@ -72,15 +72,16 @@ void Station::updateTrainPassengers(Train* trainToLoad){
              const Station* connectedStation = &(stations.at(i));
 
             if(connectedStation->stationType == passengerToAdd){
-                 trainToLoad->boardPassenger(passengerToAdd);
+                trainToLoad->boardPassenger(passengerToAdd);
                 waitingPassengers.removeAt(j);
-                 numberOfPassengerOffloaded++;
+                numberOfPassengerOffloaded++;
             }
         }
     }
 
     //unload all the passengers that have the same type as the station
-    trainToLoad->removePassengers(stationType);
+    emit passengerDelivered(trainToLoad->removePassengers(stationType));
+
 }
 
 Passenger Station::getStationType(){

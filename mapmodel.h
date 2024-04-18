@@ -30,6 +30,8 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
+    int numberOfPassengersDelivered = 0;
+    int numberOfPassengersDeliveredCompensation = 0;
     const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;
@@ -66,7 +68,12 @@ signals:
     void updateStationDetails(QString);
     void showNewTip();
     void restartProgressBar();
+    void updateProgressBar(int);
     void drawStationPassenger(Station* station, Passenger passengerType);
+
+public slots:
+    void passengerDelivered(int);
+
 };
 
 #endif // MAPMODEL_H

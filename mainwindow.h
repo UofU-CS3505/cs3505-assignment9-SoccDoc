@@ -71,6 +71,7 @@ public slots:
     void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();
+    void updateProgressBar(int);
     void fillProgressBar();
     void resetProgressBar();
 

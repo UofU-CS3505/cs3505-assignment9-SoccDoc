@@ -48,6 +48,9 @@ private:
     int numberOfPassengerOffloaded = -1;
     quint64 waitTime = -1;
     int throughput = 0;
+
+signals:
+    void passengerDelivered(int);
 };
 
 #endif // STATION_H

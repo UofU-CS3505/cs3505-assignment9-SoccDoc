@@ -26,6 +26,8 @@ MapModel::MapModel(QWidget *parent) :
     Train* train = new Train();
     train->changeStations(trainStations);
     trains.append(new Train());
+
+
 }
 
 void MapModel::updateFrame() {
@@ -110,6 +112,8 @@ void MapModel::spawnStation() {
     stations.append(newStation);
     drawer->drawStations(newStation);
     selectedStation = newStation;
+
+    connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
@@ -132,7 +136,7 @@ bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
 void MapModel::checkProgressBar(int progressValue) {
     if (progressValue != 100)
         return;
-
+    numberOfPassengersDeliveredCompensation = numberOfPassengersDelivered;
     emit showNewTip();
     emit restartProgressBar();
     confetti();
@@ -171,6 +175,12 @@ Station* MapModel::getStation(QPoint point) {
     }
     return selectedStation;
 
+}
+
+void MapModel::passengerDelivered(int passengersDelivered) {
+    numberOfPassengersDelivered += passengersDelivered;
+    qDebug() << passengersDelivered << "\n";
+    emit updateProgressBar(numberOfPassengersDelivered - numberOfPassengersDeliveredCompensation);
 }
 
 
