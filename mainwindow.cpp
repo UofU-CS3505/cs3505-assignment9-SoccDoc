@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
 }
 
 MainWindow::~MainWindow() {}
@@ -56,6 +57,26 @@ void MainWindow::trainKillingSimulator(){
     animation->start();
 
     connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
+}
+
+void MainWindow::drawStationPassenger(Station* station, Passenger passenger){
+    QLabel* label = new QLabel(map->getDrawer());
+    QPixmap newImage;
+    if (passenger == Circle){
+        shapeImage.load(":/images/images/Circle.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    else if (passenger == Square){
+        shapeImage.load(":/images/images/Square.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    else if (passenger == Triangle){
+        shapeImage.load(":/images/images/Triangle.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    label->setPixmap(newImage);
+    label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 20, station->getLocation().y() - 10, 10, 5);
+    label->show();
 }
 
 void MainWindow::createDockWindows() {

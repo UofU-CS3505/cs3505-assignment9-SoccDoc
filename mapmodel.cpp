@@ -1,5 +1,6 @@
 #include "mapmodel.h"
 #include <QWidget>
+#include <QLabel>
 
 MapModel::MapModel(QWidget *parent) :
     QWidget(parent), updateTimer(this),
@@ -29,7 +30,16 @@ MapModel::MapModel(QWidget *parent) :
 
 void MapModel::updateFrame() {
     foreach (Station* station, stations)
-        station->update();
+    {
+        if (station->update()){
+            int index = station->returnWaitingSize() - 1;
+            emit drawStationPassenger(station, station->getPassengers()[index]);
+        }
+    }
+
+    qDebug() << stations[0]->returnWaitingSize();
+    qDebug() << stations[5]->returnWaitingSize();
+    qDebug() << stations[9]->returnWaitingSize();
 
     foreach (Train* train, trains)
         train->update();

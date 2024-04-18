@@ -29,12 +29,19 @@ Station& Station::operator=(const Station& other) {
     return *this;
 }
 
-void Station::update(){
+int Station::returnWaitingSize(){
+    return waitingPassengers.size();
+}
+
+bool Station::update(){
     //generatePassengers if the correct probability was hit.
-    int randNum = rand.bounded(100);
+    int randNum = rand.bounded(3000);
     if(randNum < GENERATE_PASSENGER_PROBABILITY){
         generatePassenger();
+        return true;
     }
+
+    return false;
 }
 
 void Station::generatePassenger(){
@@ -95,4 +102,8 @@ double Station::getThroughput(){
 
 double Station::getWaitTime(){
     return waitTime;
+}
+
+QList<Passenger> Station::getPassengers(){
+    return waitingPassengers;
 }
