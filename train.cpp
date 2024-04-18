@@ -38,7 +38,6 @@ void Train::update() {
 
     QPoint newLocation = relativeSpeed * location + (1 - relativeSpeed) * nextStationLocation;
     location = newLocation;
-    qDebug() << location.x() << ", " << location.y();
 }
 
 double Train::getDistance(QPoint p1, QPoint p2) {

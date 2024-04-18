@@ -30,7 +30,12 @@ MapModel::MapModel(QWidget *parent) :
 
 void MapModel::updateFrame() {
     foreach (Station* station, stations)
-        station->update();
+    {
+        if (station->update()){
+            int index = station->returnWaitingSize() - 1;
+            emit drawStationPassenger(station, station->getPassengers()[index]);
+        }
+    }
 
     foreach (Train* train, trains)
         train->update();
@@ -135,12 +140,11 @@ void MapModel::checkProgressBar(int progressValue) {
 
 // not implemented
 void MapModel::checkForStations(QList<QPoint> testPoints) {
-    qDebug() << "check stations is called";
-    qDebug() << testPoints.length();
     QList<Station*> selectedStations{};
     foreach(QPoint point, testPoints){
-        selectedStations.append(getStation(point));
-        qDebug() << point;
+        if(!selectedStations.contains(getStation(point))){
+            selectedStations.append(getStation(point));
+        }
     }
 
     for(int i = 0; i < selectedStations.length() - 1; i++){
@@ -151,7 +155,8 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         qDebug() << endPoint.x();
 
         drawer->drawLineBetweenStations(startPoint, endPoint);
-
+        drawer->drawStations(selectedStations.at(i));
+        drawer->drawStations(selectedStations.at(i+1));
     }
 }
 
