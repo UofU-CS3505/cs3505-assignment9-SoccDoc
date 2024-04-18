@@ -33,7 +33,6 @@ private:
     //data variables to be updated.
     QLabel* throughput;
     QLabel* waitTime;
-    QPixmap image;
     QHBoxLayout* tipLayout = new QHBoxLayout();
     int tipNum = 1;
 
@@ -42,7 +41,6 @@ private:
     void createBottomDockWindow();
     void createDockWindows();
     void createTipPopups();
-    void trainKillingSimulator();
     void deleteTrain(QLabel* image);
 
     QProgressBar* progressBar;

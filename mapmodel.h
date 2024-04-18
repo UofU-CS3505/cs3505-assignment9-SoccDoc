@@ -29,6 +29,7 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
+    QPixmap trainImage;
     const int MILISECONDS_TO_UPDATE = (1000);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;

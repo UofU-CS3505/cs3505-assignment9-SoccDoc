@@ -1,5 +1,6 @@
 #include "train.h"
 #include <QWidget>
+#include <QPropertyAnimation>
 
 Train::Train(QObject *parent) : QObject(parent) {}
 
@@ -21,16 +22,44 @@ void Train::changeStations(QList<Station*> stations) {
     passengers.clear();
 
     // Load passengers from first station
-    connectedStations.first()->updateTrainPassengers(this);
+    currentStation = connectedStations.first();
+    currentStation->updateTrainPassengers(this);
 
     // Start train towards next station
-    location = connectedStations.first()->getLocation();
-    nextStation = connectedStations.at(1);
+    stationInList = 1;
+    nextStation = connectedStations.at(stationInList);
 
     foreach (Station* s, connectedStations)
         qDebug() << s->getLocation();
 
     qDebug() << "next " << nextStation->getLocation();
+}
+
+void Train::setImage(QPixmap image) {
+    trainImage = new QLabel();
+    trainImage->setPixmap(image);
+}
+
+void Train::startTravel() {
+    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
+    animation->setDuration(3000);
+    animation->setStartValue(currentStation->getLocation());
+    animation->setEndValue(nextStation->getLocation());
+    animation->start();
+
+    connect(animation, &QPropertyAnimation::finished, this, &Train::endTravel);
+}
+
+void Train::endTravel() {
+    currentStation = nextStation;
+    currentStation->updateTrainPassengers(this);
+
+    // Set current and next station
+    stationInList++;
+    currentStation->updateTrainPassengers(this);
+    nextStation = connectedStations.at(stationInList);
+
+    startTravel();
 }
 
 void Train::update() {

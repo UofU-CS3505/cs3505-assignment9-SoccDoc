@@ -1,6 +1,7 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 #include <QObject>
+#include <QLabel>
 #include "passenger.h"
 #include "station.h"
 
@@ -21,20 +22,30 @@ public:
      */
     void changeStations(QList<Station*> stations);
 
+    void startTravel();
+    void setImage(QPixmap image);
+
     QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);
     void removePassengers(Passenger passengerType);
     void update();
 
 private:
+    Station* currentStation;
     Station* nextStation;
+    int stationInList;
     QPoint location;
     QList<Passenger> passengers;
     QList<Station*> connectedStations;
 
+    QLabel* trainImage;
+
     double getDistance(QPoint p1, QPoint p2);
 
     const double SPEED = 2.0;
+
+public slots:
+    void endTravel();
 };
 
 #endif // TRAIN_H

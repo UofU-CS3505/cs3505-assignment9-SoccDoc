@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // Set our canvas as the central widget
     setCentralWidget(map->getDrawer());
-    image.load(":/images/images/train.png");
 
     // Create the window format
     createDockWindows();
@@ -41,23 +40,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::trainKillingSimulator(){
-    QLabel* label = new QLabel(map->getDrawer());
-    QPixmap newImage = image.scaled(50, 25, Qt::KeepAspectRatio);
-    label->setPixmap(newImage);
-    //label->setGeometry(621, 607, 50, 25);
-    //trainList.append(label);
-    label->show();
-
-    QPropertyAnimation* animation = new QPropertyAnimation(label, "pos");
-    animation->setDuration(3000);
-    animation->setStartValue(QPoint(0, 0));
-    animation->setEndValue(QPoint(621,457));
-    animation->start();
-
-    connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
-}
-
 void MainWindow::createDockWindows() {
     createLeftDockWindow();
     createRightDockWindow();
@@ -69,7 +51,6 @@ void MainWindow::createLeftDockWindow() {
     QRadioButton* orange = new QRadioButton("Orange Line");
     QRadioButton* blue = new QRadioButton("Blue Line");
     QRadioButton* red = new QRadioButton("Red Line");
-    QPushButton* trainkiller = new QPushButton("Kill A Train");
 
     orange->setChecked(true); // Check default option
 
@@ -86,8 +67,6 @@ void MainWindow::createLeftDockWindow() {
     trainLayout->addWidget(orange);
     trainLayout->addWidget(blue);
     trainLayout->addWidget(red);
-    trainLayout->addWidget(trainkiller);
-    connect(trainkiller, &QPushButton::clicked, this, &MainWindow::trainKillingSimulator);
 
     QWidget* trainWidget = new QWidget();
     trainWidget->setLayout(trainLayout);

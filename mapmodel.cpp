@@ -17,13 +17,19 @@ MapModel::MapModel(QWidget *parent) :
     for (int i = 0; i < 10; i++)
         spawnStation();
 
-    trainStations.append(new Station(this, QPoint(0, 0), rand));
-    trainStations.append(new Station(this, QPoint(0, 10), rand));
-    trainStations.append(new Station(this, QPoint(10, 10), rand));
+    // Setup train image
+    QPixmap image;
+    image.load(":/images/images/train.png");
+    trainImage = image.scaled(50, 25, Qt::KeepAspectRatio);
 
-    Train* train = new Train();
+    trainStations.append(stations.at(0));
+    trainStations.append(stations.at(1));
+    trainStations.append(stations.at(2));
+
+    Train* train = new Train(this);
+    train->setImage(trainImage);
     train->changeStations(trainStations);
-    trains.append(new Train());
+    trains.append(train);
 }
 
 void MapModel::updateFrame() {
