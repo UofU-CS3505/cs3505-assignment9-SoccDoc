@@ -35,8 +35,8 @@ int Station::returnWaitingSize(){
 
 bool Station::update(){
     //generatePassengers if the correct probability was hit.
-    int randNum = rand.bounded(3000);
-    if(randNum < GENERATE_PASSENGER_PROBABILITY){
+    int randNum = rand.bounded(1000);
+    if(randNum < GENERATE_PASSENGER_PROBABILITY && waitingPassengers.size() < 8){
         generatePassenger();
         return true;
     }
