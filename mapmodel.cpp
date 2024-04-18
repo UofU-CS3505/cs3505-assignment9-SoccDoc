@@ -30,7 +30,12 @@ MapModel::MapModel(QWidget *parent) :
 
 void MapModel::updateFrame() {
     foreach (Station* station, stations)
-        station->update();
+    {
+        if (station->update()){
+            int index = station->returnWaitingSize() - 1;
+            emit drawStationPassenger(station, station->getPassengers()[index]);
+        }
+    }
 
     foreach (Train* train, trains)
         train->update();

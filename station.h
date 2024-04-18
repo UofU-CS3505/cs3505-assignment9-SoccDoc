@@ -25,7 +25,7 @@ public:
     Station& operator=(const Station& that);
 
     Passenger stationType;
-    void update();
+    bool update();
     Passenger getStationType();
     QPoint getLocation();
     const int GENERATE_PASSENGER_PROBABILITY = 8;
@@ -34,6 +34,8 @@ public:
     double getWaitTime();
     
     void updateTrainPassengers(Train* trainToLoad);
+    int returnWaitingSize();
+    QList<Passenger> getPassengers();
 
 private:
     QList<Passenger> waitingPassengers;

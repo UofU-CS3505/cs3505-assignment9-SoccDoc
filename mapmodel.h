@@ -66,6 +66,7 @@ signals:
     void updateStationDetails(QString);
     void showNewTip();
     void restartProgressBar();
+    void drawStationPassenger(Station* station, Passenger passengerType);
 };
 
 #endif // MAPMODEL_H

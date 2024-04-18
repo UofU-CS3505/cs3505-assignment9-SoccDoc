@@ -34,6 +34,7 @@ private:
     QLabel* throughput;
     QLabel* waitTime;
     QPixmap image;
+    QPixmap shapeImage;
     QHBoxLayout* tipLayout = new QHBoxLayout();
     int tipNum = 1;
 
@@ -44,6 +45,7 @@ private:
     void createTipPopups();
     void trainKillingSimulator();
     void deleteTrain(QLabel* image);
+    void drawStationPassenger(Station* station, Passenger passengerType);
 
     QProgressBar* progressBar;
     /**
