@@ -264,3 +264,20 @@ void TrainDrawer::setPenColor(QColor newPenColor){
     penColor = newPenColor;
 }
 
+void TrainDrawer::selectStation(Station* selectedStation){
+
+    QPainter painter(&baseImage);
+    painter.save();
+     if(previousSelectedStation != nullptr){
+        QRectF rectangle(previousSelectedStation->getLocation().x()-5, previousSelectedStation->getLocation().y()-5, STATION_WIDTH+10, STATION_WIDTH+10);
+        painter.setPen(Qt::white);
+        painter.drawRect(rectangle);
+     }
+
+    QRectF rectangle(selectedStation->getLocation().x()-5, selectedStation->getLocation().y()-5, STATION_WIDTH+10, STATION_WIDTH+10);
+    painter.setPen(Qt::cyan);
+    painter.drawRect(rectangle);
+    painter.restore();
+
+    previousSelectedStation = selectedStation;
+}

@@ -36,8 +36,10 @@ void MapModel::updateFrame() {
         train->update();
 
     drawer->updateImage();
-    if(selectedStation != nullptr)
+    if(selectedStation != nullptr){
         emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
+        drawer->selectStation(selectedStation);
+    }
 }
 
 void MapModel::trainButtonClicked(int id) {

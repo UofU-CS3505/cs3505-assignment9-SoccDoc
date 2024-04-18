@@ -17,6 +17,7 @@ public:
     QSize size();
     const int STATION_WIDTH = 30;
     void setPenColor(QColor newPenColor);
+    void selectStation(Station* selectedStation);
 
     ///
     /// \brief drawLineTo - This method draws a line between the startPoint and endPoint given. This is used to draw a straight line between stations.
@@ -49,6 +50,7 @@ private:
 
     QColor penColor = Qt::green;
     bool hitBlack = false;
+    Station* previousSelectedStation = nullptr;
 
 
 
