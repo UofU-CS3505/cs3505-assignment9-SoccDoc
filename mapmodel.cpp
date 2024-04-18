@@ -42,7 +42,7 @@ void MapModel::updateFrame() {
 
     drawer->updateImage();
     if(selectedStation != nullptr){
-        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
+        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime(), (selectedStation->getPassengers().size()));
         drawer->selectStation(selectedStation);
     }
 }

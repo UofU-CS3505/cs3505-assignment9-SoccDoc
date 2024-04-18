@@ -33,6 +33,7 @@ private:
     //data variables to be updated.
     QLabel* throughput;
     QLabel* waitTime;
+    QLabel* numberOfPassengers;
     QPixmap image;
     QPixmap shapeImage;
     QHBoxLayout* tipLayout = new QHBoxLayout();
@@ -66,7 +67,7 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
-    void updateData(int, int);
+    void updateData(int, int, int);
     void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();

@@ -212,6 +212,7 @@ void MainWindow::createBottomDockWindow() {
     // Setup data
     throughput = new QLabel("Throughput: ");
     waitTime = new QLabel("WaitTime: ");
+    numberOfPassengers = new QLabel("Number Of Passengers Waiting: ");
 
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
@@ -219,6 +220,7 @@ void MainWindow::createBottomDockWindow() {
     dataLayout->addWidget(progressBar);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
+    dataLayout->addWidget(numberOfPassengers);
 
     // Put the data into a widget
     QWidget* dataWidget = new QWidget();
@@ -307,9 +309,18 @@ void MainWindow::updateStationData(QString newData) {
     stationDetailsDock->setWindowTitle(newData);
 }
 
-void MainWindow::updateData(int newThroughput, int newWaitTime){
-    throughput->setText(&"Throughput: " [newThroughput]);
-    waitTime->setText(&"WaitTime: " [newWaitTime]);
+void MainWindow::updateData(int newThroughput, int newWaitTime, int numOfPassengers){
+    QString throughputStr = QString::number(newThroughput);
+    QString waitTimeStr = QString::number(newWaitTime);
+     QString numOfPassengersStr = QString::number(numOfPassengers);
+
+    throughput->setText(("Throughput: " + throughputStr ));
+    waitTime->setText(("WaitTime: " + waitTimeStr));
+    numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
+    //qDebug() << newThroughput<< " " << newWaitTime << "\n";
+    throughput->update();
+    waitTime->update();
+    numberOfPassengers->update();
 }
 
 void MainWindow::showTip() {

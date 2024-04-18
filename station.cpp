@@ -93,7 +93,7 @@ QPoint Station::getLocation() {
 
 double Station::getThroughput(){
     if (!waitTime || waitTime == 0){
-        return -1;
+        return 0;
     }
     throughput = (numberOfPassengerOffloaded/waitTime);
     return throughput;
