@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QRandomGenerator>
+#include <QColor>
 #include "station.h"
 #include "train.h"
 #include "TrainDrawer.h"
@@ -32,6 +33,7 @@ private:
     const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;
+    QColor currentLine;
 
 
     /**

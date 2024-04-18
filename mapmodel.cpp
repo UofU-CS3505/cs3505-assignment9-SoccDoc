@@ -29,15 +29,19 @@ void MapModel::updateFrame() {
 void MapModel::trainButtonClicked(int id) {
     switch(id) {
     case 0:
-        emit updateTrainDetails("Orange Train Details");
+        emit updateTrainDetails("Green Train Details");
+        currentLine = Qt::green;
         break;
     case 1:
         emit updateTrainDetails("Blue Train Details");
+        currentLine = Qt::blue;
         break;
     case 2:
         emit updateTrainDetails("Red Train Details");
+        currentLine = Qt::red;
         break;
     }
+    drawer->setPenColor(currentLine);
 }
 
 void MapModel::stationButtonClicked(int id) {

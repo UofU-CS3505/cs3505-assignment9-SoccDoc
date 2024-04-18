@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QRandomGenerator>
 #include <Box2D/Box2D.h>
+#include <QColor>
 #include "station.h"
 
 class TrainDrawer: public QWidget
@@ -15,6 +16,7 @@ public:
     void updateImage();
     QSize size();
     const int STATION_WIDTH = 30;
+    void setPenColor(QColor newPenColor);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -32,6 +34,7 @@ private:
     QList<QPoint> points;
     bool scribbling;
 
+    QColor penColor = Qt::green;
     bool hitBlack = false;
 
 

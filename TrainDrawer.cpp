@@ -115,7 +115,7 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 void TrainDrawer::drawLineTo(const QPoint &endPoint)
 {
     QPainter painter(&overlayImage);
-    painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(penColor, 10, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
 
@@ -245,4 +245,7 @@ int TrainDrawer::getWidth(){
     return STATION_WIDTH;
 }
 
+void TrainDrawer::setPenColor(QColor newPenColor){
+    penColor = newPenColor;
+}
 

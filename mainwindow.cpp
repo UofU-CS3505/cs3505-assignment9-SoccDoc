@@ -66,7 +66,7 @@ void MainWindow::createDockWindows() {
 
 void MainWindow::createLeftDockWindow() {
     // Create train layout and add radio buttons
-    QRadioButton* orange = new QRadioButton("Orange Line");
+    QRadioButton* orange = new QRadioButton("Green Line");
     QRadioButton* blue = new QRadioButton("Blue Line");
     QRadioButton* red = new QRadioButton("Red Line");
     QPushButton* trainkiller = new QPushButton("Kill A Train");
@@ -156,7 +156,7 @@ void MainWindow::createRightDockWindow() {
     stationWidget->setLayout(stationLayout);
 
     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    trainDetailsDock = new QDockWidget("Orange Train Details", this);     // Default train
+    trainDetailsDock = new QDockWidget("Green Train Details", this);     // Default train
     stationDetailsDock = new QDockWidget("Square Station Details", this); // Default station
 
     trainDetailsDock->setWidget(trainWidget);
