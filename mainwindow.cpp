@@ -75,7 +75,7 @@ void MainWindow::drawStationPassenger(Station* station, Passenger passenger){
         newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
     }
     label->setPixmap(newImage);
-    label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 20, station->getLocation().y() - 10, 10, 5);
+    label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
     label->show();
 }
 
