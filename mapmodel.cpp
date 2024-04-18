@@ -133,12 +133,11 @@ void MapModel::checkProgressBar(int progressValue) {
 
 // not implemented
 void MapModel::checkForStations(QList<QPoint> testPoints) {
-    qDebug() << "check stations is called";
-    qDebug() << testPoints.length();
     QList<Station*> selectedStations{};
     foreach(QPoint point, testPoints){
-        selectedStations.append(getStation(point));
-        qDebug() << point;
+        if(!selectedStations.contains(getStation(point))){
+            selectedStations.append(getStation(point));
+        }
     }
 
     for(int i = 0; i < selectedStations.length() - 1; i++){
@@ -149,7 +148,8 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         qDebug() << endPoint.x();
 
         drawer->drawLineBetweenStations(startPoint, endPoint);
-
+        drawer->drawStations(selectedStations.at(i));
+        drawer->drawStations(selectedStations.at(i+1));
     }
 }
 
