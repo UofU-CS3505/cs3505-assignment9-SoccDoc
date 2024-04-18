@@ -15,19 +15,27 @@ class Train : public QObject
 public:
     Train(QObject *parent = nullptr);
 
-    void addStations(QList<Station> stations);
-    void clearStations();
+    /**
+     * @brief Replaces the current stations with the given stations.
+     * @param stations the new list of stations
+     */
+    void changeStations(QList<Station> stations);
+
     QList<Station> getConnectedStations();
     void boardPassenger(Passenger passenger);
     void removePassengers(Passenger passengerType);
+    void update();
 
 private:
-    Station currentDestination;
-    QList<Passenger> cargo;
+    QPoint previousStation;
+    QPoint nextStation;
+    QPoint location;
+    QList<Passenger> passengers;
     QList<Station> connectedStations;
 
-    void deliverPassengers();
-    void boardPassengers();
+    double getDistance(QPoint p1, QPoint p2);
+
+    const double SPEED = 2.0;
 };
 
 #endif // TRAIN_H

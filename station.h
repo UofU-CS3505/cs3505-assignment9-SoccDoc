@@ -21,13 +21,18 @@ public:
             QPoint _location = QPoint(0,0),
             QRandomGenerator randomGenerator = *QRandomGenerator::global());
 
+    Station(const Station& other);
+    Station& operator=(const Station& that);
+
     Passenger stationType;
     void update();
     Passenger getStationType();
     QPoint getLocation();
+    const int GENERATE_PASSENGER_PROBABILITY = 8;
+
     double getThroughput();
     double getWaitTime();
-    int generatePassengerProbability = 8;
+    
     void updateTrainPassengers(Train* trainToLoad);
 
 private:

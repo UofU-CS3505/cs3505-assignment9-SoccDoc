@@ -5,23 +5,37 @@ MapModel::MapModel(QWidget *parent) :
     QWidget(parent), updateTimer(this),
     drawer(new TrainDrawer(this))
 {
-    trains.append(new Train());
-
     // Get the securely seeded generator
     rand = QRandomGenerator::securelySeeded();
 
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
+    connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
     updateTimer.start();
 
     // Spawn some initial stations
     for (int i = 0; i < 10; i++)
         spawnStation();
+
+    QList<Station> trainStations;
+    trainStations.append(stations.at(0));
+    trainStations.append(stations.at(1));
+    trainStations.append(stations.at(3));
+
+    Train* train = new Train();
+    train->changeStations(trainStations);
+    trains.append(new Train());
 }
 
 void MapModel::updateFrame() {
-   drawer->updateImage();
+    foreach (Station* station, stations)
+        station->update();
+
+    foreach (Train* train, trains)
+        train->update();
+
+    drawer->updateImage();
     if(selectedStation != nullptr)
         emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
 }
@@ -118,13 +132,31 @@ void MapModel::checkProgressBar(int progressValue) {
 }
 
 // not implemented
-void MapModel::checkForStations(QList<QPoint>) {
+void MapModel::checkForStations(QList<QPoint> testPoints) {
+    qDebug() << "check stations is called";
+    qDebug() << testPoints.length();
+    QList<Station*> selectedStations{};
+    foreach(QPoint point, testPoints){
+        selectedStations.append(getStation(point));
+        qDebug() << point;
+    }
 
+    for(int i = 0; i < selectedStations.length() - 1; i++){
+        QPoint startPoint = selectedStations.at(i)->getLocation();
+        QPoint endPoint = selectedStations.at(i + 1)->getLocation();
+
+        qDebug() << startPoint.x();
+        qDebug() << endPoint.x();
+
+        drawer->drawLineBetweenStations(startPoint, endPoint);
+
+    }
 }
+
 Station* MapModel::getStation(QPoint point) {
     foreach (Station* station, stations) {
-        if(station->getLocation().x() <= point.x() && (station->getLocation().x() + drawer->STATION_WIDTH) >= point.x()){
-            if(station->getLocation().y() >= point.y() && (station->getLocation().y() - drawer->STATION_WIDTH) <= point.y()){
+        if(station->getLocation().x() <= point.x() && ((station->getLocation().x() + drawer->STATION_WIDTH) >= point.x())){
+            if(station->getLocation().y() <= point.y() && (station->getLocation().y() + drawer->STATION_WIDTH) >= point.y()){
                 selectedStation = station;
                 return station;
             }

@@ -18,6 +18,13 @@ public:
     const int STATION_WIDTH = 30;
     void setPenColor(QColor newPenColor);
 
+    ///
+    /// \brief drawLineTo - This method draws a line between the startPoint and endPoint given. This is used to draw a straight line between stations.
+    /// \param startPoint - The start point to begin drawing the line.
+    /// \param endPoint  - The end point to end drawing the line.
+    ///
+    void drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint);
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     //commented out because we don't want the canvas to be resized
@@ -27,11 +34,17 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 private:
     void resizeImage(QImage *image, const QSize &newSize);
+
+    ///
+    /// \brief drawLineTo - This method draws a line between the last point recieved and the current point. It is used for drawing a line.
+    /// \param endPoint - The current point to be drawn to.
+    ///
     void drawLineTo(const QPoint &endPoint);
+
     QImage overlayImage;
     QImage baseImage;
     QPoint lastPoint;
-    QList<QPoint> points;
+    QList<QPoint> *points;
     bool scribbling;
 
     QColor penColor = Qt::green;
@@ -59,6 +72,8 @@ private:
     bool redrawLine;
 public slots:
     void drawStations(Station* station);
+
+
 signals:
     void checkForStations(QList<QPoint>);
 };
