@@ -22,7 +22,7 @@ MapModel::MapModel(QWidget *parent) :
 
     // Add a train
     Train* train = new Train(this);
-    train->setImage(":/images/images/train.png");
+    train->setImage(drawer, ":/images/images/train.png");
 
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));

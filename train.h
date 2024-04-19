@@ -2,8 +2,10 @@
 #define TRAIN_H
 #include <QObject>
 #include <QLabel>
+#include <QPropertyAnimation>
 #include "passenger.h"
 #include "station.h"
+#include "TrainDrawer.h"
 
 /**
  * @brief The Train class
@@ -23,7 +25,7 @@ public:
     void changeStations(QList<Station*> stations);
 
     void startTravel();
-    void setImage(QString fileName);
+    void setImage(TrainDrawer* drawer, QString fileName);
 
     QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);

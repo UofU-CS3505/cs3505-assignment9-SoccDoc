@@ -30,7 +30,6 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
-    QPixmap trainImage;
     int numberOfPassengersDelivered = 0;
     int numberOfPassengersDeliveredCompensation = 0;
     const int MILISECONDS_TO_UPDATE = (1000/60);
@@ -40,6 +39,9 @@ private:
 
     QList<Station*> trainStations;
 
+    QPixmap image;
+    QLabel* trainImage;
+    QPropertyAnimation* trainAnimation;
 
     /**
      * @brief spawns a new station and draws it

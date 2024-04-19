@@ -31,14 +31,15 @@ void Train::changeStations(QList<Station*> stations) {
     startTravel();
 }
 
-void Train::setImage(QString fileName) {
+void Train::setImage(TrainDrawer* drawer, QString fileName) {
     // Setup train image
     QPixmap image;
     image.load(fileName);
     image = image.scaled(50, 25, Qt::KeepAspectRatio);
 
-    trainImage = new QLabel();
+    trainImage = new QLabel(drawer);
     trainImage->setPixmap(image);
+    trainImage->show();
 }
 
 void Train::startTravel() {
