@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QRandomGenerator>
+#include <QColor>
 #include "station.h"
 #include "train.h"
 #include "TrainDrawer.h"
@@ -30,9 +31,12 @@ private:
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
     QPixmap trainImage;
-    const int MILISECONDS_TO_UPDATE = (1000);
+    int numberOfPassengersDelivered = 0;
+    int numberOfPassengersDeliveredCompensation = 0;
+    const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;
+    QColor currentLine;
 
     QList<Station*> trainStations;
 
@@ -62,11 +66,17 @@ public slots:
     void checkProgressBar(int);
 
 signals:
-    void updateData(int, int);
+    void updateData(int, int, int);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
     void showNewTip();
     void restartProgressBar();
+    void updateProgressBar(int);
+    void drawStationPassenger(Station* station, Passenger passengerType);
+
+public slots:
+    void passengerDelivered(int);
+
 };
 
 #endif // MAPMODEL_H

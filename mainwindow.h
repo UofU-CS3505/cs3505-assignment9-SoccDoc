@@ -33,6 +33,9 @@ private:
     //data variables to be updated.
     QLabel* throughput;
     QLabel* waitTime;
+    QLabel* numberOfPassengers;
+    QPixmap image;
+    QPixmap shapeImage;
     QHBoxLayout* tipLayout = new QHBoxLayout();
     int tipNum = 1;
 
@@ -42,6 +45,7 @@ private:
     void createDockWindows();
     void createTipPopups();
     void deleteTrain(QLabel* image);
+    void drawStationPassenger(Station* station, Passenger passengerType);
 
     QProgressBar* progressBar;
     /**
@@ -62,10 +66,11 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
-    void updateData(int, int);
+    void updateData(int, int, int);
     void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();
+    void updateProgressBar(int);
     void fillProgressBar();
     void resetProgressBar();
 

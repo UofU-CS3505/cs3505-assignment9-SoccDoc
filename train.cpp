@@ -12,8 +12,8 @@ QList<Station*> Train::getConnectedStations() {
     return connectedStations;
 }
 
-void Train::removePassengers(Passenger passengerType) {
-    passengers.removeAll(passengerType);
+int Train::removePassengers(Passenger passengerType) {
+    return passengers.removeAll(passengerType);
 }
 
 void Train::changeStations(QList<Station*> stations) {

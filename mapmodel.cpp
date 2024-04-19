@@ -11,6 +11,7 @@ MapModel::MapModel(QWidget *parent) :
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
+    connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
     updateTimer.start();
 
     // Spawn some initial stations
@@ -34,25 +35,36 @@ MapModel::MapModel(QWidget *parent) :
 
 void MapModel::updateFrame() {
     foreach (Station* station, stations)
-        station->update();
+    {
+        if (station->update()){
+            int index = station->returnWaitingSize() - 1;
+            emit drawStationPassenger(station, station->getPassengers()[index]);
+        }
+    }
 
     drawer->updateImage();
-    if(selectedStation != nullptr)
-        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());
+    if(selectedStation != nullptr){
+        emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime(), (selectedStation->getPassengers().size()));
+        drawer->selectStation(selectedStation);
+    }
 }
 
 void MapModel::trainButtonClicked(int id) {
     switch(id) {
     case 0:
-        emit updateTrainDetails("Orange Train Details");
+        emit updateTrainDetails("Green Train Details");
+        currentLine = Qt::green;
         break;
     case 1:
         emit updateTrainDetails("Blue Train Details");
+        currentLine = Qt::blue;
         break;
     case 2:
         emit updateTrainDetails("Red Train Details");
+        currentLine = Qt::red;
         break;
     }
+    drawer->setPenColor(currentLine);
 }
 
 void MapModel::stationButtonClicked(int id) {
@@ -100,6 +112,8 @@ void MapModel::spawnStation() {
     stations.append(newStation);
     drawer->drawStations(newStation);
     selectedStation = newStation;
+
+    connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
@@ -122,20 +136,38 @@ bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
 void MapModel::checkProgressBar(int progressValue) {
     if (progressValue != 100)
         return;
-
+    numberOfPassengersDeliveredCompensation = numberOfPassengersDelivered;
     emit showNewTip();
     emit restartProgressBar();
     confetti();
 }
 
 // not implemented
-void MapModel::checkForStations(QList<QPoint>) {
+void MapModel::checkForStations(QList<QPoint> testPoints) {
+    QList<Station*> selectedStations{};
+    foreach(QPoint point, testPoints){
+        if(!selectedStations.contains(getStation(point))){
+            selectedStations.append(getStation(point));
+        }
+    }
 
+    for(int i = 0; i < selectedStations.length() - 1; i++){
+        QPoint startPoint = selectedStations.at(i)->getLocation();
+        QPoint endPoint = selectedStations.at(i + 1)->getLocation();
+
+        qDebug() << startPoint.x();
+        qDebug() << endPoint.x();
+
+        drawer->drawLineBetweenStations(startPoint, endPoint);
+        drawer->drawStations(selectedStations.at(i));
+        drawer->drawStations(selectedStations.at(i+1));
+    }
 }
+
 Station* MapModel::getStation(QPoint point) {
     foreach (Station* station, stations) {
-        if(station->getLocation().x() <= point.x() && (station->getLocation().x() + drawer->STATION_WIDTH) >= point.x()){
-            if(station->getLocation().y() >= point.y() && (station->getLocation().y() - drawer->STATION_WIDTH) <= point.y()){
+        if(station->getLocation().x() <= point.x() && ((station->getLocation().x() + drawer->STATION_WIDTH) >= point.x())){
+            if(station->getLocation().y() <= point.y() && (station->getLocation().y() + drawer->STATION_WIDTH) >= point.y()){
                 selectedStation = station;
                 return station;
             }
@@ -143,6 +175,12 @@ Station* MapModel::getStation(QPoint point) {
     }
     return selectedStation;
 
+}
+
+void MapModel::passengerDelivered(int passengersDelivered) {
+    numberOfPassengersDelivered += passengersDelivered;
+    qDebug() << passengersDelivered << "\n";
+    emit updateProgressBar(numberOfPassengersDelivered - numberOfPassengersDeliveredCompensation);
 }
 
 

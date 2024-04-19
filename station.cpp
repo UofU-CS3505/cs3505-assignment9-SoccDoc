@@ -27,12 +27,18 @@ Station& Station::operator=(const Station& other) {
     return *this;
 }
 
-void Station::update(){
+int Station::returnWaitingSize(){
+    return waitingPassengers.size();
+}
+
+bool Station::update(){
     //generatePassengers if the correct probability was hit.
-    int randNum = rand.bounded(100);
-    if(randNum < GENERATE_PASSENGER_PROBABILITY){
+    int randNum = rand.bounded(1000);
+    if(randNum < GENERATE_PASSENGER_PROBABILITY && waitingPassengers.size() < 8){
         generatePassenger();
+        return true;
     }
+    return false;
 }
 
 void Station::generatePassenger(){
@@ -64,15 +70,16 @@ void Station::updateTrainPassengers(Train* trainToLoad){
              const Station* connectedStation = stations.at(i);
 
             if(connectedStation->stationType == passengerToAdd){
-                 trainToLoad->boardPassenger(passengerToAdd);
+                trainToLoad->boardPassenger(passengerToAdd);
                 waitingPassengers.removeAt(j);
-                 numberOfPassengerOffloaded++;
+                numberOfPassengerOffloaded++;
             }
         }
     }
 
     //unload all the passengers that have the same type as the station
-    trainToLoad->removePassengers(stationType);
+    emit passengerDelivered(trainToLoad->removePassengers(stationType));
+
 }
 
 Passenger Station::getStationType(){
@@ -85,7 +92,7 @@ QPoint Station::getLocation() {
 
 double Station::getThroughput(){
     if (!waitTime || waitTime == 0){
-        return -1;
+        return 0;
     }
     throughput = (numberOfPassengerOffloaded/waitTime);
     return throughput;
@@ -93,4 +100,8 @@ double Station::getThroughput(){
 
 double Station::getWaitTime(){
     return waitTime;
+}
+
+QList<Passenger> Station::getPassengers(){
+    return waitingPassengers;
 }

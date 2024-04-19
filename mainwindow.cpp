@@ -36,9 +36,33 @@ MainWindow::MainWindow(QWidget *parent)
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
+    connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
+
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::drawStationPassenger(Station* station, Passenger passenger){
+    QLabel* label = new QLabel(map->getDrawer());
+    QPixmap newImage;
+    if (passenger == Circle){
+        shapeImage.load(":/images/images/Circle.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    else if (passenger == Square){
+        shapeImage.load(":/images/images/Square.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    else if (passenger == Triangle){
+        shapeImage.load(":/images/images/Triangle.png") ;
+        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    }
+    label->setPixmap(newImage);
+    label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
+    label->show();
+}
 
 void MainWindow::createDockWindows() {
     createLeftDockWindow();
@@ -48,7 +72,7 @@ void MainWindow::createDockWindows() {
 
 void MainWindow::createLeftDockWindow() {
     // Create train layout and add radio buttons
-    QRadioButton* orange = new QRadioButton("Orange Line");
+    QRadioButton* orange = new QRadioButton("Green Line");
     QRadioButton* blue = new QRadioButton("Blue Line");
     QRadioButton* red = new QRadioButton("Red Line");
 
@@ -135,7 +159,7 @@ void MainWindow::createRightDockWindow() {
     stationWidget->setLayout(stationLayout);
 
     // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    trainDetailsDock = new QDockWidget("Orange Train Details", this);     // Default train
+    trainDetailsDock = new QDockWidget("Green Train Details", this);     // Default train
     stationDetailsDock = new QDockWidget("Square Station Details", this); // Default station
 
     trainDetailsDock->setWidget(trainWidget);
@@ -169,6 +193,7 @@ void MainWindow::createBottomDockWindow() {
     // Setup data
     throughput = new QLabel("Throughput: ");
     waitTime = new QLabel("WaitTime: ");
+    numberOfPassengers = new QLabel("Number Of Passengers Waiting: ");
 
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
@@ -176,6 +201,7 @@ void MainWindow::createBottomDockWindow() {
     dataLayout->addWidget(progressBar);
     dataLayout->addWidget(throughput);
     dataLayout->addWidget(waitTime);
+    dataLayout->addWidget(numberOfPassengers);
 
     // Put the data into a widget
     QWidget* dataWidget = new QWidget();
@@ -264,9 +290,18 @@ void MainWindow::updateStationData(QString newData) {
     stationDetailsDock->setWindowTitle(newData);
 }
 
-void MainWindow::updateData(int newThroughput, int newWaitTime){
-    throughput->setText(&"Throughput: " [newThroughput]);
-    waitTime->setText(&"WaitTime: " [newWaitTime]);
+void MainWindow::updateData(int newThroughput, int newWaitTime, int numOfPassengers){
+    QString throughputStr = QString::number(newThroughput);
+    QString waitTimeStr = QString::number(newWaitTime);
+     QString numOfPassengersStr = QString::number(numOfPassengers);
+
+    throughput->setText(("Throughput: " + throughputStr ));
+    waitTime->setText(("WaitTime: " + waitTimeStr));
+    numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
+    //qDebug() << newThroughput<< " " << newWaitTime << "\n";
+    throughput->update();
+    waitTime->update();
+    numberOfPassengers->update();
 }
 
 void MainWindow::showTip() {
@@ -295,4 +330,8 @@ void MainWindow::fillProgressBar() {
 
 void MainWindow::resetProgressBar() {
     progressBar->setValue(0);
+}
+void MainWindow::updateProgressBar(int newValue) {
+    qDebug()<< newValue <<"\n";
+    progressBar->setValue(newValue);
 }

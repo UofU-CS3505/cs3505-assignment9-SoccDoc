@@ -18,6 +18,7 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     resizeImage(&baseImage, QSize(750, 500));
     overlayImage = baseImage;
     redrawLine = false;
+    points = new QList<QPoint>{};
 
 }
 
@@ -68,7 +69,8 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-            qDebug() << "Pixel sent";
+            qDebug() << event->position().toPoint();
+            points->append(event->position().toPoint());
         }else if (baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
@@ -83,12 +85,11 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-            qDebug() << "Pixel sent";
-            qDebug() << "different signal";
+            qDebug() << event->position().toPoint();
+            points->append(event->position().toPoint());
 
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
-            qDebug() << "hitBlack was set false";
         }
         drawLineTo(event->position().toPoint());
     }
@@ -100,22 +101,27 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
+            qDebug() << event->position().toPoint();
+            points->append(event->position().toPoint());
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
+
+        hitBlack = false;
         drawLineTo(event->position().toPoint());
         scribbling = false;
         redrawLine = false;
         update();
         overlayImage = baseImage;
-        //emit checkForStations(points);
+        emit checkForStations(*points);
+        points->clear();
     }
 }
 
 void TrainDrawer::drawLineTo(const QPoint &endPoint)
 {
     QPainter painter(&overlayImage);
-    painter.setPen(QPen(Qt::blue, 10, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(penColor, 10, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(lastPoint, endPoint);
 
@@ -123,6 +129,16 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
     // update(QRect(lastPoint, endPoint).normalized()
     //            .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
+}
+
+void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint){
+    QPoint newStartPoint(startPoint.x()+(STATION_WIDTH/2), startPoint.y()+(STATION_WIDTH/2));
+    QPoint newEndPoint(endPoint.x()+(STATION_WIDTH/2), endPoint.y()+(STATION_WIDTH/2));
+    QPainter painter(&baseImage);
+    painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
+    painter.drawLine(newStartPoint, newEndPoint);
+    qDebug() << "The line is drawn";
 }
 
 
@@ -194,7 +210,7 @@ void TrainDrawer::updateImage(){
 
 void TrainDrawer::drawStations(Station* station){
     QPainter painter(&baseImage);
-    painter.setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     if(station->getStationType() == Passenger::Circle){
         painter.setBrush(Qt::black);
@@ -245,4 +261,27 @@ int TrainDrawer::getWidth(){
     return STATION_WIDTH;
 }
 
+void TrainDrawer::setPenColor(QColor newPenColor){
+    penColor = newPenColor;
+}
 
+void TrainDrawer::selectStation(Station* selectedStation){
+
+    QPainter painter(&baseImage);
+    painter.save();
+     if(previousSelectedStation != nullptr){
+        QRectF rectangle(previousSelectedStation->getLocation().x()-5, previousSelectedStation->getLocation().y()-5, STATION_WIDTH+10, STATION_WIDTH+10);
+        painter.setPen(Qt::white);
+        painter.drawRect(rectangle);
+     }
+
+
+    QRectF rectangle(selectedStation->getLocation().x()-5, selectedStation->getLocation().y()-5, STATION_WIDTH+10, STATION_WIDTH+10);
+    painter.setPen(Qt::cyan);
+    painter.drawRect(rectangle);
+    painter.restore();
+
+
+
+    previousSelectedStation = selectedStation;
+}
