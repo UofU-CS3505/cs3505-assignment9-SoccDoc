@@ -15,7 +15,7 @@ class Train : public QObject
     Q_OBJECT
 
 public:
-    Train(QObject *parent = nullptr);
+    Train(QObject *parent = nullptr, QPropertyAnimation* anim = nullptr);
 
     /**
      * @brief Replaces the current stations with the given stations.
@@ -27,12 +27,6 @@ public:
      * @brief starts the train moving towards its next station
      */
     void startTravel();
-
-    /**
-     * @brief gets the object to animate this train moving
-     * @param anim the animation object with the train label and drawer in it
-     */
-    void setAnimation(QPropertyAnimation* anim);
 
     /**
      * @brief Returns a list of all of this train's connected stations
@@ -57,6 +51,7 @@ private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
     int stationInList; // where the train is in its station list
+
     QList<Passenger> passengers; // list of current passengers on this train
     QList<Station*> connectedStations; // list of all stations train is connected to
 
@@ -64,7 +59,7 @@ private:
     const double SPEED = 0.15; // speed of the train
 
     /**
-     * @brief gets the distance between two points
+     * @brief gets the distance between two given points
      */
     double getDistance(QPoint p1, QPoint p2);
 

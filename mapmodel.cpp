@@ -18,26 +18,23 @@ MapModel::MapModel(QWidget *parent) :
     for (int i = 0; i < 10; i++)
         spawnStation();
 
-    // Setup train image
+    // Setup train animation object
     QPixmap image;
     image.load(":/images/images/train.png");
     image = image.scaled(50, 25, Qt::KeepAspectRatio);
-
     trainImage = new QLabel(drawer);
     trainImage->setPixmap(image);
     trainImage->show();
-
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
 
-    // Add stations for train
+    // Setup stations for train
     QList<Station*> trainStations;
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));
     trainStations.append(stations.at(2));
 
-    // Setup an initial train
-    Train* train = new Train(this);
-    train->setAnimation(animation); // THIS HAS TO GO BEFORE THE NEXT LINE (will fix)
+    // Put everything into a train
+    Train* train = new Train(this, animation);
     train->changeStations(trainStations);
     trains.append(train);
 }

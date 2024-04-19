@@ -2,7 +2,7 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 
-Train::Train(QObject *parent) : QObject(parent) {}
+Train::Train(QObject *parent, QPropertyAnimation* anim) : QObject(parent), animation(anim) {}
 
 void Train::boardPassenger(Passenger passenger) {
     passengers.append(passenger);
@@ -29,10 +29,6 @@ void Train::changeStations(QList<Station*> stations) {
     stationInList = 1;
     nextStation = connectedStations.at(stationInList);
     startTravel();
-}
-
-void Train::setAnimation(QPropertyAnimation* anim) {
-    animation = anim;
 }
 
 void Train::startTravel() {
