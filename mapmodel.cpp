@@ -22,7 +22,18 @@ MapModel::MapModel(QWidget *parent) :
 
     // Add a train
     Train* train = new Train(this);
-    train->setImage(drawer, ":/images/images/train.png");
+
+    // Setup train image
+    QPixmap image;
+    image.load(":/images/images/train.png");
+    image = image.scaled(50, 25, Qt::KeepAspectRatio);
+
+    trainImage = new QLabel(drawer);
+    trainImage->setPixmap(image);
+    trainImage->show();
+
+    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
+    train->setAnimation(animation);
 
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));

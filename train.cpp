@@ -22,8 +22,8 @@ void Train::changeStations(QList<Station*> stations) {
     passengers.clear();
 
     // Load passengers from first station
-    currentStation = connectedStations.first();
-    currentStation->updateTrainPassengers(this);
+    pastStation = connectedStations.first();
+    pastStation->updateTrainPassengers(this);
 
     // Start train towards next station
     stationInList = 1;
@@ -31,26 +31,14 @@ void Train::changeStations(QList<Station*> stations) {
     startTravel();
 }
 
-void Train::setImage(TrainDrawer* drawer, QString fileName) {
-    // Setup train image
-    QPixmap image;
-    image.load(fileName);
-    image = image.scaled(50, 25, Qt::KeepAspectRatio);
-
-    trainImage = new QLabel(drawer);
-    trainImage->setPixmap(image);
-    trainImage->show();
+void Train::setAnimation(QPropertyAnimation* anim) {
+    animation = anim;
 }
 
 void Train::startTravel() {
-    // qDebug() << "curr " << currentStation->getLocation();
-    // qDebug() << "to " << nextStation->getLocation();
-    // qDebug(); // empty line
-
     // Setup animation and start it
-    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
     animation->setDuration(5000);
-    animation->setStartValue(currentStation->getLocation());
+    animation->setStartValue(pastStation->getLocation());
     animation->setEndValue(nextStation->getLocation());
     animation->start();
 
@@ -59,8 +47,8 @@ void Train::startTravel() {
 
 void Train::endTravel() {
     // Make the station we are at the current station and update passengers
-    currentStation = nextStation;
-    currentStation->updateTrainPassengers(this);
+    pastStation = nextStation;
+    pastStation->updateTrainPassengers(this);
 
     // Set current and next station
     stationInList++;
