@@ -61,7 +61,7 @@ private:
     QList<Station*> connectedStations; // list of all stations train is connected to
 
     QPropertyAnimation* animation; // animates the train moving between stations
-    const double SPEED = 2.0; // speed of the train in ???
+    const double SPEED = 0.15; // speed of the train
 
     /**
      * @brief gets the distance between two points

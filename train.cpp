@@ -36,8 +36,12 @@ void Train::setAnimation(QPropertyAnimation* anim) {
 }
 
 void Train::startTravel() {
+    // Calculate the train's travel time
+    double stationDistance = getDistance(pastStation->getLocation(), nextStation->getLocation());
+    int traveltime = stationDistance / SPEED;
+
     // Setup animation and start it
-    animation->setDuration(5000);
+    animation->setDuration(traveltime);
     animation->setStartValue(pastStation->getLocation());
     animation->setEndValue(nextStation->getLocation());
     animation->start();
