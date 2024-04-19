@@ -298,7 +298,6 @@ void MainWindow::updateData(int newThroughput, int newWaitTime, int numOfPasseng
     throughput->setText(("Throughput: " + throughputStr ));
     waitTime->setText(("WaitTime: " + waitTimeStr));
     numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
-    //qDebug() << newThroughput<< " " << newWaitTime << "\n";
     throughput->update();
     waitTime->update();
     numberOfPassengers->update();
@@ -332,6 +331,5 @@ void MainWindow::resetProgressBar() {
     progressBar->setValue(0);
 }
 void MainWindow::updateProgressBar(int newValue) {
-    qDebug()<< newValue <<"\n";
     progressBar->setValue(newValue);
 }

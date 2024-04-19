@@ -28,15 +28,22 @@ void Train::changeStations(QList<Station*> stations) {
     // Start train towards next station
     stationInList = 1;
     nextStation = connectedStations.at(stationInList);
-    startTravel();
+
 
     foreach (Station* s, connectedStations)
         qDebug() << s->getLocation();
 
     qDebug() << "next " << nextStation->getLocation();
+
+    startTravel();
 }
 
-void Train::setImage(QPixmap image) {
+void Train::setImage(QString fileName) {
+    // Setup train image
+    QPixmap image;
+    image.load(fileName);
+    image = image.scaled(50, 25, Qt::KeepAspectRatio);
+
     trainImage = new QLabel();
     trainImage->setPixmap(image);
 }
@@ -44,9 +51,11 @@ void Train::setImage(QPixmap image) {
 void Train::startTravel() {
     qDebug() << "curr " << currentStation->getLocation();
     qDebug() << "to " << nextStation->getLocation();
+    qDebug(); // empty line
 
+    // Setup animation and start it
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
-    animation->setDuration(3000);
+    animation->setDuration(5000);
     animation->setStartValue(currentStation->getLocation());
     animation->setEndValue(nextStation->getLocation());
     animation->start();
@@ -55,14 +64,17 @@ void Train::startTravel() {
 }
 
 void Train::endTravel() {
+    // Make the station we are at the current station and update passengers
     currentStation = nextStation;
     currentStation->updateTrainPassengers(this);
 
     // Set current and next station
     stationInList++;
-    currentStation->updateTrainPassengers(this);
-    nextStation = connectedStations.at(stationInList);
+    if (stationInList == connectedStations.size())
+        stationInList = 0;
 
+    // Set the next station and leave station
+    nextStation = connectedStations.at(stationInList);
     startTravel();
 }
 

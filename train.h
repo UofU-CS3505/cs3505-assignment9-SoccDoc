@@ -23,11 +23,11 @@ public:
     void changeStations(QList<Station*> stations);
 
     void startTravel();
-    void setImage(QPixmap image);
+    void setImage(QString fileName);
 
     QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);
-    void removePassengers(Passenger passengerType);
+    int removePassengers(Passenger passengerType);
 
 private:
     Station* currentStation;

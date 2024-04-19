@@ -15,20 +15,15 @@ MapModel::MapModel(QWidget *parent) :
     updateTimer.start();
 
     // Spawn some initial stations
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 3; i++)
         spawnStation();
-
-    // Setup train image
-    QPixmap image;
-    image.load(":/images/images/train.png");
-    trainImage = image.scaled(50, 25, Qt::KeepAspectRatio);
 
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));
     trainStations.append(stations.at(2));
 
     Train* train = new Train(this);
-    train->setImage(trainImage);
+    train->setImage(":/images/images/train.png");
     train->changeStations(trainStations);
     trains.append(train);
 }
@@ -38,7 +33,7 @@ void MapModel::updateFrame() {
     {
         if (station->update()){
             int index = station->returnWaitingSize() - 1;
-            emit drawStationPassenger(station, station->getPassengers()[index]);
+            emit drawStationPassenger(station, station->getPassengers().at(index));
         }
     }
 
@@ -155,9 +150,6 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         QPoint startPoint = selectedStations.at(i)->getLocation();
         QPoint endPoint = selectedStations.at(i + 1)->getLocation();
 
-        qDebug() << startPoint.x();
-        qDebug() << endPoint.x();
-
         drawer->drawLineBetweenStations(startPoint, endPoint);
         drawer->drawStations(selectedStations.at(i));
         drawer->drawStations(selectedStations.at(i+1));
@@ -179,7 +171,6 @@ Station* MapModel::getStation(QPoint point) {
 
 void MapModel::passengerDelivered(int passengersDelivered) {
     numberOfPassengersDelivered += passengersDelivered;
-    qDebug() << passengersDelivered << "\n";
     emit updateProgressBar(numberOfPassengersDelivered - numberOfPassengersDeliveredCompensation);
 }
 

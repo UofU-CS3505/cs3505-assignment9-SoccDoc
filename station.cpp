@@ -4,7 +4,7 @@
 Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGenerator) :
     QObject(parent), location(_location), rand(randomGenerator)
 {
-    stationType = Passenger(rand() % last);
+    stationType = Passenger(rand() % Last);
     waitTime = 0;
     throughput = 0;
     numberOfPassengerOffloaded = 0;
@@ -42,11 +42,11 @@ bool Station::update(){
 }
 
 void Station::generatePassenger(){
-    Passenger passengerToAdd = Passenger(rand() % last);
+    Passenger passengerToAdd = Passenger(rand() % Last);
 
     //regenerates the pasenger while its he same type as the station
     while(passengerToAdd == stationType){
-        passengerToAdd = Passenger(rand() % last);
+        passengerToAdd = Passenger(rand() % Last);
     }
 
     waitingPassengers.append(passengerToAdd);
@@ -62,24 +62,28 @@ void Station::updateTrainPassengers(Train* trainToLoad){
     numberOfPassengerOffloaded = 0;
 
     //load all the passengers that can go to their correct destination on the train.
-    for(int j = waitingPassengers.size(); j > 0; j--){
-        Passenger passengerToAdd = waitingPassengers.at(j);
+    for (int passengerInt = Passenger::Square; passengerInt != Passenger::Last; passengerInt++ ) {
         QList<Station*> stations = trainToLoad->getConnectedStations();
+        bool trainHasPassengerType = false;
 
-        for(int i = 0; i < trainToLoad->getConnectedStations().size(); i++){
-             const Station* connectedStation = stations.at(i);
-
-            if(connectedStation->stationType == passengerToAdd){
-                trainToLoad->boardPassenger(passengerToAdd);
-                waitingPassengers.removeAt(j);
-                numberOfPassengerOffloaded++;
+        foreach (Station* station, stations) {
+            if (station->getStationType() == passengerInt) {
+                trainHasPassengerType = true;
+                break;
             }
+        }
+
+        if (trainHasPassengerType) {
+            int passengersToBoard = waitingPassengers.removeAll(passengerInt);
+            numberOfPassengerOffloaded += passengersToBoard;
+
+            for (int i = 0; i < passengersToBoard; i++)
+                trainToLoad->boardPassenger((Passenger)passengerInt);
         }
     }
 
     //unload all the passengers that have the same type as the station
     emit passengerDelivered(trainToLoad->removePassengers(stationType));
-
 }
 
 Passenger Station::getStationType(){

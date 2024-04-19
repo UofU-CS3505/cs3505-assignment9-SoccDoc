@@ -69,7 +69,6 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-            qDebug() << event->position().toPoint();
             points->append(event->position().toPoint());
         }else if (baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
@@ -85,7 +84,6 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-            qDebug() << event->position().toPoint();
             points->append(event->position().toPoint());
 
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
@@ -101,7 +99,6 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
         if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
-            qDebug() << event->position().toPoint();
             points->append(event->position().toPoint());
         }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
@@ -138,7 +135,6 @@ void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint
     painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     painter.drawLine(newStartPoint, newEndPoint);
-    qDebug() << "The line is drawn";
 }
 
 
