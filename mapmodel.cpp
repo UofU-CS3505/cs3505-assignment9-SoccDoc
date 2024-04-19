@@ -15,15 +15,18 @@ MapModel::MapModel(QWidget *parent) :
     updateTimer.start();
 
     // Spawn some initial stations
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 10; i++)
         spawnStation();
+
+
+
+    // Add a train
+    Train* train = new Train(this);
+    train->setImage(":/images/images/train.png");
 
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));
     trainStations.append(stations.at(2));
-
-    Train* train = new Train(this);
-    train->setImage(":/images/images/train.png");
     train->changeStations(trainStations);
     trains.append(train);
 }

@@ -28,13 +28,6 @@ void Train::changeStations(QList<Station*> stations) {
     // Start train towards next station
     stationInList = 1;
     nextStation = connectedStations.at(stationInList);
-
-
-    foreach (Station* s, connectedStations)
-        qDebug() << s->getLocation();
-
-    qDebug() << "next " << nextStation->getLocation();
-
     startTravel();
 }
 
@@ -49,9 +42,9 @@ void Train::setImage(QString fileName) {
 }
 
 void Train::startTravel() {
-    qDebug() << "curr " << currentStation->getLocation();
-    qDebug() << "to " << nextStation->getLocation();
-    qDebug(); // empty line
+    // qDebug() << "curr " << currentStation->getLocation();
+    // qDebug() << "to " << nextStation->getLocation();
+    // qDebug(); // empty line
 
     // Setup animation and start it
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
