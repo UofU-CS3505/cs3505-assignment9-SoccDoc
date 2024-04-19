@@ -64,27 +64,29 @@ void Station::updateTrainPassengers(Train* trainToLoad){
     //load all the passengers that can go to their correct destination on the train.
     for (int passengerInt = Passenger::Square; passengerInt != Passenger::Last; passengerInt++) {
         QList<Station*> stations = trainToLoad->getConnectedStations();
-        bool trainHasPassengerType = false;
 
+        // Check if the train has a station with the current passenger type
         foreach (Station* station, stations) {
             if (station->getStationType() == passengerInt) {
-                trainHasPassengerType = true;
+                // It does, load all passengers of that type onto the train
+                numberOfPassengerOffloaded += loadPassengers(trainToLoad, (Passenger)passengerInt);
                 break;
             }
-        }
-
-        if (trainHasPassengerType) {
-            int passengersToBoard = waitingPassengers.removeAll(passengerInt);
-            //qDebug() << "boarding " << passengersToBoard << " of type " << passengerInt;
-            numberOfPassengerOffloaded += passengersToBoard;
-
-            for (int i = 0; i < passengersToBoard; i++)
-                trainToLoad->boardPassenger((Passenger)passengerInt);
         }
     }
 
     //unload all the passengers that have the same type as the station
     emit passengerDelivered(trainToLoad->removePassengers(stationType));
+}
+
+int Station::loadPassengers(Train* trainToLoad, Passenger type) {
+    int passengersToBoard = waitingPassengers.removeAll(type);
+
+    // Load the passengers onto the train
+    for (int i = 0; i < passengersToBoard; i++)
+        trainToLoad->boardPassenger(type);
+
+    return passengersToBoard;
 }
 
 Passenger Station::getStationType(){

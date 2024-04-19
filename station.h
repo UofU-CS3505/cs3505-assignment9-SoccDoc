@@ -44,6 +44,8 @@ public:
     double getWaitTime();
     
     void updateTrainPassengers(Train* trainToLoad);
+    int loadPassengers(Train* trainToLoad, Passenger type);
+
     int returnWaitingSize();
     QList<Passenger> getPassengers();
 
