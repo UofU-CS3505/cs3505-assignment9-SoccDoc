@@ -30,14 +30,15 @@ MapModel::MapModel(QWidget *parent) :
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
 
     // Add stations for train
+    QList<Station*> trainStations;
     trainStations.append(stations.at(0));
     trainStations.append(stations.at(1));
     trainStations.append(stations.at(2));
 
     // Setup an initial train
     Train* train = new Train(this);
+    train->setAnimation(animation); // THIS HAS TO GO BEFORE THE NEXT LINE (will fix)
     train->changeStations(trainStations);
-    train->setAnimation(animation);
     trains.append(train);
 }
 

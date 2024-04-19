@@ -37,8 +37,6 @@ private:
     const int STATION_EDGE_BUFFER = 40;
     QColor currentLine;
 
-    QList<Station*> trainStations;
-
     QPixmap image;
     QLabel* trainImage;
     QPropertyAnimation* trainAnimation;
