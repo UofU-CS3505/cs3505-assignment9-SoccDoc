@@ -30,12 +30,15 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
+    QPixmap trainImage;
     int numberOfPassengersDelivered = 0;
     int numberOfPassengersDeliveredCompensation = 0;
     const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;
     QColor currentLine;
+
+    QList<Station*> trainStations;
 
 
     /**

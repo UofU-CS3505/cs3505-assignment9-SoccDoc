@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // Set our canvas as the central widget
     setCentralWidget(map->getDrawer());
-    image.load(":/images/images/train.png");
 
     // Create the window format
     createDockWindows();
@@ -44,23 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {}
-
-void MainWindow::trainKillingSimulator(){
-    QLabel* label = new QLabel(map->getDrawer());
-    QPixmap newImage = image.scaled(50, 25, Qt::KeepAspectRatio);
-    label->setPixmap(newImage);
-    //label->setGeometry(621, 607, 50, 25);
-    //trainList.append(label);
-    label->show();
-
-    QPropertyAnimation* animation = new QPropertyAnimation(label, "pos");
-    animation->setDuration(3000);
-    animation->setStartValue(QPoint(0, 0));
-    animation->setEndValue(QPoint(621,457));
-    animation->start();
-
-    connect(animation, &QPropertyAnimation::finished, label, &QWidget::deleteLater);
-}
 
 void MainWindow::drawStationPassenger(Station* station, Passenger passenger){
     QLabel* label = new QLabel(map->getDrawer());
@@ -93,7 +75,6 @@ void MainWindow::createLeftDockWindow() {
     QRadioButton* orange = new QRadioButton("Green Line");
     QRadioButton* blue = new QRadioButton("Blue Line");
     QRadioButton* red = new QRadioButton("Red Line");
-    QPushButton* trainkiller = new QPushButton("Kill A Train");
 
     orange->setChecked(true); // Check default option
 
@@ -110,8 +91,6 @@ void MainWindow::createLeftDockWindow() {
     trainLayout->addWidget(orange);
     trainLayout->addWidget(blue);
     trainLayout->addWidget(red);
-    trainLayout->addWidget(trainkiller);
-    connect(trainkiller, &QPushButton::clicked, this, &MainWindow::trainKillingSimulator);
 
     QWidget* trainWidget = new QWidget();
     trainWidget->setLayout(trainLayout);
@@ -319,7 +298,6 @@ void MainWindow::updateData(int newThroughput, int newWaitTime, int numOfPasseng
     throughput->setText(("Throughput: " + throughputStr ));
     waitTime->setText(("WaitTime: " + waitTimeStr));
     numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
-    //qDebug() << newThroughput<< " " << newWaitTime << "\n";
     throughput->update();
     waitTime->update();
     numberOfPassengers->update();
@@ -353,6 +331,5 @@ void MainWindow::resetProgressBar() {
     progressBar->setValue(0);
 }
 void MainWindow::updateProgressBar(int newValue) {
-    qDebug()<< newValue <<"\n";
     progressBar->setValue(newValue);
 }

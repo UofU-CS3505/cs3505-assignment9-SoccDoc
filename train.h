@@ -1,6 +1,7 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 #include <QObject>
+#include <QLabel>
 #include "passenger.h"
 #include "station.h"
 
@@ -19,23 +20,31 @@ public:
      * @brief Replaces the current stations with the given stations.
      * @param stations the new list of stations
      */
-    void changeStations(QList<Station> stations);
+    void changeStations(QList<Station*> stations);
 
-    QList<Station> getConnectedStations();
+    void startTravel();
+    void setImage(QString fileName);
+
+    QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);
     int removePassengers(Passenger passengerType);
-    void update();
 
 private:
-    QPoint previousStation;
-    QPoint nextStation;
+    Station* currentStation;
+    Station* nextStation;
+    int stationInList;
     QPoint location;
     QList<Passenger> passengers;
-    QList<Station> connectedStations;
+    QList<Station*> connectedStations;
+
+    QLabel* trainImage;
 
     double getDistance(QPoint p1, QPoint p2);
 
     const double SPEED = 2.0;
+
+public slots:
+    void endTravel();
 };
 
 #endif // TRAIN_H

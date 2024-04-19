@@ -21,7 +21,17 @@ public:
             QPoint _location = QPoint(0,0),
             QRandomGenerator randomGenerator = *QRandomGenerator::global());
 
+    /**
+     * @brief Copy constructor for Station
+     * @param other station to copy
+     */
     Station(const Station& other);
+
+    /**
+     * @brief Assignment operator for station
+     * @param station to copy
+     * @return the copied station
+     */
     Station& operator=(const Station& that);
 
     Passenger stationType;

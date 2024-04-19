@@ -44,7 +44,6 @@ private:
     void createBottomDockWindow();
     void createDockWindows();
     void createTipPopups();
-    void trainKillingSimulator();
     void deleteTrain(QLabel* image);
     void drawStationPassenger(Station* station, Passenger passengerType);
 
