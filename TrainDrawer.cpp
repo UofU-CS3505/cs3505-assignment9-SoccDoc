@@ -5,6 +5,7 @@
 #include <QPainterPath>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QtMath>
 
 
 
@@ -134,6 +135,24 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
 void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint){
     QPoint newStartPoint(startPoint.x()+(STATION_WIDTH/2), startPoint.y()+(STATION_WIDTH/2));
     QPoint newEndPoint(endPoint.x()+(STATION_WIDTH/2), endPoint.y()+(STATION_WIDTH/2));
+    //code to draw multiple lines to a station and make them all appear nicely
+    if(distanceXIsGreater(startPoint, endPoint)){
+        if(penColor == Qt::blue){
+            newStartPoint.setY(newStartPoint.y() + 6);
+            newEndPoint.setY(newEndPoint.y() + 6);
+        } else if(penColor == Qt::red){
+            newStartPoint.setY(newStartPoint.y() - 6);
+            newEndPoint.setY(newEndPoint.y() - 6);
+        }
+    }else{
+        if(penColor == Qt::blue){
+            newStartPoint.setX(newStartPoint.x() + 6);
+            newEndPoint.setX(newEndPoint.x() + 6);
+        } else if(penColor == Qt::red){
+            newStartPoint.setX(newStartPoint.x() - 6);
+            newEndPoint.setX(newEndPoint.x() - 6);
+        }
+    }
     QPainter painter(&baseImage);
     painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
@@ -141,6 +160,16 @@ void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint
     qDebug() << "The line is drawn";
 }
 
+bool TrainDrawer::distanceXIsGreater(const QPoint &startPoint, const QPoint &endPoint){
+    int distanceX = qFabs(startPoint.x() - endPoint.x());
+    int distanceY = qFabs(startPoint.y() - endPoint.y());
+
+    if(distanceX > distanceY){
+        return true;
+    }else{
+        return false;
+    }
+}
 
 void TrainDrawer::confetti(){
     //clear all the confetti in the array (assuming they've fallen off the screen)

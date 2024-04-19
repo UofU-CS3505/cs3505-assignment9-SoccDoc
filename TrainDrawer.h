@@ -41,6 +41,7 @@ private:
     /// \param endPoint - The current point to be drawn to.
     ///
     void drawLineTo(const QPoint &endPoint);
+    bool distanceXIsGreater(const QPoint &startPoint, const QPoint &endPoint);
 
     QImage overlayImage;
     QImage baseImage;
@@ -51,7 +52,6 @@ private:
     QColor penColor = Qt::green;
     bool hitBlack = false;
     Station* previousSelectedStation = nullptr;
-
 
 
 
