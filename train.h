@@ -28,7 +28,6 @@ public:
     QList<Station*> getConnectedStations();
     void boardPassenger(Passenger passenger);
     void removePassengers(Passenger passengerType);
-    void update();
 
 private:
     Station* currentStation;

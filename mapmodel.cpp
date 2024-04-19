@@ -36,9 +36,6 @@ void MapModel::updateFrame() {
     foreach (Station* station, stations)
         station->update();
 
-    foreach (Train* train, trains)
-        train->update();
-
     drawer->updateImage();
     if(selectedStation != nullptr)
         emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime());

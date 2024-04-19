@@ -28,6 +28,7 @@ void Train::changeStations(QList<Station*> stations) {
     // Start train towards next station
     stationInList = 1;
     nextStation = connectedStations.at(stationInList);
+    startTravel();
 
     foreach (Station* s, connectedStations)
         qDebug() << s->getLocation();
@@ -41,6 +42,9 @@ void Train::setImage(QPixmap image) {
 }
 
 void Train::startTravel() {
+    qDebug() << "curr " << currentStation->getLocation();
+    qDebug() << "to " << nextStation->getLocation();
+
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
     animation->setDuration(3000);
     animation->setStartValue(currentStation->getLocation());
@@ -60,25 +64,6 @@ void Train::endTravel() {
     nextStation = connectedStations.at(stationInList);
 
     startTravel();
-}
-
-void Train::update() {
-    foreach (Station* s, connectedStations)
-        qDebug() << s->getLocation();
-
-    QPoint nextStationLocation = nextStation->getLocation();
-    qDebug() << "now next " << nextStationLocation;
-
-    // Find the distance
-    double distance = getDistance(location, nextStationLocation);
-    double relativeSpeed = SPEED / distance;
-
-    // Set the new train location
-    QPoint newLocation = relativeSpeed * location + (1 - relativeSpeed) * nextStationLocation;
-    location = newLocation;
-    qDebug() << location << " going to " << nextStation;
-    qDebug() << location.x() << ", " << location.y();
-    qDebug();
 }
 
 double Train::getDistance(QPoint p1, QPoint p2) {
