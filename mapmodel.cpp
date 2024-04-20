@@ -15,7 +15,7 @@ MapModel::MapModel(QWidget *parent) :
     updateTimer.start();
 
     // Spawn some initial stations
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 4; i++)
         spawnStation();
 
     // // Setup train animation object
@@ -143,6 +143,8 @@ void MapModel::checkProgressBar(int progressValue) {
     if (progressValue != 100)
         return;
     numberOfPassengersDeliveredCompensation = numberOfPassengersDelivered;
+    numberOfUnusedTrains += 1;
+    spawnStation();
     emit showNewTip();
     emit restartProgressBar();
     confetti();
