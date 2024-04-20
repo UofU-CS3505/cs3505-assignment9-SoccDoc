@@ -51,10 +51,11 @@ public:
 private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
-    int stationInList; // where the train is in its station list
+    int nextStationIndex; // where the train is in its station list
 
     QList<Passenger> passengers; // list of current passengers on this train
     QList<Station*> connectedStations; // list of all stations train is connected to
+    bool trainIsGoingBackwards; // Whether the train is going backwards or not
 
     QPropertyAnimation* animation; // animates the train moving between stations
     const double SPEED = 0.15; // speed of the train

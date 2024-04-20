@@ -2,7 +2,10 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 
-Train::Train(QObject *parent, QPropertyAnimation* anim) : QObject(parent), animation(anim) {}
+Train::Train(QObject *parent, QPropertyAnimation* anim) : QObject(parent), animation(anim) {
+    // Setup animation connection
+    connect(animation, &QPropertyAnimation::finished, this, &Train::endTravel);
+}
 
 bool Train::boardPassenger(Passenger passenger) {
     // Check if the train is full
@@ -32,8 +35,9 @@ void Train::changeStations(QList<Station*> stations) {
     pastStation->updateTrainPassengers(this);
 
     // Start train towards next station
-    stationInList = 1;
-    nextStation = connectedStations.at(stationInList);
+    trainIsGoingBackwards = false;
+    nextStationIndex = 1;
+    nextStation = connectedStations.at(nextStationIndex);
     startTravel();
 }
 
@@ -47,8 +51,6 @@ void Train::startTravel() {
     animation->setStartValue(pastStation->getLocation());
     animation->setEndValue(nextStation->getLocation());
     animation->start();
-
-    connect(animation, &QPropertyAnimation::finished, this, &Train::endTravel);
 }
 
 void Train::endTravel() {
@@ -56,13 +58,20 @@ void Train::endTravel() {
     pastStation = nextStation;
     pastStation->updateTrainPassengers(this);
 
-    // Set current and next station
-    stationInList++;
-    if (stationInList == connectedStations.size())
-        stationInList = 0;
+    // Check if the train has reached the end of the line, turn around if it has
+    if (nextStationIndex == connectedStations.size() - 1)
+        trainIsGoingBackwards = true;
+    if (nextStationIndex == 0)
+        trainIsGoingBackwards = false;
+
+    // Move the train forward
+    if (!trainIsGoingBackwards)
+        nextStationIndex++;
+    if (trainIsGoingBackwards)
+        nextStationIndex--;
 
     // Set the next station and leave station
-    nextStation = connectedStations.at(stationInList);
+    nextStation = connectedStations.at(nextStationIndex);
     startTravel();
 }
 
