@@ -46,6 +46,7 @@ public:
      * @return number of passengers removed
      */
     int removePassengers(Passenger passengerType);
+    QColor line;
 
 private:
     Station* pastStation; // station train is departing from

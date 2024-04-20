@@ -18,25 +18,25 @@ MapModel::MapModel(QWidget *parent) :
     for (int i = 0; i < 10; i++)
         spawnStation();
 
-    // Setup train animation object
-    QPixmap image;
-    image.load(":/images/images/train.png");
-    image = image.scaled(50, 25, Qt::KeepAspectRatio);
-    trainImage = new QLabel(drawer);
-    trainImage->setPixmap(image);
-    trainImage->show();
-    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
+    // // Setup train animation object
+    // QPixmap image;
+    // image.load(":/images/images/train.png");
+    // image = image.scaled(50, 25, Qt::KeepAspectRatio);
+    // trainImage = new QLabel(drawer);
+    // trainImage->setPixmap(image);
+    // trainImage->show();
+    // QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
 
-    // Setup stations for train
-    QList<Station*> trainStations;
-    trainStations.append(stations.at(0));
-    trainStations.append(stations.at(1));
-    trainStations.append(stations.at(2));
+    // // Setup stations for train
+    // QList<Station*> trainStations;
+    // trainStations.append(stations.at(0));
+    // trainStations.append(stations.at(1));
+    // trainStations.append(stations.at(2));
 
-    // Put everything into a train
-    Train* train = new Train(this, animation);
-    train->changeStations(trainStations);
-    trains.append(train);
+    // // Put everything into a train
+    // Train* train = new Train(this, animation);
+    // train->changeStations(trainStations);
+    // trains.append(train);
 }
 
 void MapModel::updateFrame() {
@@ -165,6 +165,7 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         drawer->drawStations(selectedStations.at(i));
         drawer->drawStations(selectedStations.at(i+1));
     }
+    addTrainToLine(selectedStations);
 }
 
 Station* MapModel::getStation(QPoint point) {
@@ -183,6 +184,30 @@ Station* MapModel::getStation(QPoint point) {
 void MapModel::passengerDelivered(int passengersDelivered) {
     numberOfPassengersDelivered += passengersDelivered;
     emit updateProgressBar(numberOfPassengersDelivered - numberOfPassengersDeliveredCompensation);
+}
+
+
+void MapModel::addTrainToLine(QList<Station*> trainLine){
+    if(numberOfUnusedTrains <= 0){
+        return; //no trains available to add to a line.
+    }
+
+    // Setup train animation object
+    QPixmap image;
+    image.load(":/images/images/train.png");
+    image = image.scaled(50, 25, Qt::KeepAspectRatio);
+    trainImage = new QLabel(drawer);
+    trainImage->setPixmap(image);
+    trainImage->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
+
+
+    // Put everything into a train
+    Train* train = new Train(this, animation);
+    train->line = currentLine;
+    train->changeStations(trainLine);
+    trains.append(train);
+    numberOfUnusedTrains -= 1;
 }
 
 

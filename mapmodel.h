@@ -24,6 +24,7 @@ public:
 
 private:
     QTimer updateTimer;
+    int numberOfUnusedTrains = 3;
     QList<Train*> trains;
     QList<Station*> stations;
     Station* selectedStation = nullptr;
@@ -40,6 +41,8 @@ private:
     QPixmap image;
     QLabel* trainImage;
     QPropertyAnimation* trainAnimation;
+
+    void addTrainToLine(QList<Station*> trainStations);
 
     /**
      * @brief spawns a new station and draws it
