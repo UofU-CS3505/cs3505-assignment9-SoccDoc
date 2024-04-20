@@ -15,7 +15,7 @@ class Train : public QObject
     Q_OBJECT
 
 public:
-    Train(QObject *parent = nullptr, QPropertyAnimation* anim = nullptr);
+    Train(QObject *parent = nullptr, QPropertyAnimation* anim = nullptr, QColor line = QColor(0, 0, 0));
 
     /**
      * @brief Replaces the current stations with the given stations.
@@ -47,12 +47,19 @@ public:
      * @return number of passengers removed
      */
     int removePassengers(Passenger passengerType);
-    QColor line;
+
+    /**
+     * @brief Gets the color of this trains line
+     * @return this trains line color
+     */
+    QColor getLineColor();
 
 private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
     int nextStationIndex; // where the train is in its station list
+
+    QColor lineColor; // The color of this trains line
 
     QList<Passenger> passengers; // list of current passengers on this train
     QList<Station*> connectedStations; // list of all stations train is connected to

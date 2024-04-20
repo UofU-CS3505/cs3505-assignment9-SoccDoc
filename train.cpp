@@ -2,7 +2,9 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 
-Train::Train(QObject *parent, QPropertyAnimation* anim) : QObject(parent), animation(anim) {
+Train::Train(QObject *parent, QPropertyAnimation* anim, QColor color) :
+    QObject(parent), lineColor(color), animation(anim)
+{
     // Setup animation connection
     connect(animation, &QPropertyAnimation::finished, this, &Train::endTravel);
 }
@@ -19,6 +21,10 @@ bool Train::boardPassenger(Passenger passenger) {
 
 QList<Station*> Train::getConnectedStations() {
     return connectedStations;
+}
+
+QColor Train::getLineColor() {
+    return lineColor;
 }
 
 int Train::removePassengers(Passenger passengerType) {
