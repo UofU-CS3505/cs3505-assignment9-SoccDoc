@@ -104,12 +104,6 @@ void MapModel::spawnStation() {
     connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
 
-
-
-
-
-
-
 void MapModel::spawnSquareStation() {
     // Get canvas dimensions
     int canvasWidth = drawer->size().width();
@@ -140,10 +134,6 @@ void MapModel::spawnSquareStation() {
 
     connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
-
-
-
-
 
 void MapModel::spawnTriangleStation() {
     // Get canvas dimensions
@@ -176,9 +166,6 @@ void MapModel::spawnTriangleStation() {
     connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
 
-
-
-
 void MapModel::spawnCircleStation() {
     // Get canvas dimensions
     int canvasWidth = drawer->size().width();
@@ -209,17 +196,6 @@ void MapModel::spawnCircleStation() {
 
     connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
     int width = drawer->getWidth();
