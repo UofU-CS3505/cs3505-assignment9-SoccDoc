@@ -64,7 +64,7 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
-    void updateData(int, int, int);
+    void updateData(double, double, double);
     void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();

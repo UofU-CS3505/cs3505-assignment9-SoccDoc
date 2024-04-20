@@ -284,13 +284,13 @@ void MainWindow::updateStationData(QString newData) {
     stationDetailsDock->setWindowTitle(newData);
 }
 
-void MainWindow::updateData(int newThroughput, int newWaitTime, int numOfPassengers){
-    QString throughputStr = QString::number(newThroughput);
-    QString waitTimeStr = QString::number(newWaitTime);
-     QString numOfPassengersStr = QString::number(numOfPassengers);
+void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){
+    QString throughputStr = QString::number(newThroughput, 'f', 3);
+    QString waitTimeStr = QString::number(newWaitTime, 'f', 3);
+     QString numOfPassengersStr = QString::number(numOfPassengers, 'f', 1);
 
     throughput->setText(("Throughput: " + throughputStr ));
-    waitTime->setText(("WaitTime: " + waitTimeStr));
+    waitTime->setText(("WaitTime: " + waitTimeStr + " Seconds"));
     numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
     throughput->update();
     waitTime->update();
