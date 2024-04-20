@@ -4,8 +4,14 @@
 
 Train::Train(QObject *parent, QPropertyAnimation* anim) : QObject(parent), animation(anim) {}
 
-void Train::boardPassenger(Passenger passenger) {
+bool Train::boardPassenger(Passenger passenger) {
+    // Check if the train is full
+    if (passengers.size() == CAPACITY)
+        return false;
+
+    // Board a passenger
     passengers.append(passenger);
+    return true;
 }
 
 QList<Station*> Train::getConnectedStations() {
@@ -46,7 +52,7 @@ void Train::startTravel() {
 }
 
 void Train::endTravel() {
-    // Make the station we are at the current station and update passengers
+    // Make the station we are at the past station and update passengers
     pastStation = nextStation;
     pastStation->updateTrainPassengers(this);
 
