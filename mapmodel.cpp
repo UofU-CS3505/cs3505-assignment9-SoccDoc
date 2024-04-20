@@ -173,6 +173,8 @@ Station* MapModel::getStation(QPoint point) {
         if(station->getLocation().x() <= point.x() && ((station->getLocation().x() + drawer->STATION_WIDTH) >= point.x())){
             if(station->getLocation().y() <= point.y() && (station->getLocation().y() + drawer->STATION_WIDTH) >= point.y()){
                 selectedStation = station;
+                if (!station)
+                    qDebug() << "station is null";
                 return station;
             }
         }
@@ -188,6 +190,10 @@ void MapModel::passengerDelivered(int passengersDelivered) {
 
 
 void MapModel::addTrainToLine(QList<Station*> trainLine){
+    // Check if there are at least two stations
+    if (trainLine.size() < 2)
+        return;
+
     if(numberOfUnusedTrains <= 0){
         return; //no trains available to add to a line.
     }
@@ -201,10 +207,8 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
     trainImage->show();
     QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
 
-
     // Put everything into a train
-    Train* train = new Train(this, animation);
-    train->line = currentLine;
+    Train* train = new Train(this, animation, currentLine);
     train->changeStations(trainLine);
     trains.append(train);
     numberOfUnusedTrains -= 1;
