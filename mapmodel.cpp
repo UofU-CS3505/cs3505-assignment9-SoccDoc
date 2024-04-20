@@ -14,11 +14,14 @@ MapModel::MapModel(QWidget *parent) :
     connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
     updateTimer.start();
 
+    // Spawn default stations
     spawnCircleStation();
     spawnSquareStation();
     spawnTriangleStation();
-
     spawnStation();
+
+    // Set initial line color
+    currentLine = Qt::green;
 }
 
 void MapModel::updateFrame() {
@@ -277,7 +280,15 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
 
     // Setup train animation object
     QPixmap image;
-    image.load(":/images/images/train.png");
+
+    // Load corresponding train image color
+    if (currentLine == Qt::blue)
+        image.load(":/images/images/blueTrain.png");
+    else if (currentLine == Qt::red)
+        image.load(":/images/images/redTrain.png");
+    else if (currentLine == Qt::green)
+        image.load(":/images/images/greenTrain.png");
+
     image = image.scaled(50, 25, Qt::KeepAspectRatio);
     trainImage = new QLabel(drawer);
     trainImage->setPixmap(image);
