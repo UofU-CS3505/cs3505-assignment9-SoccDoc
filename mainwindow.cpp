@@ -1,17 +1,11 @@
 #include "mainwindow.h"
-#include <QMessageBox>
-#include <QDockWidget>
-#include <QListWidget>
-#include <QMenu>
-#include <QMenuBar>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
 #include <QRadioButton>
-#include <QButtonGroup>
-#include <QLabel>
 #include <QPushButton>
+#include <QButtonGroup>
+#include <QDockWidget>
+#include <QLabel>
 #include <QPropertyAnimation>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), map(new MapModel(this))

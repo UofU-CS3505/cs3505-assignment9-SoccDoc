@@ -6,10 +6,8 @@
 #include <QLabel>
 #include "mapmodel.h"
 #include <QQueue>
-#include <QMetaMethod>
 #include <QMessageBox>
 #include <QHBoxLayout>
-#include <QMap>
 
 /**
  * @brief The MainWindow class

@@ -61,6 +61,9 @@ void Station::updateTrainPassengers(Train* trainToLoad){
     }
     numberOfPassengerOffloaded = 0;
 
+    //unload all the passengers that have the same type as the station
+    emit passengerDelivered(trainToLoad->removePassengers(stationType));
+
     //load all the passengers that can go to their correct destination on the train.
     for (int passengerInt = Passenger::Square; passengerInt != Passenger::Last; passengerInt++) {
         QList<Station*> stations = trainToLoad->getConnectedStations();
@@ -74,9 +77,6 @@ void Station::updateTrainPassengers(Train* trainToLoad){
             }
         }
     }
-
-    //unload all the passengers that have the same type as the station
-    emit passengerDelivered(trainToLoad->removePassengers(stationType));
 }
 
 int Station::loadPassengers(Train* trainToLoad, Passenger type) {
@@ -84,8 +84,11 @@ int Station::loadPassengers(Train* trainToLoad, Passenger type) {
 
     // Load the passengers onto the train
     for (int i = 0; i < passengersToBoard; i++)
-        trainToLoad->boardPassenger(type);
+        // Check if we succeed to load a passenger
+        if (!trainToLoad->boardPassenger(type))
+            return i; // we failed, stop loading
 
+    // All passengers successfully loaded
     return passengersToBoard;
 }
 

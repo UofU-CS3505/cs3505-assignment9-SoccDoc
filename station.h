@@ -34,7 +34,6 @@ public:
      */
     Station& operator=(const Station& that);
 
-    Passenger stationType;
     bool update();
     Passenger getStationType();
     QPoint getLocation();
@@ -51,6 +50,7 @@ public:
 
 private:
     QList<Passenger> waitingPassengers;
+    Passenger stationType;
     QPoint location;
     QRandomGenerator rand;
     void generatePassenger();
