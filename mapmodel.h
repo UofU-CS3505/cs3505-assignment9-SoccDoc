@@ -69,7 +69,7 @@ public slots:
     void checkProgressBar(int);
 
 signals:
-    void updateData(int, int, int);
+    void updateData(double, double, double);
     void updateTrainDetails(QString);
     void updateStationDetails(QString);
     void showNewTip();

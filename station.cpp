@@ -56,7 +56,7 @@ void Station::updateTrainPassengers(Train* trainToLoad){
     if(!elapsedTimer.isValid()){
         elapsedTimer.start();
     }else{
-        waitTime = elapsedTimer.elapsed();
+        waitTime = (elapsedTimer.elapsed());
         elapsedTimer.restart();
     }
     numberOfPassengerOffloaded = 0;
@@ -104,12 +104,12 @@ double Station::getThroughput(){
     if (!waitTime || waitTime == 0){
         return 0;
     }
-    throughput = (numberOfPassengerOffloaded/waitTime);
+    throughput = (numberOfPassengerOffloaded/(waitTime)/1000);
     return throughput;
 }
 
 double Station::getWaitTime(){
-    return waitTime;
+    return (waitTime / 1000);
 }
 
 QList<Passenger> Station::getPassengers(){

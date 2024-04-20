@@ -57,9 +57,9 @@ private:
     int amountOfUnloadedPassengers;
 
     QElapsedTimer elapsedTimer;
-    int numberOfPassengerOffloaded = -1;
-    quint64 waitTime = -1;
-    int throughput = 0;
+    double numberOfPassengerOffloaded = -1;
+    double waitTime = -1;
+    double throughput = 0;
 
 signals:
     void passengerDelivered(int);
