@@ -19,7 +19,7 @@ class Station : public QObject
 public:
     Station(QObject *parent = nullptr,
             QPoint _location = QPoint(0,0),
-            QRandomGenerator randomGenerator = *QRandomGenerator::global());
+            Passenger passenger = Passenger(0));
 
     /**
      * @brief Copy constructor for Station

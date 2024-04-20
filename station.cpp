@@ -1,10 +1,11 @@
 #include "station.h"
 #include "train.h"
 
-Station::Station(QObject *parent, QPoint _location, QRandomGenerator randomGenerator) :
-    QObject(parent), location(_location), rand(randomGenerator)
+Station::Station(QObject *parent, QPoint _location, Passenger passenger) :
+    QObject(parent), location(_location)
 {
-    stationType = Passenger(rand() % Last);
+    rand = QRandomGenerator::securelySeeded();
+    stationType = passenger;
     waitTime = 0;
     throughput = 0;
     numberOfPassengerOffloaded = 0;
