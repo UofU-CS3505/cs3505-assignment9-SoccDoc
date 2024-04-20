@@ -14,9 +14,11 @@ MapModel::MapModel(QWidget *parent) :
     connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
     updateTimer.start();
 
-    // Spawn some initial stations
-    for (int i = 0; i < 4; i++)
-        spawnStation();
+    spawnCircleStation();
+    spawnSquareStation();
+    spawnTriangleStation();
+
+    spawnStation();
 }
 
 void MapModel::updateFrame() {
@@ -94,13 +96,130 @@ void MapModel::spawnStation() {
     }
 
     // Create station and add it to station list
-    Station* newStation = new Station(this, newStationLocation, rand);
+    Station* newStation = new Station(this, newStationLocation, Passenger(rand.bounded(3)));
     stations.append(newStation);
     drawer->drawStations(newStation);
     selectedStation = newStation;
 
     connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
 }
+
+
+
+
+
+
+
+void MapModel::spawnSquareStation() {
+    // Get canvas dimensions
+    int canvasWidth = drawer->size().width();
+    int canvasHeight = drawer->size().height();
+
+    // Create initial random location
+    int x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+    int y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+    QPoint newStationLocation;
+    newStationLocation.setX(x);
+    newStationLocation.setY(y);
+
+    // Check if new station location is too close to other stations
+    while(!stationLocationIsGood(newStationLocation)) {
+        x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+        y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+        newStationLocation.setX(x);
+        newStationLocation.setY(y);
+    }
+
+    // Create station and add it to station list
+    Station* newStation = new Station(this, newStationLocation, Passenger(0));
+    stations.append(newStation);
+    drawer->drawStations(newStation);
+    selectedStation = newStation;
+
+    connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
+}
+
+
+
+
+
+void MapModel::spawnTriangleStation() {
+    // Get canvas dimensions
+    int canvasWidth = drawer->size().width();
+    int canvasHeight = drawer->size().height();
+
+    // Create initial random location
+    int x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+    int y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+    QPoint newStationLocation;
+    newStationLocation.setX(x);
+    newStationLocation.setY(y);
+
+    // Check if new station location is too close to other stations
+    while(!stationLocationIsGood(newStationLocation)) {
+        x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+        y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+        newStationLocation.setX(x);
+        newStationLocation.setY(y);
+    }
+
+    // Create station and add it to station list
+    Station* newStation = new Station(this, newStationLocation, Passenger(2));
+    stations.append(newStation);
+    drawer->drawStations(newStation);
+    selectedStation = newStation;
+
+    connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
+}
+
+
+
+
+void MapModel::spawnCircleStation() {
+    // Get canvas dimensions
+    int canvasWidth = drawer->size().width();
+    int canvasHeight = drawer->size().height();
+
+    // Create initial random location
+    int x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+    int y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+    QPoint newStationLocation;
+    newStationLocation.setX(x);
+    newStationLocation.setY(y);
+
+    // Check if new station location is too close to other stations
+    while(!stationLocationIsGood(newStationLocation)) {
+        x = rand.bounded(STATION_EDGE_BUFFER, canvasWidth - STATION_EDGE_BUFFER);
+        y = rand.bounded(STATION_EDGE_BUFFER, canvasHeight - STATION_EDGE_BUFFER);
+
+        newStationLocation.setX(x);
+        newStationLocation.setY(y);
+    }
+
+    // Create station and add it to station list
+    Station* newStation = new Station(this, newStationLocation, Passenger(1));
+    stations.append(newStation);
+    drawer->drawStations(newStation);
+    selectedStation = newStation;
+
+    connect(newStation, &Station::passengerDelivered, this, &MapModel::passengerDelivered);
+}
+
+
+
+
+
+
+
+
+
+
+
 
 bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
     int width = drawer->getWidth();

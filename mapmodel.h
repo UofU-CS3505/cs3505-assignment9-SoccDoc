@@ -49,6 +49,10 @@ private:
      */
     void spawnStation();
 
+    void spawnTriangleStation();
+    void spawnCircleStation();
+    void spawnSquareStation();
+
     /**
      * @brief Checks if a given point is too close to current stations
      * @param the point to check
