@@ -22,6 +22,17 @@ MapModel::MapModel(QWidget *parent) :
 
     // Set initial line color
     currentLine = Qt::green;
+
+    // Add goals to queue
+    passengerGoals.enqueue(5);
+    passengerGoals.enqueue(15);
+    passengerGoals.enqueue(30);
+    passengerGoals.enqueue(50);
+    passengerGoals.enqueue(100);
+
+    // Set first goal
+    numberOfPassengersDelivered = 0;
+    currentPassengerGoal = passengerGoals.dequeue();
 }
 
 void MapModel::updateFrame() {
@@ -218,11 +229,20 @@ bool MapModel::stationLocationIsGood(QPoint newStationLocation) {
 }
 
 void MapModel::checkProgressBar(int progressValue) {
-    if (progressValue != 100)
+    // Don't do anything if progress bar isn't full
+    if (progressValue < 100)
         return;
-    numberOfPassengersDeliveredCompensation = numberOfPassengersDelivered;
+
+    // Reset the number of delivered passengers and update the goal
+    numberOfPassengersDelivered = 0;
+    if (!passengerGoals.isEmpty())
+        currentPassengerGoal = passengerGoals.dequeue();
+
+    // Give user an extra train and spawn another station
     numberOfUnusedTrains += 1;
     spawnStation();
+
+    // Show a new tip and reset the progress bar
     emit showNewTip();
     emit restartProgressBar();
     confetti();
@@ -265,7 +285,13 @@ Station* MapModel::getStation(QPoint point) {
 
 void MapModel::passengerDelivered(int passengersDelivered) {
     numberOfPassengersDelivered += passengersDelivered;
-    emit updateProgressBar(numberOfPassengersDelivered - numberOfPassengersDeliveredCompensation);
+    int progressBarPercent = ((double)numberOfPassengersDelivered / currentPassengerGoal) * 100;
+
+    // Cap the progress bar percent at 100
+    if (progressBarPercent > 100)
+        progressBarPercent = 100;
+
+    emit updateProgressBar(progressBarPercent);
 }
 
 

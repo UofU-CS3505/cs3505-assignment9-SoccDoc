@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QColor>
+#include <QQueue>
 #include "station.h"
 #include "train.h"
 #include "TrainDrawer.h"
@@ -31,8 +32,11 @@ private:
     TrainDrawer *drawer;
     QList<QPoint> stationPoints;
     QRandomGenerator rand;
-    int numberOfPassengersDelivered = 0;
-    int numberOfPassengersDeliveredCompensation = 0;
+
+    int numberOfPassengersDelivered; // The number of passengers the user has delivered since the last completed goal
+    int currentPassengerGoal; // The current passenger goal to fill the progress bar
+    QQueue<int> passengerGoals; // A queue of the passenger goals to fill the progress bar
+
     const int MILISECONDS_TO_UPDATE = (1000/60);
     const int STATION_DISTANCE = 120;
     const int STATION_EDGE_BUFFER = 40;
