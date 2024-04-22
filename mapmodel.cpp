@@ -11,7 +11,7 @@ MapModel::MapModel(QWidget *parent) :
     // Setup and start update timer
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
-    connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::checkForStations);
+    connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::drawStationsOnLine);
     updateTimer.start();
 
     // Spawn default stations
@@ -36,15 +36,20 @@ MapModel::MapModel(QWidget *parent) :
 }
 
 void MapModel::updateFrame() {
+    // Update all of the stations
     foreach (Station* station, stations)
     {
+        // If the station has added a passenger, update how many are drawn
         if (station->update()){
             int index = station->returnWaitingSize() - 1;
             emit drawStationPassenger(station, station->getPassengers().at(index));
         }
     }
 
+    // Update the canvas
     drawer->updateImage();
+
+    // Update the current data and highlight the selected station
     if(selectedStation != nullptr){
         emit updateData(selectedStation->getThroughput(), selectedStation->getWaitTime(), (selectedStation->getPassengers().size()));
         drawer->selectStation(selectedStation);
@@ -52,6 +57,7 @@ void MapModel::updateFrame() {
 }
 
 void MapModel::trainButtonClicked(int id) {
+    // Update details for selected radio button
     switch(id) {
     case 0:
         emit updateTrainDetails("Green Train Details");
@@ -66,10 +72,13 @@ void MapModel::trainButtonClicked(int id) {
         currentLine = Qt::red;
         break;
     }
+
+    // Set the color of the drawer based on the radio button selected
     drawer->setPenColor(currentLine);
 }
 
 void MapModel::stationButtonClicked(int id) {
+    // Update details for selected radio button
     switch(id) {
     case 0:
         emit updateStationDetails("Square Station Details");
@@ -248,8 +257,8 @@ void MapModel::checkProgressBar(int progressValue) {
     confetti();
 }
 
-// not implemented
-void MapModel::checkForStations(QList<QPoint> testPoints) {
+void MapModel::drawStationsOnLine(QList<QPoint> testPoints) {
+    // Make a list of all stations touching the drawn line
     QList<Station*> selectedStations{};
     foreach(QPoint point, testPoints){
         if(!selectedStations.contains(getStation(point))){
@@ -257,6 +266,7 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         }
     }
 
+    // Draw lines between each of those stations
     for(int i = 0; i < selectedStations.length() - 1; i++){
         QPoint startPoint = selectedStations.at(i)->getLocation();
         QPoint endPoint = selectedStations.at(i + 1)->getLocation();
@@ -265,22 +275,29 @@ void MapModel::checkForStations(QList<QPoint> testPoints) {
         drawer->drawStations(selectedStations.at(i));
         drawer->drawStations(selectedStations.at(i+1));
     }
+
+    // Add a train to follow that line
     addTrainToLine(selectedStations);
 }
 
 Station* MapModel::getStation(QPoint point) {
+    // Check if the given point is on a station
     foreach (Station* station, stations) {
-        if(station->getLocation().x() <= point.x() && ((station->getLocation().x() + drawer->STATION_WIDTH) >= point.x())){
-            if(station->getLocation().y() <= point.y() && (station->getLocation().y() + drawer->STATION_WIDTH) >= point.y()){
-                selectedStation = station;
-                if (!station)
-                    qDebug() << "station is null";
-                return station;
-            }
-        }
-    }
-    return selectedStation;
+        // Check x axis
+        if(station->getLocation().x() > point.x() || ((station->getLocation().x() + drawer->STATION_WIDTH) < point.x()))
+            continue;
 
+        // Check y axis
+        if(station->getLocation().y() > point.y() || (station->getLocation().y() + drawer->STATION_WIDTH) < point.y())
+            continue;
+
+        // Point is on this station
+        selectedStation = station;
+        return station;
+    }
+
+    // Point is not on any station, don't change selection
+    return selectedStation;
 }
 
 void MapModel::passengerDelivered(int passengersDelivered) {
@@ -316,6 +333,8 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
         image.load(":/images/images/greenTrain.png");
 
     image = image.scaled(50, 25, Qt::KeepAspectRatio);
+
+    QLabel* trainImage;
     trainImage = new QLabel(drawer);
     trainImage->setPixmap(image);
     trainImage->show();
