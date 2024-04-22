@@ -111,6 +111,8 @@ public slots:
      */
     void passengerDelivered(int);
 
+    void redrawTrack();
+
 signals:
     /**
      * @brief updates data tab
@@ -148,6 +150,8 @@ signals:
      * @param passengerType The type of the station to draw
      */
     void drawStationPassenger(Station* station, Passenger passengerType);
+
+    void enableTrackButtonsSignal();
 };
 
 #endif // MAPMODEL_H

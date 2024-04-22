@@ -25,6 +25,7 @@ public:
     /// \param endPoint  - The end point to end drawing the line.
     ///
     void drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint);
+    void redrawTrack();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -34,7 +35,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 private:
-    void resizeImage(QImage *image, const QSize &newSize);
+    void resizeImage(QImage *image, const QSize &newSize, int colorValue);
 
     ///
     /// \brief drawLineTo - This method draws a line between the last point recieved and the current point. It is used for drawing a line.
@@ -45,6 +46,10 @@ private:
 
     QImage overlayImage;
     QImage baseImage;
+    QImage redLine;
+    QImage blueLine;
+    QImage greenLine;
+    QImage stationDrawings;
     QPoint lastPoint;
     QList<QPoint> *points;
     bool scribbling;
@@ -78,6 +83,7 @@ public slots:
 
 signals:
     void checkForStations(QList<QPoint>);
+    void enableTrackButtonSignal();
 };
 
 

@@ -16,7 +16,11 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     _world->SetAutoClearForces(true);
 
     setAttribute(Qt::WA_StaticContents);
-    resizeImage(&baseImage, QSize(750, 500));
+    resizeImage(&baseImage, QSize(750, 500), 255);
+    resizeImage(&redLine, QSize(750, 500), 0);
+    resizeImage(&blueLine, QSize(750, 500), 0);
+    resizeImage(&greenLine, QSize(750, 500), 0);
+    resizeImage(&stationDrawings, QSize(750, 500), 0);
     overlayImage = baseImage;
     redrawLine = false;
     points = new QList<QPoint>{};
@@ -50,13 +54,13 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
 //     QWidget::resizeEvent(event);
 // }
 
-void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
+void TrainDrawer::resizeImage(QImage *image, const QSize &newSize, int colorValue)
 {
     if (image->size() == newSize)
         return;
 
-    QImage newImage(newSize, QImage::Format_RGB32);
-    newImage.fill(qRgb(255, 255, 255));
+    QImage newImage(newSize, QImage::Format_ARGB32);
+    newImage.fill(qRgba(colorValue, colorValue, colorValue, colorValue));
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *image);
     *image = newImage;
@@ -64,14 +68,12 @@ void TrainDrawer::resizeImage(QImage *image, const QSize &newSize)
 
 void TrainDrawer::mousePressEvent(QMouseEvent *event)
 {
-    overlayImage = baseImage;
-    redrawLine = true;
     if (event->button() == Qt::LeftButton && redrawLine) {
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+        if(stationDrawings.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
             points->append(event->position().toPoint());
-        }else if (baseImage.pixelColor(event->position().toPoint()) != Qt::black){
+        }else if (stationDrawings.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
         lastPoint = event->position().toPoint();
@@ -82,12 +84,12 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling && redrawLine){
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+        if(stationDrawings.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
             points->append(event->position().toPoint());
 
-        }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
+        }else if(stationDrawings.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
         drawLineTo(event->position().toPoint());
@@ -97,11 +99,11 @@ void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
 void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling && redrawLine) {
-        if(baseImage.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
+        if(stationDrawings.pixelColor(event->position().toPoint()) == Qt::black && !hitBlack){
             //emit signal with the point
             hitBlack = true;
             points->append(event->position().toPoint());
-        }else if(baseImage.pixelColor(event->position().toPoint()) != Qt::black){
+        }else if(stationDrawings.pixelColor(event->position().toPoint()) != Qt::black){
             hitBlack = false;
         }
 
@@ -112,6 +114,7 @@ void TrainDrawer::mouseReleaseEvent(QMouseEvent *event)
         update();
         overlayImage = baseImage;
         emit checkForStations(*points);
+        emit enableTrackButtonSignal();
         points->clear();
     }
 }
@@ -129,31 +132,71 @@ void TrainDrawer::drawLineTo(const QPoint &endPoint)
     lastPoint = endPoint;
 }
 
+void TrainDrawer::redrawTrack(){
+    if(penColor == Qt::green){
+        greenLine.fill(qRgba(0, 0, 0, 0));
+    }else if(penColor == Qt::blue){
+        blueLine.fill(qRgba(0, 0, 0, 0));
+    }else if(penColor == Qt::red){
+        redLine.fill(qRgba(0, 0, 0, 0));
+    }
+    baseImage.fill(qRgba(255, 255, 255, 255));
+    QPainter painter(&baseImage);
+    painter.drawImage(0, 0, redLine);
+    painter.drawImage(0, 0, greenLine);
+    painter.drawImage(0, 0, blueLine);
+    painter.drawImage(0, 0, stationDrawings);
+    overlayImage = baseImage;
+    redrawLine = true;
+}
+
 void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint){
     QPoint newStartPoint(startPoint.x()+(STATION_WIDTH/2), startPoint.y()+(STATION_WIDTH/2));
     QPoint newEndPoint(endPoint.x()+(STATION_WIDTH/2), endPoint.y()+(STATION_WIDTH/2));
     //code to draw multiple lines to a station and make them all appear nicely
-    if(distanceXIsGreater(startPoint, endPoint)){
+    if(distanceXIsGreater(startPoint, endPoint) && penColor != Qt::green){
         if(penColor == Qt::blue){
             newStartPoint.setY(newStartPoint.y() + 6);
             newEndPoint.setY(newEndPoint.y() + 6);
+            QPainter painter(&blueLine);
+            painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                                Qt::RoundJoin));
+            painter.drawLine(newStartPoint, newEndPoint);
         } else if(penColor == Qt::red){
             newStartPoint.setY(newStartPoint.y() - 6);
             newEndPoint.setY(newEndPoint.y() - 6);
+            QPainter painter(&redLine);
+            painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                                Qt::RoundJoin));
+            painter.drawLine(newStartPoint, newEndPoint);
         }
-    }else{
+    }else if(!distanceXIsGreater(startPoint, endPoint) && penColor != Qt::green){
         if(penColor == Qt::blue){
             newStartPoint.setX(newStartPoint.x() + 6);
             newEndPoint.setX(newEndPoint.x() + 6);
+            QPainter painter(&blueLine);
+            painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                                Qt::RoundJoin));
+            painter.drawLine(newStartPoint, newEndPoint);
         } else if(penColor == Qt::red){
             newStartPoint.setX(newStartPoint.x() - 6);
             newEndPoint.setX(newEndPoint.x() - 6);
+            QPainter painter(&redLine);
+            painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                                Qt::RoundJoin));
+            painter.drawLine(newStartPoint, newEndPoint);
         }
+    }else{
+        QPainter painter(&greenLine);
+        painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
+                            Qt::RoundJoin));
+        painter.drawLine(newStartPoint, newEndPoint);
     }
     QPainter painter(&baseImage);
-    painter.setPen(QPen(penColor, 3, Qt::SolidLine, Qt::RoundCap,
-                        Qt::RoundJoin));
-    painter.drawLine(newStartPoint, newEndPoint);
+    painter.drawImage(0, 0, redLine);
+    painter.drawImage(0, 0, greenLine);
+    painter.drawImage(0, 0, blueLine);
+    painter.drawImage(0, 0, stationDrawings);
 }
 
 bool TrainDrawer::distanceXIsGreater(const QPoint &startPoint, const QPoint &endPoint){
@@ -234,7 +277,7 @@ void TrainDrawer::updateImage(){
 }
 
 void TrainDrawer::drawStations(Station* station){
-    QPainter painter(&baseImage);
+    QPainter painter(&stationDrawings);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap,
                         Qt::RoundJoin));
     if(station->getStationType() == Passenger::Circle){
@@ -276,6 +319,9 @@ void TrainDrawer::drawStations(Station* station){
         // painter.drawPath(path);
         painter.fillPath(path, QBrush (Qt::black));
     }
+
+    QPainter baseImagePainter(&baseImage);
+    baseImagePainter.drawImage(0, 0, stationDrawings);
 }
 
 QSize TrainDrawer::size() {

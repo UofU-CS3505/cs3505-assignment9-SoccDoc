@@ -12,6 +12,7 @@ MapModel::MapModel(QWidget *parent) :
     updateTimer.setInterval(MILISECONDS_TO_UPDATE);
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
     connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::drawStationsOnLine);
+    connect(drawer, &TrainDrawer::enableTrackButtonSignal, this, &MapModel::enableTrackButtonsSignal);
     updateTimer.start();
 
     // Spawn default stations
@@ -349,6 +350,10 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
     train->changeStations(trainLine);
     trains.append(train);
     numberOfUnusedTrains -= 1;
+}
+
+void MapModel::redrawTrack(){
+    drawer->redrawTrack();
 }
 
 

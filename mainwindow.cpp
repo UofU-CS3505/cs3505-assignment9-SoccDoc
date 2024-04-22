@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
     connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
     connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
+    connect(map, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
 
 }
 
@@ -68,49 +69,53 @@ void MainWindow::createDockWindows() {
 void MainWindow::createLeftDockWindow() {
     QPixmap LineImage;
     // Create train layout and add radio buttons
-    QRadioButton* green = new QRadioButton("");
+    greenButton = new QRadioButton("");
     LineImage.load(":/images/images/greenLine.png") ;
     //LineImage.fill(Qt::green);
     QIcon newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
-    green->setIcon(newImage);
-    green->setIconSize(QSize(120, 30));
-    green->setBaseSize(120, 40);
+    greenButton->setIcon(newImage);
+    greenButton->setIconSize(QSize(120, 30));
+    greenButton->setBaseSize(120, 40);
     // label->setPixmap(newImage);
     //  label.setMask(newImage.mask());
     // //label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
     // label->show();
 
-    QRadioButton* blue = new QRadioButton("");
+    blueButton = new QRadioButton("");
     LineImage.load(":/images/images/blueLine.png") ;
     //LineImage.fill(Qt::blue);
     newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
-    blue->setIcon(newImage);
-    blue->setIconSize(QSize(120, 30));
-    blue->setBaseSize(120, 40);
+    blueButton->setIcon(newImage);
+    blueButton->setIconSize(QSize(120, 30));
+    blueButton->setBaseSize(120, 40);
 
 
-    QRadioButton* red = new QRadioButton("");
+    redButton = new QRadioButton("");
     LineImage.load(":/images/images/redLine.png") ;
     newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
-    red->setIcon(newImage);
-    red->setIconSize(QSize(120, 30));
-    red->setBaseSize(120, 40);
+    redButton->setIcon(newImage);
+    redButton->setIconSize(QSize(120, 30));
+    redButton->setBaseSize(120, 40);
 
-    green->setChecked(true); // Check default option
+    greenButton->setChecked(true); // Check default option
 
     // Add train buttons to button group
     QButtonGroup* trainButtonGroup = new QButtonGroup();
-    trainButtonGroup->addButton(green, 0);
-    trainButtonGroup->addButton(blue, 1);
-    trainButtonGroup->addButton(red, 2);
+    trainButtonGroup->addButton(greenButton, 0);
+    trainButtonGroup->addButton(blueButton, 1);
+    trainButtonGroup->addButton(redButton, 2);
     connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
+
+    QPushButton* RedrawTrack = new QPushButton("Redraw Track");
+    connect(RedrawTrack, &QPushButton::clicked, this, &MainWindow::redrawTracks);
 
     // Put train buttons in a vertical layout
     QVBoxLayout* trainLayout = new QVBoxLayout();
     trainLayout->setAlignment(Qt::AlignTop);
-    trainLayout->addWidget(green);
-    trainLayout->addWidget(blue);
-    trainLayout->addWidget(red);
+    trainLayout->addWidget(greenButton);
+    trainLayout->addWidget(blueButton);
+    trainLayout->addWidget(redButton);
+    trainLayout->addWidget(RedrawTrack);
 
     QWidget* trainWidget = new QWidget();
     trainWidget->setLayout(trainLayout);
@@ -404,4 +409,17 @@ void MainWindow::resetProgressBar() {
 }
 void MainWindow::updateProgressBar(int newValue) {
     progressBar->setValue(newValue);
+}
+
+void MainWindow::redrawTracks(){
+    greenButton->setEnabled(false);
+    blueButton->setEnabled(false);
+    redButton->setEnabled(false);
+    map->redrawTrack();
+}
+
+void MainWindow::enableTrackButtons(){
+    greenButton->setEnabled(true);
+    blueButton->setEnabled(true);
+    redButton->setEnabled(true);
 }

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QLabel>
+#include "QtWidgets/qradiobutton.h"
 #include "mapmodel.h"
 #include <QQueue>
 #include <QMessageBox>
@@ -27,6 +28,10 @@ private:
     // Docks for managing train and station details
     QDockWidget* trainDetailsDock;
     QDockWidget* stationDetailsDock;
+
+    QRadioButton* greenButton;
+    QRadioButton* blueButton;
+    QRadioButton* redButton;
 
     //data variables to be updated.
     QLabel* throughput;
@@ -72,6 +77,8 @@ public slots:
     void updateProgressBar(int);
     void fillProgressBar();
     void resetProgressBar();
+    void redrawTracks();
+    void enableTrackButtons();
 
 signals:
     void firstTipSignal();
