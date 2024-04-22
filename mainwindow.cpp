@@ -64,17 +64,43 @@ void MainWindow::createDockWindows() {
     createBottomDockWindow();
 }
 
-void MainWindow::createLeftDockWindow() {
-    // Create train layout and add radio buttons
-    QRadioButton* orange = new QRadioButton("Green Line");
-    QRadioButton* blue = new QRadioButton("Blue Line");
-    QRadioButton* red = new QRadioButton("Red Line");
 
-    orange->setChecked(true); // Check default option
+void MainWindow::createLeftDockWindow() {
+    QPixmap LineImage;
+    // Create train layout and add radio buttons
+    QRadioButton* green = new QRadioButton("");
+    LineImage.load(":/images/images/greenLine.png") ;
+    //LineImage.fill(Qt::green);
+    QIcon newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
+    green->setIcon(newImage);
+    green->setIconSize(QSize(120, 30));
+    green->setBaseSize(120, 40);
+    // label->setPixmap(newImage);
+    //  label.setMask(newImage.mask());
+    // //label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
+    // label->show();
+
+    QRadioButton* blue = new QRadioButton("");
+    LineImage.load(":/images/images/blueLine.png") ;
+    //LineImage.fill(Qt::blue);
+    newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
+    blue->setIcon(newImage);
+    blue->setIconSize(QSize(120, 30));
+    blue->setBaseSize(120, 40);
+
+
+    QRadioButton* red = new QRadioButton("");
+    LineImage.load(":/images/images/redLine.png") ;
+    newImage = QIcon(LineImage.scaled(120, 30, Qt::IgnoreAspectRatio));
+    red->setIcon(newImage);
+    red->setIconSize(QSize(120, 30));
+    red->setBaseSize(120, 40);
+
+    green->setChecked(true); // Check default option
 
     // Add train buttons to button group
     QButtonGroup* trainButtonGroup = new QButtonGroup();
-    trainButtonGroup->addButton(orange, 0);
+    trainButtonGroup->addButton(green, 0);
     trainButtonGroup->addButton(blue, 1);
     trainButtonGroup->addButton(red, 2);
     connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
@@ -82,7 +108,7 @@ void MainWindow::createLeftDockWindow() {
     // Put train buttons in a vertical layout
     QVBoxLayout* trainLayout = new QVBoxLayout();
     trainLayout->setAlignment(Qt::AlignTop);
-    trainLayout->addWidget(orange);
+    trainLayout->addWidget(green);
     trainLayout->addWidget(blue);
     trainLayout->addWidget(red);
 

@@ -6,5 +6,8 @@
         <file>images/Triangle.png</file>
         <file>images/blueTrain.png</file>
         <file>images/redTrain.png</file>
+        <file>images/redLine.png</file>
+        <file>images/blueLine.png</file>
+        <file>images/greenLine.png</file>
     </qresource>
 </RCC>

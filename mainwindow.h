@@ -34,6 +34,7 @@ private:
     QLabel* numberOfPassengers;
     QPixmap image;
     QPixmap shapeImage;
+
     QHBoxLayout* tipLayout = new QHBoxLayout();
     int tipNum = 1;
 
