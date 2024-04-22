@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Title and resize the window
     setWindowTitle("Train");
-    resize(875, 700);
+    resize(1025, 700);
 
     // Connect updating detail dock widgets
     connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainData);
@@ -116,15 +116,33 @@ void MainWindow::createLeftDockWindow() {
     trainWidget->setLayout(trainLayout);
 
     // Create station layout and add radio buttons ---------------------------------
-    QRadioButton* square = new QRadioButton("Square station");
-    QRadioButton* circle = new QRadioButton("Circle station");
+    QRadioButton* square = new QRadioButton(" Stations");
+    LineImage.load(":/images/images/Square.png") ;
+    newImage = QIcon(LineImage.scaled(30, 30, Qt::IgnoreAspectRatio));
+    square->setIcon(newImage);
+    square->setIconSize(QSize(30, 30));
+    square->setBaseSize(30, 30);
 
-    square->setChecked(true); // Check default option
+    QRadioButton* circle = new QRadioButton(" Stations");
+    LineImage.load(":/images/images/Circle.png") ;
+    newImage = QIcon(LineImage.scaled(30, 30, Qt::IgnoreAspectRatio));
+    circle->setIcon(newImage);
+    circle->setIconSize(QSize(30, 30));
+    circle->setChecked(true); // Check default option
+
+
+    QRadioButton* triangle = new QRadioButton(" Stations");
+    LineImage.load(":/images/images/Triangle.png") ;
+    newImage = QIcon(LineImage.scaled(30, 30, Qt::IgnoreAspectRatio));
+    triangle->setIcon(newImage);
+    triangle->setIconSize(QSize(30, 30));
+
 
     // Add station buttons to button group
     QButtonGroup* stationButtonGroup = new QButtonGroup();
     stationButtonGroup->addButton(square, 0);
     stationButtonGroup->addButton(circle, 1);
+    stationButtonGroup->addButton(triangle, 2);
     connect(stationButtonGroup, &QButtonGroup::idClicked, map, &MapModel::stationButtonClicked);
 
     // Put station buttons in a vertical layout
@@ -132,6 +150,8 @@ void MainWindow::createLeftDockWindow() {
     stationLayout->setAlignment(Qt::AlignTop);
     stationLayout->addWidget(square);
     stationLayout->addWidget(circle);
+    stationLayout->addWidget(triangle);
+
 
     QWidget* stationWidget = new QWidget();
     stationWidget->setLayout(stationLayout);
@@ -219,9 +239,39 @@ void MainWindow::createBottomDockWindow() {
     QVBoxLayout* dataLayout = new QVBoxLayout();
     //tipLayout->addItem(dataLayout);
     dataLayout->addWidget(progressBar);
-    dataLayout->addWidget(throughput);
-    dataLayout->addWidget(waitTime);
-    dataLayout->addWidget(numberOfPassengers);
+
+    QHBoxLayout* throughputLayout = new QHBoxLayout();
+    throughputLayout->setAlignment(Qt::AlignLeft);
+
+
+
+    QLabel* throughputImg = new QLabel();
+    throughputImg->setPixmap(QPixmap(":/images/images/throughput.png").scaled(30,30));
+    throughputLayout->addWidget(throughputImg);
+    throughputLayout->addWidget(throughput);
+
+
+
+    QHBoxLayout* waitTimeLayout = new QHBoxLayout();
+    waitTimeLayout->setAlignment(Qt::AlignLeft);
+
+    QLabel* waitTimeImg = new QLabel();
+    waitTimeImg->setPixmap(QPixmap(":/images/images/WaitTime.png").scaled(30, 30));
+    waitTimeLayout->addWidget(waitTimeImg);
+    waitTimeLayout->addWidget(waitTime);
+
+    QHBoxLayout* passengersWaitingLayout = new QHBoxLayout();
+    passengersWaitingLayout->setAlignment(Qt::AlignLeft);
+
+    QLabel* passengerWaiting = new QLabel();
+    passengerWaiting->setPixmap(QPixmap(":/images/images/waitingPassengers.png").scaled(30, 30));
+    passengersWaitingLayout->addWidget(passengerWaiting);
+    passengersWaitingLayout->addWidget(numberOfPassengers);
+
+
+    dataLayout->addLayout(throughputLayout);
+    dataLayout->addLayout(waitTimeLayout);
+    dataLayout->addLayout(passengersWaitingLayout);
 
     // Put the data into a widget
     QWidget* dataWidget = new QWidget();
@@ -317,9 +367,11 @@ void MainWindow::updateData(double newThroughput, double newWaitTime, double num
 
     throughput->setText(("Throughput: " + throughputStr ));
     waitTime->setText(("WaitTime: " + waitTimeStr + " Seconds"));
-    numberOfPassengers->setText(("Numer Of Passengers Waiting: " + numOfPassengersStr));
+    //waitTime->setPixmap(QPixmap(":/images/images/WaitTime.png").scaled(30,30));
+    numberOfPassengers->setText(("Passengers Waiting: " + numOfPassengersStr));
     throughput->update();
     waitTime->update();
+
     numberOfPassengers->update();
 }
 

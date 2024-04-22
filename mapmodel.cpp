@@ -86,6 +86,10 @@ void MapModel::stationButtonClicked(int id) {
     case 1:
         emit updateStationDetails("Circle Station Details");
         break;
+    case 2:
+        emit updateStationDetails("Triangle Station Details");
+        break;
+
     }
 }
 

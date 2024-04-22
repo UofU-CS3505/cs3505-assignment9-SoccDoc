@@ -9,5 +9,8 @@
         <file>images/redLine.png</file>
         <file>images/blueLine.png</file>
         <file>images/greenLine.png</file>
+        <file>images/WaitTime.png</file>
+        <file>images/throughput.png</file>
+        <file>images/waitingPassengers.png</file>
     </qresource>
 </RCC>
