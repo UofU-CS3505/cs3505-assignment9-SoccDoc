@@ -10,6 +10,28 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), map(new MapModel(this))
 {
+    // Make the pop up for introducing the train education app.
+    QMessageBox* startPrompt = new QMessageBox(this);
+    startPrompt->setWindowTitle("Train Education App");
+
+    // Set the image to appear along with the text.
+    QPixmap startIcon;
+    startIcon.load(":/images/images/RealTrainImage.png");
+    startIcon = startIcon.scaled(400, 200, Qt::KeepAspectRatio);
+    startPrompt->setIconPixmap(startIcon);
+
+    // Define the message box text details
+    startPrompt->setText("This Train Education App is to help people get a basic sense on how train systems need to function"
+                         " and learn a bit more about trains.\n\n This app will have users create tracks between stations and try to "
+                         "maintain a passenger flow between stations.\n More stations will be added as the user is able to get passengers "
+                         "to their destinations.");
+    startPrompt->setStyleSheet("QLabel{min-width: 500px; min-height: 300px;}");
+    startPrompt->setStandardButtons(QMessageBox::Ok);
+
+    // Execute the popup for the start window.
+    startPrompt->exec();
+
+
     // Set our canvas as the central widget
     setCentralWidget(map->getDrawer());
 
@@ -24,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     resize(1150, 700);
 
     // Connect updating detail dock widgets
-    connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainData);
     connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationData);
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
@@ -320,10 +341,6 @@ void MainWindow::createTipPopups() {
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
-}
-
-void MainWindow::updateTrainData(QString newData) {
-    trainDetailsDock->setWindowTitle(newData);
 }
 
 void MainWindow::updateStationData(QString newData) {

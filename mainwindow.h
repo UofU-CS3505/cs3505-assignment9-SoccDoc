@@ -62,6 +62,9 @@ private:
      */
     QAction *exitAct;
 
+    // Start Message
+    QMessageBox* startWindow;
+
     // Tips
     QQueue<QMessageBox*> tipMessageBoxQueue;
     QMessageBox* firstTip;
@@ -72,7 +75,6 @@ private:
 
 public slots:
     void updateData(double, double, double);
-    void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();
     void updateProgressBar(int);
@@ -82,6 +84,7 @@ public slots:
     void enableTrackButtons();
 
 signals:
+    void startWindowSignal();
     void firstTipSignal();
     void secondTipSignal();
     void thirdTipSignal();

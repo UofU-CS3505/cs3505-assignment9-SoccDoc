@@ -120,11 +120,6 @@ signals:
     void updateData(double, double, double);
 
     /**
-     * @brief Updates the details for the given train
-     */
-    void updateTrainDetails(QString);
-
-    /**
      * @brief Updates the details for the given station
      */
     void updateStationDetails(QString);
