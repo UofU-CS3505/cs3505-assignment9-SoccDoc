@@ -32,6 +32,7 @@ private:
     QRadioButton* greenButton;
     QRadioButton* blueButton;
     QRadioButton* redButton;
+    QPushButton* RedrawTrack;
 
     //data variables to be updated.
     QLabel* throughput;
@@ -75,7 +76,6 @@ private:
 
 public slots:
     void updateData(double, double, double);
-    void updateStationData(QString);
     void showTip();
     void updateProgressBar(int);
     void fillProgressBar();

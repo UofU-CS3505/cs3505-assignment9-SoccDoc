@@ -87,11 +87,6 @@ public slots:
     void trainButtonClicked(int);
 
     /**
-     * @brief Detects which station radio button was clicked and updates station details
-     */
-    void stationButtonClicked(int);
-
-    /**
      * @brief Displays a blast of confetti on the screen
      */
     void confetti();
@@ -120,11 +115,6 @@ signals:
     void updateData(double, double, double);
 
     /**
-     * @brief Updates the details for the given station
-     */
-    void updateStationDetails(QString);
-
-    /**
      * @brief Displays a new tip for the user
      */
     void showNewTip();
@@ -148,6 +138,7 @@ signals:
     void redraw(Station* station);
 
     void enableTrackButtonsSignal();
+    void changeRedrawTrackText(QString string);
 };
 
 #endif // MAPMODEL_H

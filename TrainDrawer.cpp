@@ -45,15 +45,6 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     }
 }
 
-// void TrainDrawer::resizeEvent(QResizeEvent *event)
-// {
-//     if (width() > image.width() || height() > image.height()) {
-//         resizeImage(&image, QSize(width(), height()));
-//         update();
-//     }
-//     QWidget::resizeEvent(event);
-// }
-
 void TrainDrawer::resizeImage(QImage *image, const QSize &newSize, int colorValue)
 {
     if (image->size() == newSize)

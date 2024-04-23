@@ -67,33 +67,20 @@ void MapModel::trainButtonClicked(int id) {
     switch(id) {
     case 0:
         currentLine = Qt::green;
+        emit changeRedrawTrackText("Redraw Green Track");
         break;
     case 1:
         currentLine = Qt::blue;
+        emit changeRedrawTrackText("Redraw Blue Track");
         break;
     case 2:
         currentLine = Qt::red;
+        emit changeRedrawTrackText("Redraw Red Track");
         break;
     }
 
     // Set the color of the drawer based on the radio button selected
     drawer->setPenColor(currentLine);
-}
-
-void MapModel::stationButtonClicked(int id) {
-    // Update details for selected radio button
-    switch(id) {
-    case 0:
-        emit updateStationDetails("Square Station Details");
-        break;
-    case 1:
-        emit updateStationDetails("Circle Station Details");
-        break;
-    case 2:
-        emit updateStationDetails("Triangle Station Details");
-        break;
-
-    }
 }
 
 TrainDrawer* MapModel::getDrawer(){

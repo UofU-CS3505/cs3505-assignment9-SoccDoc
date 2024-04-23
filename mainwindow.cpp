@@ -46,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     resize(1150, 700);
 
     // Connect updating detail dock widgets
-    connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationData);
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
@@ -163,8 +162,9 @@ void MainWindow::createLeftDockWindow() {
     trainButtonGroup->addButton(redButton, 2);
     connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
 
-    QPushButton* RedrawTrack = new QPushButton("Redraw Track");
+    RedrawTrack = new QPushButton("Redraw Green Track");
     connect(RedrawTrack, &QPushButton::clicked, this, &MainWindow::redrawTracks);
+    connect(map, &MapModel::changeRedrawTrackText, RedrawTrack, &QPushButton::setText);
 
     // Put train buttons in a vertical layout
     QVBoxLayout* trainLayout = new QVBoxLayout();
@@ -341,10 +341,6 @@ void MainWindow::createTipPopups() {
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
-}
-
-void MainWindow::updateStationData(QString newData) {
-    stationDetailsDock->setWindowTitle(newData);
 }
 
 void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){
