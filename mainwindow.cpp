@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Title and resize the window
     setWindowTitle("Train");
-    resize(1025, 700);
+    resize(1150, 700);
 
     // Connect updating detail dock widgets
     connect(map, &MapModel::updateTrainDetails, this, &MainWindow::updateTrainData);
