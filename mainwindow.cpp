@@ -213,58 +213,6 @@ void MainWindow::createLeftDockWindow() {
 }
 
 void MainWindow::createRightDockWindow() {
-    // Create train details labels
-    QLabel* trainThroughput = new QLabel("throughput: ");
-    QLabel* trainStations = new QLabel("stations: ");
-
-    // Put train buttons in a vertical layout
-    QVBoxLayout* trainLayout = new QVBoxLayout();
-    trainLayout->setAlignment(Qt::AlignTop);
-    trainLayout->addWidget(trainThroughput);
-    trainLayout->addWidget(trainStations);
-
-    QWidget* trainWidget = new QWidget();
-    trainWidget->setLayout(trainLayout);
-
-    // Create station details labels --------------------------------
-    QLabel* stationThroughput = new QLabel("throughput: ");
-    QLabel* stationTrains = new QLabel("trains: ");
-
-    // Put station buttons in a vertical layout
-    QVBoxLayout* stationLayout = new QVBoxLayout();
-    stationLayout->setAlignment(Qt::AlignTop);
-    stationLayout->addWidget(stationThroughput);
-    stationLayout->addWidget(stationTrains);
-
-    QWidget* stationWidget = new QWidget();
-    stationWidget->setLayout(stationLayout);
-
-    // Set the layout to one multi-widget and the multi widget to frameScrolling and dock it on the window
-    trainDetailsDock = new QDockWidget("Green Train Details", this);     // Default train
-    stationDetailsDock = new QDockWidget("Square Station Details", this); // Default station
-
-    trainDetailsDock->setWidget(trainWidget);
-    stationDetailsDock->setWidget(stationWidget);
-
-    // Dock the frame buttons on the left side
-    this->addDockWidget(Qt::RightDockWidgetArea, trainDetailsDock);
-    this->addDockWidget(Qt::RightDockWidgetArea, stationDetailsDock);
-
-    trainDetailsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    stationDetailsDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-}
-
-void MainWindow::createBottomDockWindow() {
-    // Setup a tip popup
-    QPushButton* tip = new QPushButton("Fill progress bar");
-    connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
-
-    // Put the tips into a layout
-    tipLayout->addWidget(tip);
-
-    // Put the tips into a widget
-    QWidget* tipWidget = new QWidget();
-    tipWidget->setLayout(tipLayout);
 
     // Setup progress bar
     progressBar = new QProgressBar();
@@ -278,20 +226,14 @@ void MainWindow::createBottomDockWindow() {
 
     // Put the data into a layout
     QVBoxLayout* dataLayout = new QVBoxLayout();
-    //tipLayout->addItem(dataLayout);
-    dataLayout->addWidget(progressBar);
-
     QHBoxLayout* throughputLayout = new QHBoxLayout();
     throughputLayout->setAlignment(Qt::AlignLeft);
-
 
 
     QLabel* throughputImg = new QLabel();
     throughputImg->setPixmap(QPixmap(":/images/images/throughput.png").scaled(30,30));
     throughputLayout->addWidget(throughputImg);
     throughputLayout->addWidget(throughput);
-
-
 
     QHBoxLayout* waitTimeLayout = new QHBoxLayout();
     waitTimeLayout->setAlignment(Qt::AlignLeft);
@@ -318,17 +260,40 @@ void MainWindow::createBottomDockWindow() {
     QWidget* dataWidget = new QWidget();
     dataWidget->setLayout(dataLayout);
 
-    // Add the data and tip widgets to the tab widget
-    QTabWidget* bottomTabWidget = new QTabWidget();
-    bottomTabWidget->addTab(dataWidget, "Data");
-    bottomTabWidget->addTab(tipWidget, "Tips");
 
     // Dock the tab widget
-    QDockWidget* bottomDock = new QDockWidget("Library", this);
-    bottomDock->setWidget(bottomTabWidget);
+    QDockWidget* rightDock = new QDockWidget("Library", this);
+    rightDock->setWidget(dataWidget);
 
     // Dock the frame buttons on the left side and set alignment
     dataLayout->setAlignment(Qt::AlignTop);
+    this->addDockWidget(Qt::RightDockWidgetArea, rightDock);
+    rightDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+}
+
+void MainWindow::createBottomDockWindow() {
+    // Setup a tip popup
+    QPushButton* tip = new QPushButton("Fill progress bar");
+    connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
+
+    // Put the tips into a layout
+    tipLayout->addWidget(tip);
+
+    // Put the tips into a widget
+    QWidget* tipWidget = new QWidget();
+    tipWidget->setLayout(tipLayout);
+
+    //tipLayout->addItem(dataLayout);
+    tipLayout->addWidget(progressBar);
+
+
+
+    // Dock the tab widget
+    QDockWidget* bottomDock = new QDockWidget("Library", this);
+    bottomDock->setWidget(tipWidget);
+
+    // Dock the frame buttons on the left side and set alignment
     tipLayout->setAlignment(Qt::AlignLeft);
     this->addDockWidget(Qt::BottomDockWidgetArea, bottomDock);
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
