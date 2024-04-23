@@ -2,9 +2,14 @@
 #include <QWidget>
 #include <QPropertyAnimation>
 
-Train::Train(QObject *parent, QPropertyAnimation* anim, QColor color) :
-    QObject(parent), lineColor(color), animation(anim)
+Train::Train(QObject *parent, QLabel* trainLabel, QPixmap image, QColor color) :
+    QObject(parent), lineColor(color),  trainImage(trainLabel)
 {
+    // Set up animation object
+    trainImage->setPixmap(image);
+    trainImage->show();
+    animation = new QPropertyAnimation(trainImage, "pos");
+
     // Setup animation connection
     connect(animation, &QPropertyAnimation::finished, this, &Train::endTravel);
 }
@@ -79,6 +84,11 @@ void Train::endTravel() {
     // Set the next station and leave station
     nextStation = connectedStations.at(nextStationIndex);
     startTravel();
+}
+
+void Train::stopTravel() {
+    animation->stop();
+    delete trainImage;
 }
 
 double Train::getDistance(QPoint p1, QPoint p2) {

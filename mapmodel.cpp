@@ -340,23 +340,24 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
         image.load(":/images/images/redTrain.png");
     else if (currentLine == Qt::green)
         image.load(":/images/images/greenTrain.png");
-
     image = image.scaled(50, 25, Qt::KeepAspectRatio);
 
-    QLabel* trainImage;
-    trainImage = new QLabel(drawer);
-    trainImage->setPixmap(image);
-    trainImage->show();
-    QPropertyAnimation* animation = new QPropertyAnimation(trainImage, "pos");
-
     // Put everything into a train
-    Train* train = new Train(this, animation, currentLine);
+    Train* train = new Train(this, new QLabel(drawer), image, currentLine);
     train->changeStations(trainLine);
     trains.append(train);
     numberOfUnusedTrains -= 1;
 }
 
 void MapModel::redrawTrack(){
+    // Remove the train from the current track
+    trains.removeIf([this](Train* train) {
+        if (train->getLineColor() == currentLine) { // Check if train is right color
+            train->stopTravel();                    // This train is the right color, stop its animation
+            return true;                            // then mark for removal
+        } return false;                             // Train is not right color, don't remove
+    });
+
     drawer->redrawTrack();
 }
 
