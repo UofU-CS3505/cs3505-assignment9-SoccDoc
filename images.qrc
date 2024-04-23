@@ -12,5 +12,6 @@
         <file>images/WaitTime.png</file>
         <file>images/throughput.png</file>
         <file>images/waitingPassengers.png</file>
+        <file>images/RealTrainImage.png</file>
     </qresource>
 </RCC>
