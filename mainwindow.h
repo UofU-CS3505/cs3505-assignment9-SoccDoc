@@ -72,7 +72,6 @@ private:
 
 public slots:
     void updateData(double, double, double);
-    void updateTrainData(QString);
     void updateStationData(QString);
     void showTip();
     void updateProgressBar(int);

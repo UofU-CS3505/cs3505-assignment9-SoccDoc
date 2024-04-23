@@ -66,15 +66,12 @@ void MapModel::trainButtonClicked(int id) {
     // Update details for selected radio button
     switch(id) {
     case 0:
-        emit updateTrainDetails("Green Train Details");
         currentLine = Qt::green;
         break;
     case 1:
-        emit updateTrainDetails("Blue Train Details");
         currentLine = Qt::blue;
         break;
     case 2:
-        emit updateTrainDetails("Red Train Details");
         currentLine = Qt::red;
         break;
     }
