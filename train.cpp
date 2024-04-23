@@ -1,4 +1,5 @@
 #include "train.h"
+#include <QTimer>
 #include <QWidget>
 #include <QPropertyAnimation>
 
@@ -61,7 +62,11 @@ void Train::startTravel() {
     animation->setDuration(traveltime);
     animation->setStartValue(pastStation->getLocation());
     animation->setEndValue(nextStation->getLocation());
+
+    // Setup animation delay
     animation->start();
+    animation->pause();
+    QTimer::singleShot(STATION_DELAY, animation, &QPropertyAnimation::resume);
 }
 
 void Train::endTravel() {
