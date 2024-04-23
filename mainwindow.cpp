@@ -277,16 +277,16 @@ void MainWindow::createBottomDockWindow() {
     QPushButton* tip = new QPushButton("Fill progress bar");
     connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
 
+    QVBoxLayout* tipOrganizer = new QVBoxLayout();
     // Put the tips into a layout
     tipLayout->addWidget(tip);
 
     // Put the tips into a widget
     QWidget* tipWidget = new QWidget();
-    tipWidget->setLayout(tipLayout);
+    tipOrganizer->addWidget(progressBar);
+    tipOrganizer->addLayout(tipLayout);
 
-    //tipLayout->addItem(dataLayout);
-    tipLayout->addWidget(progressBar);
-
+    tipWidget->setLayout(tipOrganizer);
 
 
     // Dock the tab widget
