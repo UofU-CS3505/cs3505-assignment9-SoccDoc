@@ -80,22 +80,6 @@ void MapModel::trainButtonClicked(int id) {
     drawer->setPenColor(currentLine);
 }
 
-void MapModel::stationButtonClicked(int id) {
-    // Update details for selected radio button
-    switch(id) {
-    case 0:
-        emit updateStationDetails("Square Station Details");
-        break;
-    case 1:
-        emit updateStationDetails("Circle Station Details");
-        break;
-    case 2:
-        emit updateStationDetails("Triangle Station Details");
-        break;
-
-    }
-}
-
 TrainDrawer* MapModel::getDrawer(){
     return drawer;
 }

@@ -46,7 +46,6 @@ MainWindow::MainWindow(QWidget *parent)
     resize(1150, 700);
 
     // Connect updating detail dock widgets
-    connect(map, &MapModel::updateStationDetails, this, &MainWindow::updateStationData);
     connect(map, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
     connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
@@ -341,10 +340,6 @@ void MainWindow::createTipPopups() {
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
-}
-
-void MainWindow::updateStationData(QString newData) {
-    stationDetailsDock->setWindowTitle(newData);
 }
 
 void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){
