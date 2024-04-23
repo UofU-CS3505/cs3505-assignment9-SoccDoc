@@ -107,7 +107,6 @@ double Station::getThroughput(){
         return throughput;
     }
     throughput = (numberOfPassengerOffloaded/(waitTime/1000));
-    qDebug()<< throughput << "\n";
     return throughput;
 
 }
