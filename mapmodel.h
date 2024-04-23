@@ -52,8 +52,6 @@ private:
     const int STATION_EDGE_BUFFER = 40; // Minimum distance between stations and the edge of the canvas
     QColor currentLine; // The color of the current train line
 
-    QPixmap image; // The canvas for drawing on
-
     /**
      * @brief Adds a train to ride the given list of stations
      * @param trainStations the stations for the train to ride between

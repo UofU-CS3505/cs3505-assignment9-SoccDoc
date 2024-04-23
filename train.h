@@ -15,7 +15,7 @@ class Train : public QObject
     Q_OBJECT
 
 public:
-    Train(QObject *parent = nullptr, QPropertyAnimation* anim = nullptr, QColor line = QColor(0, 0, 0));
+    Train(QObject *parent = nullptr, QLabel* trainLabel = nullptr, QPixmap image = QPixmap(), QColor line = QColor(0, 0, 0));
 
     /**
      * @brief Replaces the current stations with the given stations.
@@ -27,6 +27,8 @@ public:
      * @brief starts the train moving towards its next station
      */
     void startTravel();
+
+    void stopTravel();
 
     /**
      * @brief Returns a list of all of this train's connected stations
@@ -66,8 +68,9 @@ private:
     bool trainIsGoingBackwards; // Whether the train is going backwards or not
 
     QPropertyAnimation* animation; // animates the train moving between stations
+    QLabel* trainImage; // The image for the train
     const double SPEED = 0.15; // speed of the train
-    const int CAPACITY = 10; // Max number of passengers the train can hold
+    const int CAPACITY = 6; // Max number of passengers the train can hold
 
     /**
      * @brief gets the distance between two given points
