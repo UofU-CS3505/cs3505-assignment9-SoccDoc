@@ -74,6 +74,7 @@ void Station::updateTrainPassengers(Train* trainToLoad){
             if (station->getStationType() == passengerInt) {
                 // It does, load all passengers of that type onto the train
                 numberOfPassengerOffloaded += loadPassengers(trainToLoad, (Passenger)passengerInt);
+
                 break;
             }
         }
@@ -102,11 +103,13 @@ QPoint Station::getLocation() {
 }
 
 double Station::getThroughput(){
-    if (!waitTime || waitTime == 0){
-        return 0;
+    if (!waitTime || waitTime <= 0){
+        return throughput;
     }
-    throughput = (numberOfPassengerOffloaded/(waitTime)/1000);
+    throughput = (numberOfPassengerOffloaded/(waitTime/1000));
+    qDebug()<< throughput << "\n";
     return throughput;
+
 }
 
 double Station::getWaitTime(){

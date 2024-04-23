@@ -84,6 +84,7 @@ public slots:
 signals:
     void checkForStations(QList<QPoint>);
     void enableTrackButtonSignal();
+    void updateSelectStation(QPoint point);
 };
 
 

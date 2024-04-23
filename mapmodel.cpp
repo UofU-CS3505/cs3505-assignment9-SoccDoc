@@ -13,6 +13,7 @@ MapModel::MapModel(QWidget *parent) :
     connect(&updateTimer, &QTimer::timeout, this, &MapModel::updateFrame);
     connect(drawer, &TrainDrawer::checkForStations, this, &MapModel::drawStationsOnLine);
     connect(drawer, &TrainDrawer::enableTrackButtonSignal, this, &MapModel::enableTrackButtonsSignal);
+    connect(drawer, &TrainDrawer::updateSelectStation, this, &MapModel::selectStation);
     updateTimer.start();
 
     // Spawn default stations
@@ -302,6 +303,7 @@ Station* MapModel::getStation(QPoint point) {
 
         // Point is on this station
         selectedStation = station;
+
         return station;
     }
 
@@ -359,6 +361,10 @@ void MapModel::redrawTrack(){
     });
 
     drawer->redrawTrack();
+}
+
+void  MapModel::selectStation(QPoint point){
+    getStation(point);
 }
 
 

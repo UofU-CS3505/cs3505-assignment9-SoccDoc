@@ -74,6 +74,8 @@ private:
     bool stationLocationIsGood(QPoint newStationLocation);
 
 public slots:
+
+    void selectStation(QPoint point);
     /**
      * @brief Updates the passengers in stations
      */

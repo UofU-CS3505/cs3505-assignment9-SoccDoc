@@ -40,7 +40,7 @@ private:
     QPixmap image;
     QPixmap shapeImage;
 
-    QHBoxLayout* tipLayout = new QHBoxLayout();
+    QVBoxLayout* tipLayout = new QVBoxLayout();
     int tipNum = 1;
 
     void createLeftDockWindow();

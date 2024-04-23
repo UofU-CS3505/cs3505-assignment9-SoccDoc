@@ -78,7 +78,9 @@ void TrainDrawer::mousePressEvent(QMouseEvent *event)
         }
         lastPoint = event->position().toPoint();
         scribbling = true;
+
     }
+     emit updateSelectStation(event->position().toPoint());
 }
 
 void TrainDrawer::mouseMoveEvent(QMouseEvent *event)
