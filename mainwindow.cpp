@@ -10,6 +10,28 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), map(new MapModel(this))
 {
+    // Make the pop up for introducing the train education app.
+    QMessageBox* startPrompt = new QMessageBox(this);
+    startPrompt->setWindowTitle("Train Education App");
+
+    // Set the image to appear along with the text.
+    QPixmap startIcon;
+    startIcon.load(":/images/images/RealTrainImage.png");
+    startIcon = startIcon.scaled(400, 200, Qt::KeepAspectRatio);
+    startPrompt->setIconPixmap(startIcon);
+
+    // Define the message box text details
+    startPrompt->setText("This Train Education App is to help people get a basic sense on how train systems need to function"
+                         " and learn a bit more about trains.\n\n This app will have users create tracks between stations and try to "
+                         "maintain a passenger flow between stations.\n More stations will be added as the user is able to get passengers "
+                         "to their destinations.");
+    startPrompt->setStyleSheet("QLabel{min-width: 500px; min-height: 300px;}");
+    startPrompt->setStandardButtons(QMessageBox::Ok);
+
+    // Execute the popup for the start window.
+    startPrompt->exec();
+
+
     // Set our canvas as the central widget
     setCentralWidget(map->getDrawer());
 
@@ -266,7 +288,7 @@ void MainWindow::createTipPopups() {
     // Define the message box details
     firstTip->setWindowTitle("Drawing Tracks");
     firstTip->setText("Select a train then click the 'Redraw Track' "
-                      "button to draw a new\n track for the selected train.");
+                      "button to draw a new track for the selected train.");
     firstTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     firstTip->setStandardButtons(QMessageBox::Ok);
 
@@ -280,8 +302,8 @@ void MainWindow::createTipPopups() {
     secondTip = new QMessageBox(this);
     secondTip->setWindowTitle("Passenger Needs");
     secondTip->setText("Each passenger has a different request and "
-                       "needs to go to\n a specific station. Be sure each station "
-                       "types can get to every\n type of station!");
+                       "needs to go to a specific station. Be sure each station "
+                       "types can get to every\n type of station! This will increase the efficiency of each line!");
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
@@ -290,10 +312,9 @@ void MainWindow::createTipPopups() {
     // Setup third tip
     thirdTip = new QMessageBox(this);
     thirdTip->setWindowTitle("Tracking Data");
-    thirdTip->setText("Each train and station tracks data that can be seen "
-                      "when\n that train is selected. Additionally, there is "
-                      "average data\n for all trains and stations in the 'Data' "
-                      "tab at the bottom.");
+    thirdTip->setText("Each station tracks data that can be seen "
+                      "when that train is selected. Try optimising your Train Lines "
+                      "to minimise these numbers!");
     thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     thirdTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
@@ -301,8 +322,10 @@ void MainWindow::createTipPopups() {
 
     // Setup fourth tip
     fourthTip = new QMessageBox(this);
-    fourthTip->setWindowTitle("Consider This! (4)");
-    fourthTip->setText("Part 4 Info:");
+    fourthTip->setWindowTitle("As Stations get Added");
+    fourthTip->setText("As more stations get added, it is"
+                       " important to maintain the efficiency of each line, "
+                       "try redrawing lines to allow more people to get to their destiniation.");
     fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fourthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
@@ -310,8 +333,10 @@ void MainWindow::createTipPopups() {
 
     // Setup fifth tip
     fifthTip = new QMessageBox(this);
-    fifthTip->setWindowTitle("Consider This! (5)");
-    fifthTip->setText("Part 5 Info:");
+    fifthTip->setWindowTitle("Max Capacity");
+    fifthTip->setText("Just like in real life, these trains can only hold a certain "
+                      "amount of people. be sure passengers "
+                      "dont get too backed up! nobody likes an over flowing train!");
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
