@@ -42,8 +42,12 @@ void MapModel::updateFrame() {
     {
         // If the station has added a passenger, update how many are drawn
         if (station->update()){
-            int index = station->returnWaitingSize() - 1;
-            emit drawStationPassenger(station, station->getPassengers().at(index));
+            emit drawStationPassenger(station);
+        }
+
+        if (station->redraw == true){
+            station->redraw = false;
+            emit redraw(station);
         }
     }
 

@@ -6,6 +6,7 @@
 #include "passenger.h"
 #include <QElapsedTimer>
 #include <QtGlobal>
+#include <QLabel>
 class Train;
 
 /**
@@ -47,6 +48,8 @@ public:
 
     int returnWaitingSize();
     QList<Passenger> getPassengers();
+    QList<QLabel*> passengerIcons;
+    bool redraw = false;
 
 private:
     QList<Passenger> waitingPassengers;

@@ -88,7 +88,7 @@ int Station::loadPassengers(Train* trainToLoad, Passenger type) {
         // Check if we succeed to load a passenger
         if (!trainToLoad->boardPassenger(type))
             return i; // we failed, stop loading
-
+    redraw = true;
     // All passengers successfully loaded
     return passengersToBoard;
 }

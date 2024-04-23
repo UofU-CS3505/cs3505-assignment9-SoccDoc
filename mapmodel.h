@@ -149,7 +149,8 @@ signals:
      * @param station The station to draw
      * @param passengerType The type of the station to draw
      */
-    void drawStationPassenger(Station* station, Passenger passengerType);
+    void drawStationPassenger(Station* station);
+    void redraw(Station* station);
 
     void enableTrackButtonsSignal();
 };

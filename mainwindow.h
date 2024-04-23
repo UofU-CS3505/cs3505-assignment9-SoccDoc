@@ -49,7 +49,8 @@ private:
     void createDockWindows();
     void createTipPopups();
     void deleteTrain(QLabel* image);
-    void drawStationPassenger(Station* station, Passenger passengerType);
+    void drawStationPassenger(Station* station);
+    void redrawStation(Station* station);
 
     QProgressBar* progressBar;
     /**

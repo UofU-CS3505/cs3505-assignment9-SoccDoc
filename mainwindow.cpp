@@ -34,29 +34,65 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
     connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
     connect(map, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
+    connect(map, &MapModel::redraw, this, &MainWindow::redrawStation);
 
 }
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::drawStationPassenger(Station* station, Passenger passenger){
-    QLabel* label = new QLabel(map->getDrawer());
+void MainWindow::redrawStation(Station* station){
+    foreach (QLabel* ql, station->passengerIcons){
+        delete ql;
+    }
+    station->passengerIcons.clear();
+
+    foreach (Passenger p, station->getPassengers()){
+        QPixmap newImage;
+        QLabel* label = new QLabel(map->getDrawer()); // Create a new QLabel object for each passenger
+
+        if (p == Circle){
+            shapeImage.load(":/images/images/Circle.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        else if (p == Square){
+            shapeImage.load(":/images/images/Square.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        else if (p == Triangle){
+            shapeImage.load(":/images/images/Triangle.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+
+        label->setPixmap(newImage);
+        label->setGeometry(station->getLocation().x() + (station->passengerIcons.size() * 10) - 30, station->getLocation().y() - 10, 10, 5);
+        label->show();
+        station->passengerIcons.append(label);
+    }
+}
+void MainWindow::drawStationPassenger(Station* station){
     QPixmap newImage;
-    if (passenger == Circle){
-        shapeImage.load(":/images/images/Circle.png") ;
-        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+    QLabel* label = new QLabel(map->getDrawer());
+
+    foreach (Passenger p, station->getPassengers()){
+        if (p == Circle){
+            shapeImage.load(":/images/images/Circle.png") ;
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        else if (p == Square){
+            shapeImage.load(":/images/images/Square.png") ;
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+
+        }
+        else if (p == Triangle){
+            shapeImage.load(":/images/images/Triangle.png") ;
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
     }
-    else if (passenger == Square){
-        shapeImage.load(":/images/images/Square.png") ;
-        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-    }
-    else if (passenger == Triangle){
-        shapeImage.load(":/images/images/Triangle.png") ;
-        newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-    }
+
     label->setPixmap(newImage);
     label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
     label->show();
+    station->passengerIcons.append(label);
 }
 
 void MainWindow::createDockWindows() {
