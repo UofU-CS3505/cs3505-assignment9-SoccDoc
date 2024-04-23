@@ -220,7 +220,7 @@ void MainWindow::createRightDockWindow() {
     progressBar->setValue(0);
 
     // Setup data
-    throughput = new QLabel("Throughput: ");
+    throughput = new QLabel("Passengers/Second: ");
     waitTime = new QLabel("WaitTime: ");
     numberOfPassengers = new QLabel("Number Of Passengers Waiting: ");
 
@@ -371,7 +371,7 @@ void MainWindow::updateData(double newThroughput, double newWaitTime, double num
     QString waitTimeStr = QString::number(newWaitTime, 'f', 3);
      QString numOfPassengersStr = QString::number(numOfPassengers, 'f', 1);
 
-    throughput->setText(("Throughput: " + throughputStr ));
+    throughput->setText(("Passengers/Second: " + throughputStr ));
     waitTime->setText(("WaitTime: " + waitTimeStr + " Seconds"));
     //waitTime->setPixmap(QPixmap(":/images/images/WaitTime.png").scaled(30,30));
     numberOfPassengers->setText(("Passengers Waiting: " + numOfPassengersStr));
