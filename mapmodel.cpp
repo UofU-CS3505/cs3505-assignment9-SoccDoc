@@ -67,12 +67,15 @@ void MapModel::trainButtonClicked(int id) {
     switch(id) {
     case 0:
         currentLine = Qt::green;
+        emit changeRedrawTrackText("Redraw Green Track");
         break;
     case 1:
         currentLine = Qt::blue;
+        emit changeRedrawTrackText("Redraw Blue Track");
         break;
     case 2:
         currentLine = Qt::red;
+        emit changeRedrawTrackText("Redraw Red Track");
         break;
     }
 

@@ -32,6 +32,7 @@ private:
     QRadioButton* greenButton;
     QRadioButton* blueButton;
     QRadioButton* redButton;
+    QPushButton* RedrawTrack;
 
     //data variables to be updated.
     QLabel* throughput;

@@ -148,6 +148,7 @@ signals:
     void redraw(Station* station);
 
     void enableTrackButtonsSignal();
+    void changeRedrawTrackText(QString string);
 };
 
 #endif // MAPMODEL_H

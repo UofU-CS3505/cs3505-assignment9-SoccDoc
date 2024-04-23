@@ -163,8 +163,9 @@ void MainWindow::createLeftDockWindow() {
     trainButtonGroup->addButton(redButton, 2);
     connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
 
-    QPushButton* RedrawTrack = new QPushButton("Redraw Track");
+    RedrawTrack = new QPushButton("Redraw Green Track");
     connect(RedrawTrack, &QPushButton::clicked, this, &MainWindow::redrawTracks);
+    connect(map, &MapModel::changeRedrawTrackText, RedrawTrack, &QPushButton::setText);
 
     // Put train buttons in a vertical layout
     QVBoxLayout* trainLayout = new QVBoxLayout();
