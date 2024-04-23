@@ -30,6 +30,7 @@ public:
 
     void stopTravel();
 
+    int getCurrentOccupancy();
     /**
      * @brief Returns a list of all of this train's connected stations
      * @return a list of all of this train's connected stations
@@ -56,6 +57,8 @@ public:
      */
     QColor getLineColor();
 
+    const int CAPACITY = 6; // Max number of passengers the train can hold
+
 private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
@@ -71,7 +74,7 @@ private:
     QLabel* trainImage; // The image for the train
     const double SPEED = 0.15; // speed of the train
     const int STATION_DELAY = 1000; // Ms delay for train when it reaches a station
-    const int CAPACITY = 6; // Max number of passengers the train can hold
+
 
     /**
      * @brief gets the distance between two given points
