@@ -15,7 +15,16 @@ class Train : public QObject
     Q_OBJECT
 
 public:
-    Train(QObject *parent = nullptr, QLabel* trainLabel = nullptr, QPixmap image = QPixmap(), QColor line = QColor(0, 0, 0));
+    /**
+     * @param parent this objects parent
+     * @param trainLabel the label to draw for this train
+     * @param image the image of this train
+     * @param line the color of this line
+     */
+    Train(QObject *parent = nullptr,
+          QLabel* trainLabel = nullptr,
+          QPixmap image = QPixmap(),
+          QColor line = QColor(0, 0, 0));
 
     /**
      * @brief Replaces the current stations with the given stations.

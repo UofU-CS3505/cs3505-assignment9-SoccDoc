@@ -31,6 +31,7 @@ MapModel::MapModel(QWidget *parent) :
     passengerGoals.enqueue(30);
     passengerGoals.enqueue(50);
     passengerGoals.enqueue(100);
+    passengerGoals.enqueue(150);
 
     // Set first goal
     numberOfPassengersDelivered = 0;
@@ -333,12 +334,15 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
 
 void MapModel::redrawTrack(){
     // Remove the train from the current track
-    trains.removeIf([this](Train* train) {
-        if (train->getLineColor() == currentColor) { // Check if train is right color
-            train->stopTravel();                    // This train is the right color, stop its animation
-            return true;                            // then mark for removal
-        } return false;                             // Train is not right color, don't remove
-    });
+    trains.removeIf(
+        [this](Train* train) {
+            if (train->getLineColor() == currentColor) { // Check if train is right color
+                train->stopTravel();                     // This train is the right color, stop its animation
+                delete train;                            // Delete the train object
+                return true;                             // then mark for removal
+            } return false;                              // Train is not right color, don't remove
+        }
+    );
 
     drawer->redrawTrack();
 }
