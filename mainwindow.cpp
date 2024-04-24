@@ -247,6 +247,8 @@ void MainWindow::addTrainButton() {
     case 2:
         LineImage.load(":/images/images/redLine.png");
         break;
+    default:
+        return;
     }
 
     // Set up rest of button
