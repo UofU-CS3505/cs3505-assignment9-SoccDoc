@@ -330,12 +330,17 @@ void MainWindow::createTipPopups() {
     firstTip = new QMessageBox(this);
 
     // Define the message box details
+    QPixmap firstTipIcon;
+    firstTipIcon.load(":/images/images/Tip1.png");
+    firstTipIcon = firstTipIcon.scaled(200, 300, Qt::KeepAspectRatio);
+
     firstTip->setWindowTitle("Passenger Needs");
     firstTip->setText("Each passenger has a different request and "
                       "needs to go \nto a specific station. Be sure your trains "
                       "can get to every\n type of station! This will increase the efficiency of your network!");
     firstTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     firstTip->setStandardButtons(QMessageBox::Ok);
+    firstTip->setIconPixmap(firstTipIcon);
 
     // Connect signals for popups
     connect(this, &MainWindow::firstTipSignal, firstTip, &QMessageBox::exec);
@@ -344,6 +349,10 @@ void MainWindow::createTipPopups() {
     tipMessageBoxQueue.enqueue(firstTip);
 
     // Setup second tip
+    QPixmap secondTipIcon;
+    secondTipIcon.load(":/images/images/Tip2.png");
+    secondTipIcon = secondTipIcon.scaled(400, 300, Qt::KeepAspectRatio);
+
     secondTip = new QMessageBox(this);
     secondTip->setWindowTitle("How to Progress");
     secondTip->setText("The more passengers that are transported to their desired stations \n"
@@ -351,10 +360,15 @@ void MainWindow::createTipPopups() {
                        "If a station overfills with passengers, the progress bar will begin decreasing.");
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
+    secondTip->setIconPixmap(secondTipIcon);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(secondTip);
 
     // Setup third tip
+    QPixmap thirdTipIcon;
+    thirdTipIcon.load(":/images/images/Tip3.png");
+    thirdTipIcon = thirdTipIcon.scaled(400, 300, Qt::KeepAspectRatio);
+
     thirdTip = new QMessageBox(this);
     thirdTip->setWindowTitle("Tracking Data");
     thirdTip->setText("Clicking on a station will show data about it on the right side of the window.\n"
@@ -362,10 +376,15 @@ void MainWindow::createTipPopups() {
                       "to minimise these numbers!");
     thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     thirdTip->setStandardButtons(QMessageBox::Ok);
+    thirdTip->setIconPixmap(thirdTipIcon);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(thirdTip);
 
     // Setup fourth tip
+    QPixmap fourthTipIcon;
+    fourthTipIcon.load(":/images/images/Tip4.png");
+    fourthTipIcon = fourthTipIcon.scaled(400, 300, Qt::KeepAspectRatio);
+
     fourthTip = new QMessageBox(this);
     fourthTip->setWindowTitle("As Stations get Added");
     fourthTip->setText("As more stations get added, it is"
@@ -373,10 +392,15 @@ void MainWindow::createTipPopups() {
                        "try redrawing lines to allow \nmore people to get to their destination.");
     fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fourthTip->setStandardButtons(QMessageBox::Ok);
+    fourthTip->setIconPixmap(fourthTipIcon);
     connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fourthTip);
 
     // Setup fifth tip
+    QPixmap fifthTipIcon;
+    fifthTipIcon.load(":/images/images/Tip5.JPG");
+    fifthTipIcon = fifthTipIcon.scaled(600, 300, Qt::KeepAspectRatio);
+
     fifthTip = new QMessageBox(this);
     fifthTip->setWindowTitle("Max Capacity");
     fifthTip->setText("Just like in real life, these trains can only hold \na certain "
@@ -384,6 +408,8 @@ void MainWindow::createTipPopups() {
                       "don't get too \ncrowded! Nobody likes an over crowded train!");
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
+    fifthTip->setIconPixmap(fifthTipIcon);
+
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
 

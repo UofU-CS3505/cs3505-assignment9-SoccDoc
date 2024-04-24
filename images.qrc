@@ -15,5 +15,10 @@
         <file>images/RealTrainImage.png</file>
         <file>images/FarAwayStationExample.png</file>
         <file>images/TrainWaitTimeExample.png</file>
+        <file>images/Tip1.png</file>
+        <file>images/Tip3.png</file>
+        <file>images/Tip4.png</file>
+        <file>images/Tip5.JPG</file>
+        <file>images/Tip2.png</file>
     </qresource>
 </RCC>
