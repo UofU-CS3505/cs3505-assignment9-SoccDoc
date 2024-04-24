@@ -128,7 +128,8 @@ private:
     double numberOfPassengerOffloaded = -1; // The number of passengers off loaded on the last train
     double waitTime = -1; // Average wait time of this statino
     double throughput = 0; // Current throughput of this station
-    const int GENERATE_PASSENGER_PROBABILITY = 8; // The chance of generating a passenger (out of 10)
+    const int GENERATE_PASSENGER_PROBABILITY = 40; // The chance of generating a passenger
+    const int PASSENGER_LIMIT = 8; // The max number of passengers at a station
     QRandomGenerator rand; // This stations random generator (for generating passengers)
 
     /**

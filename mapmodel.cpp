@@ -297,8 +297,13 @@ Station* MapModel::getStation(QPoint point) {
     return selectedStation;
 }
 
-void MapModel::passengerDelivered(int passengersDelivered) {
+void MapModel::passengerDelivered(int passengersDelivered) {  
     numberOfPassengersDelivered += passengersDelivered;
+
+    // Ensure the player avoids debt
+    if (numberOfPassengersDelivered < 0)
+        numberOfPassengersDelivered = 0;
+
     int progressBarPercent = ((double)numberOfPassengersDelivered / currentPassengerGoal) * 100;
 
     // Cap the progress bar percent at 100

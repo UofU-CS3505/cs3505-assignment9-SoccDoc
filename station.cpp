@@ -33,11 +33,19 @@ int Station::returnWaitingSize(){
 
 void Station::update(){
     //generatePassengers if the correct probability was hit.
-    int randNum = rand.bounded(1000);
-    if(randNum < GENERATE_PASSENGER_PROBABILITY && waitingPassengers.size() < 8){
-        generatePassenger();
-        passengersUpdated = true;
+    int randNum = rand.bounded(10000);
+    if(randNum >= GENERATE_PASSENGER_PROBABILITY)
+        return;
+
+    // If we have reached the passenger limit, decrease progress bar
+    if (waitingPassengers.size() > PASSENGER_LIMIT) {
+        emit passengerDelivered(-1);
+        return;
     }
+
+    // Generate a passenger
+    generatePassenger();
+    passengersUpdated = true;
 }
 
 void Station::generatePassenger(){
