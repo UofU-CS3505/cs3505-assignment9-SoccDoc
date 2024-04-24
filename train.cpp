@@ -116,6 +116,17 @@ QPropertyAnimation* Train::getAnimation(){
     return animation;
 }
 
-QList<QLabel*> Train::getTrainPassengerIcons(){
-    return trainPassengerIcons;
+void Train::clearPassengerIcons() {
+    foreach (QLabel* label, passengerIcons)
+        delete label;
+
+    passengerIcons.clear();
+}
+
+void Train::addPassengerIcon(QLabel* icon) {
+    passengerIcons.append(icon);
+}
+
+int Train::getNumberOfPassengerIcons() {
+    return passengerIcons.size();
 }

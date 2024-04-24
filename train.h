@@ -77,9 +77,27 @@ public:
      */
     QList<QLabel*> getTrainPassengerIcons();
 
-    QList<QLabel*> trainPassengerIcons; //List of Qlabels with images on them representing the train's passengers
+    /**
+     * @brief Clears all of the passenger icons
+     */
+    void clearPassengerIcons();
+
+    /**
+     * @brief Adds an icon to the list of passenger icons
+     * @param icon the label to add
+     */
+    void addPassengerIcon(QLabel* icon);
+
+    /**
+     * @return the number of passenger icons
+     */
+    int getNumberOfPassengerIcons();
+
+    QList<QLabel*> passengerIcons; //List of Qlabels with images on them representing the train's passengers
+
 
 private:
+
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
     int nextStationIndex; // where the train is in its station list

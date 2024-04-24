@@ -60,36 +60,37 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {}
 
 void MainWindow::drawTrainPassenger(Train* train, TrainDrawer* drawer){
-    foreach(QLabel* oldIcons, train->getTrainPassengerIcons()){
-        delete oldIcons;
-    }
-    train->trainPassengerIcons.clear();
-    QPixmap shapeImage;
+    train->clearPassengerIcons();
 
+    // Iterate through every passenger and draw them
+    QPixmap passengerImage;
     foreach (Passenger p, train->getPassengers()) {
-        QPixmap newImage;
         QLabel* label = new QLabel(drawer); // Create a new QLabel object for each passenger
-        if (p == Circle){
-            shapeImage.load(":/images/images/Circle.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        // Load the proper passenger icon
+        switch (p) {
+        case Square:
+            passengerImage.load(":/images/images/Square.png");
+            break;
+        case Circle:
+            passengerImage.load(":/images/images/Circle.png");
+            break;
+        case Triangle:
+            passengerImage.load(":/images/images/Triangle.png");
+            break;
+        case Last:
+            break; // Here to account for all cases
         }
-        else if (p == Square){
-            shapeImage.load(":/images/images/Square.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-        else if (p == Triangle){
-            shapeImage.load(":/images/images/Triangle.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-        label->setPixmap(newImage);
+
+        passengerImage = passengerImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
+        label->setPixmap(passengerImage);
         label->show();
-        train->trainPassengerIcons.append(label);
+        train->addPassengerIcon(label);
     }
 
-    for (int i = 0; i < train->trainPassengerIcons.size(); i++){
+    for (int i = 0; i < train->getNumberOfPassengerIcons(); i++){
         QPoint newStartPoint = QPoint(train->getAnimation()->startValue().toPoint().x() +(10 * i), train->getAnimation()->startValue().toPoint().y()-10);
         QPoint newEndPoint = QPoint(train->getAnimation()->endValue().toPoint().x() +(10 * i), train->getAnimation()->endValue().toPoint().y()-10);
-        QPropertyAnimation* animation = new QPropertyAnimation(train->trainPassengerIcons[i], "pos");
+        QPropertyAnimation* animation = new QPropertyAnimation(train->passengerIcons[i], "pos");
         animation->setDuration(train->getAnimation()->duration());
         animation->setStartValue(newStartPoint);
         animation->setEndValue(newEndPoint);
@@ -109,13 +110,13 @@ void MainWindow::drawStationPassenger(Station* station){
         // Load the proper passenger icon
         switch (p) {
         case Square:
-            newImage.load(":/images/images/Square.png") ;
+            newImage.load(":/images/images/Square.png");
             break;
         case Circle:
-            newImage.load(":/images/images/Circle.png") ;
+            newImage.load(":/images/images/Circle.png");
             break;
         case Triangle:
-            newImage.load(":/images/images/Triangle.png") ;
+            newImage.load(":/images/images/Triangle.png");
             break;
         case Last:
             break; // Here to account for all cases
