@@ -50,7 +50,7 @@ private:
     const int MILISECONDS_TO_UPDATE = (1000/60); // How often the timer updates the canvas
     const int STATION_DISTANCE = 120; // Minimum distance between stations
     const int STATION_EDGE_BUFFER = 40; // Minimum distance between stations and the edge of the canvas
-    QColor currentLine; // The color of the current train line
+    QColor currentColor; // The color of the current train line
 
     /**
      * @brief Adds a train to ride the given list of stations
@@ -136,6 +136,12 @@ signals:
      */
     void drawStationPassenger(Station* station);
     void redraw(Station* station);
+
+
+    /**
+     * @brief addTrainType
+     */
+    void addTrainType();
 
     void enableTrackButtonsSignal();
     void changeRedrawTrackText(QString string);

@@ -23,7 +23,7 @@ MapModel::MapModel(QWidget *parent) :
     spawnStation();
 
     // Set initial line color
-    currentLine = Qt::green;
+    currentColor = Qt::green;
 
     // Add goals to queue
     passengerGoals.enqueue(5);
@@ -66,21 +66,21 @@ void MapModel::trainButtonClicked(int id) {
     // Update details for selected radio button
     switch(id) {
     case 0:
-        currentLine = Qt::green;
+        currentColor = Qt::green;
         emit changeRedrawTrackText("Redraw Green Track");
         break;
     case 1:
-        currentLine = Qt::blue;
+        currentColor = Qt::blue;
         emit changeRedrawTrackText("Redraw Blue Track");
         break;
     case 2:
-        currentLine = Qt::red;
+        currentColor = Qt::red;
         emit changeRedrawTrackText("Redraw Red Track");
         break;
     }
 
     // Set the color of the drawer based on the radio button selected
-    drawer->setPenColor(currentLine);
+    drawer->setPenColor(currentColor);
 }
 
 TrainDrawer* MapModel::getDrawer(){
@@ -241,8 +241,9 @@ void MapModel::checkProgressBar(int progressValue) {
     if (!passengerGoals.isEmpty())
         currentPassengerGoal = passengerGoals.dequeue();
 
-    // Give user an extra train and spawn another station
-    numberOfUnusedTrains += 1;
+    // Give user an extra train (every other goal reached) and spawn another station
+    if (passengerGoals.size() % 2 == 0)
+        emit addTrainType();
     spawnStation();
 
     // Show a new tip and reset the progress bar
@@ -308,37 +309,32 @@ void MapModel::passengerDelivered(int passengersDelivered) {
 
 
 void MapModel::addTrainToLine(QList<Station*> trainLine){
-    // Check if there are at least two stations
+    // Check if there are at least two stations in the line
     if (trainLine.size() < 2)
         return;
 
-    if(numberOfUnusedTrains <= 0){
-        return; //no trains available to add to a line.
-    }
-
-    // Setup train animation object
-    QPixmap image;
+    // Setup train image object
+    QPixmap trainImage;
 
     // Load corresponding train image color
-    if (currentLine == Qt::blue)
-        image.load(":/images/images/blueTrain.png");
-    else if (currentLine == Qt::red)
-        image.load(":/images/images/redTrain.png");
-    else if (currentLine == Qt::green)
-        image.load(":/images/images/greenTrain.png");
-    image = image.scaled(50, 25, Qt::KeepAspectRatio);
+    if (currentColor == Qt::blue)
+        trainImage.load(":/images/images/blueTrain.png");
+    else if (currentColor == Qt::red)
+        trainImage.load(":/images/images/redTrain.png");
+    else if (currentColor == Qt::green)
+        trainImage.load(":/images/images/greenTrain.png");
+    trainImage = trainImage.scaled(50, 25, Qt::KeepAspectRatio);
 
     // Put everything into a train
-    Train* train = new Train(this, new QLabel(drawer), image, currentLine);
+    Train* train = new Train(this, new QLabel(drawer), trainImage, currentColor);
     train->changeStations(trainLine);
     trains.append(train);
-    numberOfUnusedTrains -= 1;
 }
 
 void MapModel::redrawTrack(){
     // Remove the train from the current track
     trains.removeIf([this](Train* train) {
-        if (train->getLineColor() == currentLine) { // Check if train is right color
+        if (train->getLineColor() == currentColor) { // Check if train is right color
             train->stopTravel();                    // This train is the right color, stop its animation
             return true;                            // then mark for removal
         } return false;                             // Train is not right color, don't remove

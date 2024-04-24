@@ -25,13 +25,10 @@ public:
 private:
     MapModel *map;
 
-    // Docks for managing train and station details
-    QDockWidget* trainDetailsDock;
-    QDockWidget* stationDetailsDock;
+    // Docks for managing train details
+    QVBoxLayout* trainLayout;
+    QButtonGroup* trainButtonGroup;
 
-    QRadioButton* greenButton;
-    QRadioButton* blueButton;
-    QRadioButton* redButton;
     QPushButton* RedrawTrack;
 
     //data variables to be updated.
@@ -75,6 +72,7 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
+    void addTrainButton();
     void updateData(double, double, double);
     void showTip();
     void updateProgressBar(int);
