@@ -62,6 +62,12 @@ public slots:
     void drawStationPassenger(Station* station);
 
     /**
+     * @brief Draws the passenger icons for the given station
+     * @param station to draw passenger icons for
+     */
+    void drawTrainPassenger(Train* train);
+
+    /**
      * @brief Adds a train button to the left dock
      */
     void addTrainButton();
@@ -100,8 +106,6 @@ public slots:
      * @brief Enables the buttons to change the selected track
      */
     void enableTrackButtons();
-
-    void drawTrainPassenger(Train* train, TrainDrawer* drawer);
 
 signals:
     // Signals for each of the tips to show their popup

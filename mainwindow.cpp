@@ -59,13 +59,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::drawTrainPassenger(Train* train, TrainDrawer* drawer){
+void MainWindow::drawTrainPassenger(Train* train){
+    // Remove all of the passenger icons
     train->clearPassengerIcons();
 
     // Iterate through every passenger and draw them
     QPixmap passengerImage;
     foreach (Passenger p, train->getPassengers()) {
-        QLabel* label = new QLabel(drawer); // Create a new QLabel object for each passenger
+        QLabel* label = new QLabel(mapModel->getDrawer()); // Create a new QLabel object for each passenger
         // Load the proper passenger icon
         switch (p) {
         case Square:
@@ -81,21 +82,29 @@ void MainWindow::drawTrainPassenger(Train* train, TrainDrawer* drawer){
             break; // Here to account for all cases
         }
 
+        // Finish setting up the label
         passengerImage = passengerImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
         label->setPixmap(passengerImage);
         label->show();
         train->addPassengerIcon(label);
-    }
 
-    for (int i = 0; i < train->getNumberOfPassengerIcons(); i++){
-        QPoint newStartPoint = QPoint(train->getAnimation()->startValue().toPoint().x() +(10 * i), train->getAnimation()->startValue().toPoint().y()-10);
-        QPoint newEndPoint = QPoint(train->getAnimation()->endValue().toPoint().x() +(10 * i), train->getAnimation()->endValue().toPoint().y()-10);
-        QPropertyAnimation* animation = new QPropertyAnimation(train->passengerIcons[i], "pos");
+        // Set the start and end points of the animation
+        int iconWidthBuffer = train->getNumberOfPassengerIcons() * (PASSENGER_ICON_WIDTH * 2);
+        QPoint trainAnimationStartPoint = train->getAnimation()->startValue().toPoint();
+        QPoint trainAnimationEndPoint = train->getAnimation()->endValue().toPoint();
+        QPoint passengerAnimationStartPoint = QPoint(trainAnimationStartPoint.x() + (iconWidthBuffer),
+                                                     trainAnimationStartPoint.y() - (PASSENGER_ICON_WIDTH * 2));
+        QPoint passengerAnimationEndPoint = QPoint(trainAnimationEndPoint.x() + (iconWidthBuffer),
+                                                   trainAnimationEndPoint.y() - (PASSENGER_ICON_WIDTH * 2));
+
+        // Set up the animation object and start
+        QPropertyAnimation* animation = new QPropertyAnimation(label, "pos");
         animation->setDuration(train->getAnimation()->duration());
-        animation->setStartValue(newStartPoint);
-        animation->setEndValue(newEndPoint);
+        animation->setStartValue(passengerAnimationStartPoint);
+        animation->setEndValue(passengerAnimationEndPoint);
         animation->start();
     }
+
 }
 
 void MainWindow::drawStationPassenger(Station* station){
@@ -103,28 +112,28 @@ void MainWindow::drawStationPassenger(Station* station){
     station->clearPassengerIcons();
 
     // Redraw all of the passenger icons
-    QPixmap newImage;
+    QPixmap passengerIcon;
     foreach (Passenger p, station->getPassengers()){
         QLabel* label = new QLabel(mapModel->getDrawer());
 
         // Load the proper passenger icon
         switch (p) {
         case Square:
-            newImage.load(":/images/images/Square.png");
+            passengerIcon.load(":/images/images/Square.png");
             break;
         case Circle:
-            newImage.load(":/images/images/Circle.png");
+            passengerIcon.load(":/images/images/Circle.png");
             break;
         case Triangle:
-            newImage.load(":/images/images/Triangle.png");
+            passengerIcon.load(":/images/images/Triangle.png");
             break;
         case Last:
             break; // Here to account for all cases
         }
 
         // Finish setting up the label
-        newImage = newImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
-        label->setPixmap(newImage);
+        passengerIcon = passengerIcon.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
+        label->setPixmap(passengerIcon);
 
         // Set the location of the icon
         int iconWidthBuffer = station->getNumberOfPassengerIcons() * (PASSENGER_ICON_WIDTH * 2);

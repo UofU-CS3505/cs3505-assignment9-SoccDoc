@@ -348,5 +348,5 @@ void  MapModel::selectStation(QPoint point){
 }
 
 void MapModel::passengerLoading(Train* train){
-    emit drawTrainPassenger(train, drawer);
+    emit drawTrainPassenger(train);
 }
