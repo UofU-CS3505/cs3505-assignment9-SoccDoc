@@ -335,7 +335,8 @@ void MapModel::redrawTrack(){
     // Remove the train from the current track
     trains.removeIf([this](Train* train) {
         if (train->getLineColor() == currentColor) { // Check if train is right color
-            train->stopTravel();                    // This train is the right color, stop its animation
+            train->stopTravel();       // This train is the right color, stop its animation
+            emit clearPassengerIcons(train);
             return true;                            // then mark for removal
         } return false;                             // Train is not right color, don't remove
     });

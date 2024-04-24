@@ -156,6 +156,8 @@ signals:
      * @param The train drawer used by the train
      */
     void drawTrainPassenger(Train* train, TrainDrawer* drawer);
+
+    void clearPassengerIcons(Train* train);
 };
 
 #endif // MAPMODEL_H

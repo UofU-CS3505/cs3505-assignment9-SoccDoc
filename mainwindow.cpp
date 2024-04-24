@@ -55,9 +55,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mapModel, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
     connect(mapModel, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
     connect(mapModel, &MapModel::drawTrainPassenger, this, &MainWindow::drawTrainPassenger);
+    connect(mapModel, &MapModel::clearPassengerIcons, this, &MainWindow::clearPassengerIcons);
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::clearPassengerIcons(Train* train){
+    foreach(QLabel* oldIcons, train->getTrainPassengerIcons()){
+        delete oldIcons;
+    }
+    train->trainPassengerIcons.clear();
+}
 
 void MainWindow::drawTrainPassenger(Train* train, TrainDrawer* drawer){
     foreach(QLabel* oldIcons, train->getTrainPassengerIcons()){
