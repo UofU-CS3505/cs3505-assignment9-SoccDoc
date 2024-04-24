@@ -345,9 +345,10 @@ void MainWindow::createTipPopups() {
 
     // Setup second tip
     secondTip = new QMessageBox(this);
-    secondTip->setWindowTitle("Drawing Tracks");
-    secondTip->setText("Select a train then click the 'Redraw Track' "
-                       "button to \ndraw a new track for the selected train.");
+    secondTip->setWindowTitle("How to Progress");
+    secondTip->setText("The more passengers that are transported to their desired stations \n"
+                       "the more progress that you will make.\n\n"
+                       "If a station overfills with passengers, the progress bar will begin decreasing.");
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
