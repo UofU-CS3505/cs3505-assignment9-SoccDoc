@@ -80,8 +80,12 @@ private:
     void passengerLoading(Train* train);
 
 public slots:
-
+    /**
+     * @brief Returns the station at the given point
+     * @param the point to check
+     */
     void selectStation(QPoint point);
+
     /**
      * @brief Updates the passengers in stations
      */
@@ -112,6 +116,9 @@ public slots:
      */
     void passengerDelivered(int);
 
+    /**
+     * @brief redrawTrack
+     */
     void redrawTrack();
 
 signals:
@@ -143,11 +150,19 @@ signals:
     void drawStationPassenger(Station* station);
 
     /**
-     * @brief addTrainType
+     * @brief Adds a new train line
      */
     void addTrainType();
 
+    /**
+     * @brief Enables the ability to change track colors
+     */
     void enableTrackButtonsSignal();
+
+    /**
+     * @brief Changes the text of the redraw track button text
+     * @param the new text for the button
+     */
     void changeRedrawTrackText(QString string);
 
     /**

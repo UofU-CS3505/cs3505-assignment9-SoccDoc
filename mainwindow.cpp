@@ -60,6 +60,10 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow() {}
 
 void MainWindow::drawTrainPassenger(Train* train){
+    // Check if the train is still alive
+    if (!train)
+        return;
+
     // Remove all of the passenger icons
     train->clearPassengerIcons();
 
