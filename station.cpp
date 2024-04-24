@@ -37,7 +37,7 @@ void Station::update(){
     int randNum = rand.bounded(1000);
     if(randNum < GENERATE_PASSENGER_PROBABILITY && waitingPassengers.size() < 8){
         generatePassenger();
-        redraw = true;
+        passengersUpdated = true;
     }
 }
 
@@ -45,26 +45,26 @@ void Station::generatePassenger(){
     Passenger passengerToAdd = Passenger(rand() % Last);
 
     //regenerates the pasenger while its he same type as the station
-    while(passengerToAdd == stationType){
+    while(passengerToAdd == stationType)
         passengerToAdd = Passenger(rand() % Last);
-    }
 
     waitingPassengers.append(passengerToAdd);
 }
 
 void Station::updateTrainPassengers(Train* trainToLoad){
-    if(!elapsedTimer.isValid()){
+    // Starts a timer to record how long it takes for a train to come
+    if(!elapsedTimer.isValid())
         elapsedTimer.start();
-    }else{
+    else {
         waitTime = (elapsedTimer.elapsed());
         elapsedTimer.restart();
     }
-    numberOfPassengerOffloaded = 0;
 
     //unload all the passengers that have the same type as the station
     emit passengerDelivered(trainToLoad->removePassengers(stationType));
 
     //load all the passengers that can go to their correct destination on the train.
+    numberOfPassengerOffloaded = 0;
     for (int passengerInt = Passenger::Square; passengerInt != Passenger::Last; passengerInt++) {
         QList<Station*> stations = trainToLoad->getConnectedStations();
 
@@ -73,7 +73,6 @@ void Station::updateTrainPassengers(Train* trainToLoad){
             if (station->getStationType() == passengerInt) {
                 // It does, load all passengers of that type onto the train
                 numberOfPassengerOffloaded += loadPassengers(trainToLoad, (Passenger)passengerInt);
-
                 break;
             }
         }
@@ -95,7 +94,7 @@ int Station::loadPassengers(Train* trainToLoad, Passenger type) {
     }
 
     // Redraw passengers
-    redraw = true;
+    passengersUpdated = true;
     return numberOfPassengersLoaded;
 }
 
@@ -108,12 +107,13 @@ QPoint Station::getLocation() {
 }
 
 double Station::getThroughput(){
-    if (!waitTime || waitTime <= 0){
+    // Check if throughput needs to be updated
+    if (!waitTime || waitTime <= 0)
         return throughput;
-    }
+
+    // Re-calculate throughput
     throughput = (numberOfPassengerOffloaded/(waitTime/1000));
     return throughput;
-
 }
 
 double Station::getWaitTime(){
@@ -137,4 +137,12 @@ void Station::clearPassengerIcons() {
 
 void Station::addPassengerIcon(QLabel* icon) {
     passengerIcons.append(icon);
+}
+
+bool Station::passengersChanged() {
+    return passengersUpdated;
+}
+
+void Station::updatedPassengers() {
+    passengersUpdated = false;
 }

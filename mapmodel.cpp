@@ -45,8 +45,8 @@ void MapModel::updateFrame() {
         station->update();
 
         // If the station has added/removed passengers, update how many are drawn
-        if (station->redraw){
-            station->redraw = false;
+        if (station->passengersChanged()){
+            station->updatedPassengers();
             emit drawStationPassenger(station);
         }
     }
