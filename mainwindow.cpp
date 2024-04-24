@@ -352,7 +352,7 @@ void MainWindow::createTipPopups() {
     fourthTip->setWindowTitle("As Stations get Added");
     fourthTip->setText("As more stations get added, it is"
                        " important to maintain \nthe efficiency of each line, "
-                       "try redrawing lines to allow \nmore people to get to their destiniation.");
+                       "try redrawing lines to allow \nmore people to get to their destination.");
     fourthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fourthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fourthTipSignal, fourthTip, &QMessageBox::exec);
@@ -363,7 +363,7 @@ void MainWindow::createTipPopups() {
     fifthTip->setWindowTitle("Max Capacity");
     fifthTip->setText("Just like in real life, these trains can only hold \na certain "
                       "amount of people. Be sure passengers "
-                      "don't get too \ncroweded! Nobody likes an over crowded train!");
+                      "don't get too \ncrowded! Nobody likes an over crowded train!");
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
