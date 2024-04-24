@@ -62,10 +62,7 @@ MainWindow::~MainWindow() {}
 
 void MainWindow::drawStationPassenger(Station* station){
     // Remove all of the passenger icons
-    foreach (QLabel* ql, station->passengerIcons){
-        delete ql;
-    }
-    station->passengerIcons.clear();
+    station->clearPassengerIcons();
 
     // Redraw all of the passenger icons
     QPixmap newImage;
@@ -91,13 +88,16 @@ void MainWindow::drawStationPassenger(Station* station){
         newImage = shapeImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
         label->setPixmap(newImage);
 
-        int iconWidthBuffer = station->passengerIcons.size() * (PASSENGER_ICON_WIDTH * 2);
+        // Set the location of the icon
+        int iconWidthBuffer = station->getNumberOfPassengerIcons() * (PASSENGER_ICON_WIDTH * 2);
         label->setGeometry(station->getLocation().x() + iconWidthBuffer - (PASSENGER_ICON_WIDTH * 6), // x coordinate of icon
                            station->getLocation().y() - (PASSENGER_ICON_WIDTH * 2),                   // y coordinate of icon (looks better double)
                            (PASSENGER_ICON_WIDTH * 2),                                                // width of icon (looks better doubled)
                            PASSENGER_ICON_WIDTH);                                                     // height of icon
+
+        // Display the icon
         label->show();
-        station->passengerIcons.append(label);
+        station->addPassengerIcon(label);
     }
 }
 

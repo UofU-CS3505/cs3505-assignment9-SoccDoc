@@ -123,3 +123,18 @@ double Station::getWaitTime(){
 QList<Passenger> Station::getPassengers(){
     return waitingPassengers;
 }
+
+int Station::getNumberOfPassengerIcons() {
+    return passengerIcons.size();
+}
+
+void Station::clearPassengerIcons() {
+    foreach (QLabel* label, passengerIcons)
+        delete label;
+
+    passengerIcons.clear();
+}
+
+void Station::addPassengerIcon(QLabel* icon) {
+    passengerIcons.append(icon);
+}

@@ -80,11 +80,32 @@ public:
      * @return The number of passengers waiting at this station
      */
     int returnWaitingSize();
-    QList<Passenger> getPassengers(); // List of passengers at this station
-    QList<QLabel*> passengerIcons; // List of icons to display this stations passengers
+
+    /**
+     * @return the number of passenger icons
+     */
+    int getNumberOfPassengerIcons();
+
+    /**
+     * @brief Clears all of the passenger icons
+     */
+    void clearPassengerIcons();
+
+    /**
+     * @brief Adds an icon to the list of passenger icons
+     * @param icon the label to add
+     */
+    void addPassengerIcon(QLabel* icon);
+
+    /**
+     * @return List of passengers at this station
+     */
+    QList<Passenger> getPassengers();
+
     bool redraw = false; // Whether station has been edited or not
 
 private:
+    QList<QLabel*> passengerIcons; // List of icons to display this stations passengers
     QList<Passenger> waitingPassengers; // List of passengers at this station
     Passenger stationType; // The type of passenger this station is accepting
     QPoint location; // The location of this station
