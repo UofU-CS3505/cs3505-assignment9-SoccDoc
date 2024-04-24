@@ -138,6 +138,9 @@ private:
     void generatePassenger();
 
 signals:
+    /**
+     * @brief Gives the number of passengers delivered to this station
+     */
     void passengerDelivered(int);
 };
 
