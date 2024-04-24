@@ -267,6 +267,8 @@ void MainWindow::createBottomDockWindow() {
     tipLayout->setAlignment(Qt::AlignLeft);
     this->addDockWidget(Qt::BottomDockWidgetArea, bottomDock);
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    bottomDock->setMinimumSize(1150, 198);
+    bottomDock->setMaximumSize(1150, 198);
 }
 
 void MainWindow::addTrainButton() {
