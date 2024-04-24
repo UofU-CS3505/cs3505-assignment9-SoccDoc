@@ -59,6 +59,26 @@ public:
      */
     QColor getLineColor();
 
+    /**
+     * @brief Gets the train's list of passengers
+     * @return the passenger list
+     */
+    QList<Passenger> getPassengers();
+
+    /**
+     * @brief Gets the train's animation
+     * @return the train animation
+     */
+    QPropertyAnimation* getAnimation();
+
+    /**
+     * @brief Gets the list of train passenger icons
+     * @return returns the list containing the passenger icons of the train
+     */
+    QList<QLabel*> getTrainPassengerIcons();
+
+    QList<QLabel*> trainPassengerIcons; //List of Qlabels with images on them representing the train's passengers
+
 private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
@@ -77,17 +97,25 @@ private:
     const double SPEED = 0.15; // speed of the train
     const int STATION_DELAY = 1000; // Ms delay for train when it reaches a station
 
-
     /**
      * @brief gets the distance between two given points
      */
     double getDistance(QPoint p1, QPoint p2);
+
+    /**
+     * @brief Emits the signal to draw and animate the train passengers and resumes the trains animation
+     */
+    void resumeAnimations();
 
 public slots:
     /**
      * @brief on/offboards passengers at the arrived station then calls startTravel()
      */
     void endTravel();
+
+signals:
+    // Sents out a signal that contains this train object
+    void passengersBoarding(Train* train);
 };
 
 #endif // TRAIN_H

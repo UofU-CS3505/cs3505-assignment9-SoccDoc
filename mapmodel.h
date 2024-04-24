@@ -73,6 +73,12 @@ private:
      */
     bool stationLocationIsGood(QPoint newStationLocation);
 
+    /**
+     * @brief Sents out a signal that passengers are loading
+     * @param The train calling this method
+     */
+    void passengerLoading(Train* train);
+
 public slots:
 
     void selectStation(QPoint point);
@@ -143,6 +149,13 @@ signals:
 
     void enableTrackButtonsSignal();
     void changeRedrawTrackText(QString string);
+
+    /**
+     * @brief Signal to start drawing the train's passengers
+     * @param The calling train object
+     * @param The train drawer used by the train
+     */
+    void drawTrainPassenger(Train* train, TrainDrawer* drawer);
 };
 
 #endif // MAPMODEL_H

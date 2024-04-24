@@ -101,6 +101,8 @@ public slots:
      */
     void enableTrackButtons();
 
+    void drawTrainPassenger(Train* train, TrainDrawer* drawer);
+
 signals:
     // Signals for each of the tips to show their popup
     void firstTipSignal();

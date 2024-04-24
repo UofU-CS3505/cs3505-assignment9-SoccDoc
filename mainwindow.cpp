@@ -54,10 +54,48 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mapModel, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
     connect(mapModel, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
     connect(mapModel, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
-
+    connect(mapModel, &MapModel::drawTrainPassenger, this, &MainWindow::drawTrainPassenger);
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::drawTrainPassenger(Train* train, TrainDrawer* drawer){
+    foreach(QLabel* oldIcons, train->getTrainPassengerIcons()){
+        delete oldIcons;
+    }
+    train->trainPassengerIcons.clear();
+    QPixmap shapeImage;
+
+    foreach (Passenger p, train->getPassengers()) {
+        QPixmap newImage;
+        QLabel* label = new QLabel(drawer); // Create a new QLabel object for each passenger
+        if (p == Circle){
+            shapeImage.load(":/images/images/Circle.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        else if (p == Square){
+            shapeImage.load(":/images/images/Square.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        else if (p == Triangle){
+            shapeImage.load(":/images/images/Triangle.png");
+            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        }
+        label->setPixmap(newImage);
+        label->show();
+        train->trainPassengerIcons.append(label);
+    }
+
+    for (int i = 0; i < train->trainPassengerIcons.size(); i++){
+        QPoint newStartPoint = QPoint(train->getAnimation()->startValue().toPoint().x() +(10 * i), train->getAnimation()->startValue().toPoint().y()-10);
+        QPoint newEndPoint = QPoint(train->getAnimation()->endValue().toPoint().x() +(10 * i), train->getAnimation()->endValue().toPoint().y()-10);
+        QPropertyAnimation* animation = new QPropertyAnimation(train->trainPassengerIcons[i], "pos");
+        animation->setDuration(train->getAnimation()->duration());
+        animation->setStartValue(newStartPoint);
+        animation->setEndValue(newEndPoint);
+        animation->start();
+    }
+}
 
 void MainWindow::drawStationPassenger(Station* station){
     // Remove all of the passenger icons

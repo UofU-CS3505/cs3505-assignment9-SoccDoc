@@ -328,6 +328,7 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
     Train* train = new Train(this, new QLabel(drawer), trainImage, currentColor);
     train->changeStations(trainLine);
     trains.append(train);
+    connect(train, &Train::passengersBoarding, this, &MapModel::passengerLoading);
 }
 
 void MapModel::redrawTrack(){
@@ -346,4 +347,6 @@ void  MapModel::selectStation(QPoint point){
     getStation(point);
 }
 
-
+void MapModel::passengerLoading(Train* train){
+    emit drawTrainPassenger(train, drawer);
+}

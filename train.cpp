@@ -66,7 +66,7 @@ void Train::startTravel() {
     // Setup animation delay
     animation->start();
     animation->pause();
-    QTimer::singleShot(STATION_DELAY, animation, &QPropertyAnimation::resume);
+    QTimer::singleShot(STATION_DELAY, this, &Train::resumeAnimations);
 }
 
 void Train::endTravel() {
@@ -96,9 +96,26 @@ void Train::stopTravel() {
     delete trainImage;
 }
 
+void Train::resumeAnimations() {
+    animation->resume();
+    emit passengersBoarding(this);
+}
+
 double Train::getDistance(QPoint p1, QPoint p2) {
     double xCord = std::pow(p1.x() - p2.x(), 2);
     double yCord = std::pow(p1.y() - p2.y(), 2);
 
     return std::sqrt(xCord + yCord);
+}
+
+QList<Passenger> Train::getPassengers(){
+    return passengers;
+}
+
+QPropertyAnimation* Train::getAnimation(){
+    return animation;
+}
+
+QList<QLabel*> Train::getTrainPassengerIcons(){
+    return trainPassengerIcons;
 }
