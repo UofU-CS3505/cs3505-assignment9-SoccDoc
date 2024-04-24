@@ -133,7 +133,7 @@ private:
 
 public slots:
     /**
-     * @brief on/offboards passengers at the arrived station then calls startTravel()
+     * @brief on/off boards passengers at the arrived station then calls startTravel()
      */
     void endTravel();
 
