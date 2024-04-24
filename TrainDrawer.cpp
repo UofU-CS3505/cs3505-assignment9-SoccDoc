@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QMouseEvent>
-#include <QDebug>
 #include <QtMath>
 
 TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {

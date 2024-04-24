@@ -438,10 +438,8 @@ void MainWindow::updateData(double newThroughput, double newWaitTime, double num
 
 void MainWindow::showTip() {
     // Check if there are more tip signals
-    if (tipMessageBoxQueue.isEmpty()) {
-        qDebug() << "Out of tips!";
+    if (tipMessageBoxQueue.isEmpty())
         return;
-    }
 
     // Get the next tip message box and make a button for it
     QMessageBox* tipMessageBox = tipMessageBoxQueue.dequeue();;
