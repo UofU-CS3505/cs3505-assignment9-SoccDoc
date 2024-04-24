@@ -10,7 +10,7 @@
 class Train;
 
 /**
- * @brief The Station class
+ * @brief The Station class keeps track of passengers at the station and calculates some data for the station
  * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class Station : public QObject
@@ -102,11 +102,20 @@ public:
      */
     QList<Passenger> getPassengers();
 
-    bool redraw = false; // Whether station has been edited or not
+    /**
+     * @return true if the passengers have been changed, false otherwise
+     */
+    bool passengersChanged();
+
+    /**
+     * @brief Marks the passenger list as unchanged
+     */
+    void updatedPassengers();
 
 private:
     QList<QLabel*> passengerIcons; // List of icons to display this stations passengers
     QList<Passenger> waitingPassengers; // List of passengers at this station
+    bool passengersUpdated = false; // Whether station's passengers have been edited or not
     Passenger stationType; // The type of passenger this station is accepting
     QPoint location; // The location of this station
 

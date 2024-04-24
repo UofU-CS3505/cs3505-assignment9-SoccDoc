@@ -45,8 +45,8 @@ void MapModel::updateFrame() {
         station->update();
 
         // If the station has added/removed passengers, update how many are drawn
-        if (station->redraw){
-            station->redraw = false;
+        if (station->passengersChanged()){
+            station->updatedPassengers();
             emit drawStationPassenger(station);
         }
     }
@@ -328,6 +328,7 @@ void MapModel::addTrainToLine(QList<Station*> trainLine){
     Train* train = new Train(this, new QLabel(drawer), trainImage, currentColor);
     train->changeStations(trainLine);
     trains.append(train);
+    connect(train, &Train::passengersBoarding, this, &MapModel::passengerLoading);
 }
 
 void MapModel::redrawTrack(){
@@ -346,4 +347,6 @@ void  MapModel::selectStation(QPoint point){
     getStation(point);
 }
 
-
+void MapModel::passengerLoading(Train* train){
+    emit drawTrainPassenger(train, drawer);
+}

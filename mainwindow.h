@@ -1,17 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "mapmodel.h"
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QLabel>
-#include "QtWidgets/qradiobutton.h"
-#include "mapmodel.h"
 #include <QQueue>
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include <QButtonGroup>
 
 /**
- * @brief The MainWindow class
+ * @brief The MainWindow class displays all of the information that MapModel asks it to on a window
  * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class MainWindow : public QMainWindow
@@ -23,48 +23,31 @@ public:
     ~MainWindow();
 
 private:
-    MapModel *map;
+    MapModel *mapModel; // The model that computes the logic for the central widget
 
-    // Docks for managing train details
-    QVBoxLayout* trainLayout;
-    QButtonGroup* trainButtonGroup;
+    QVBoxLayout* trainLayout; // Layout for adding train buttons
+    QButtonGroup* trainButtonGroup; // Radio button group for train butons
+    QPushButton* RedrawTrack; // Button for redrawing train tracks
 
-    QPushButton* RedrawTrack;
+    QLabel* throughput; // Average delivered passengers per second for the selected station
+    QLabel* waitTime; // Average wait time between train arrivals for the selected station
+    QLabel* numberOfPassengers; // number of passengers waiting at the selected station
 
-    //data variables to be updated.
-    QLabel* throughput;
-    QLabel* waitTime;
-    QLabel* numberOfPassengers;
-    QPixmap image;
-    QPixmap shapeImage;
-
-    QHBoxLayout* tipLayout = new QHBoxLayout();
-    int tipNum = 1;
+    QProgressBar* progressBar; // Shows user how much of the goal they have completed
+    QHBoxLayout* tipLayout; // Layout for storing tips for building a train network
 
     const int PASSENGER_ICON_WIDTH = 5; // size of passenger icons
 
-    void createLeftDockWindow();
-    void createRightDockWindow();
-    void createBottomDockWindow();
-    void createDockWindows();
-    void createTipPopups();
-    void deleteTrain(QLabel* image);
+    void createDockWindows(); // Sets up all dock windows
+    void createLeftDockWindow(); // Sets up dock windows on the left
+    void createRightDockWindow(); // Sets up dock windows on the right
+    void createBottomDockWindow(); // Sets up dock windows on the bottom
+    void createTipPopups(); // Sets up queue of tip popups
 
-    QProgressBar* progressBar;
-    /**
-     * @brief action to tell the user about the application
-     */
-    QAction *aboutAct;
-    /**
-     * @brief action to exit the application
-     */
-    QAction *exitAct;
+    QMessageBox* startWindow; // Introductory message shown to user on startup
 
-    // Start Message
-    QMessageBox* startWindow;
-
-    // Tips
-    QQueue<QMessageBox*> tipMessageBoxQueue;
+    QQueue<QMessageBox*> tipMessageBoxQueue; // The queue for tips
+    // Various tip popups
     QMessageBox* firstTip;
     QMessageBox* secondTip;
     QMessageBox* thirdTip;
@@ -72,18 +55,56 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
+    /**
+     * @brief Draws the passenger icons for the given station
+     * @param station to draw passenger icons for
+     */
     void drawStationPassenger(Station* station);
+
+    /**
+     * @brief Adds a train button to the left dock
+     */
     void addTrainButton();
+
+    /**
+     * @brief Updates data points on the right dock
+     */
     void updateData(double, double, double);
+
+    /**
+     * @brief Shows the next tip to the user
+     */
     void showTip();
+
+    /**
+     * @brief Updates the progress bar to the given value
+     */
     void updateProgressBar(int);
+
+    /**
+     * @brief Fills the progress bar
+     */
     void fillProgressBar();
+
+    /**
+     * @brief Empties the progress bar
+     */
     void resetProgressBar();
+
+    /**
+     * @brief Redraws the track for the selected train
+     */
     void redrawTracks();
+
+    /**
+     * @brief Enables the buttons to change the selected track
+     */
     void enableTrackButtons();
 
+    void drawTrainPassenger(Train* train, TrainDrawer* drawer);
+
 signals:
-    void startWindowSignal();
+    // Signals for each of the tips to show their popup
     void firstTipSignal();
     void secondTipSignal();
     void thirdTipSignal();
