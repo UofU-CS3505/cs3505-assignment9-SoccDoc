@@ -10,7 +10,7 @@
 class Train;
 
 /**
- * @brief The Station class
+ * @brief The Station class keeps track of passengers at the station and calculates some data for the station
  * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class Station : public QObject

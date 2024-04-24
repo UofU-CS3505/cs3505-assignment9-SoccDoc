@@ -8,7 +8,7 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), map(new MapModel(this))
+    : QMainWindow(parent), mapModel(new MapModel(this))
 {
     // Make the pop up for introducing the train education app.
     QMessageBox* startPrompt = new QMessageBox(this);
@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     // Set our canvas as the central widget
-    setCentralWidget(map->getDrawer());
+    setCentralWidget(mapModel->getDrawer());
 
     // Create the window format
     createDockWindows();
@@ -46,15 +46,15 @@ MainWindow::MainWindow(QWidget *parent)
     resize(1150, 700);
 
     // Connect updating detail dock widgets
-    connect(map, &MapModel::updateData, this, &MainWindow::updateData);
-    connect(progressBar, &QProgressBar::valueChanged, map, &MapModel::checkProgressBar);
-    connect(map, &MapModel::showNewTip, this, &MainWindow::showTip);
-    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
-    connect(map, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
-    connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
-    connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
-    connect(map, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
-    connect(map, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
+    connect(mapModel, &MapModel::updateData, this, &MainWindow::updateData);
+    connect(progressBar, &QProgressBar::valueChanged, mapModel, &MapModel::checkProgressBar);
+    connect(mapModel, &MapModel::showNewTip, this, &MainWindow::showTip);
+    connect(mapModel, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(mapModel, &MapModel::restartProgressBar, this, &MainWindow::resetProgressBar);
+    connect(mapModel, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
+    connect(mapModel, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
+    connect(mapModel, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
+    connect(mapModel, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
 
 }
 
@@ -67,7 +67,7 @@ void MainWindow::drawStationPassenger(Station* station){
     // Redraw all of the passenger icons
     QPixmap newImage;
     foreach (Passenger p, station->getPassengers()){
-        QLabel* label = new QLabel(map->getDrawer());
+        QLabel* label = new QLabel(mapModel->getDrawer());
 
         // Load the proper passenger icon
         switch (p) {
@@ -122,12 +122,12 @@ void MainWindow::createLeftDockWindow() {
     // Add train button to button group
     trainButtonGroup = new QButtonGroup();
     trainButtonGroup->addButton(greenButton, 0);
-    connect(trainButtonGroup, &QButtonGroup::idClicked, map, &MapModel::trainButtonClicked);
+    connect(trainButtonGroup, &QButtonGroup::idClicked, mapModel, &MapModel::trainButtonClicked);
 
     // Create button for redrawing the track
     RedrawTrack = new QPushButton("Redraw Green Track"); // Green because that is the default
     connect(RedrawTrack, &QPushButton::clicked, this, &MainWindow::redrawTracks);
-    connect(map, &MapModel::changeRedrawTrackText, RedrawTrack, &QPushButton::setText);
+    connect(mapModel, &MapModel::changeRedrawTrackText, RedrawTrack, &QPushButton::setText);
 
     // Put train buttons in a vertical layout
     trainLayout = new QVBoxLayout();
@@ -370,7 +370,7 @@ void MainWindow::redrawTracks(){
     foreach (QAbstractButton* button, trainButtonGroup->buttons())
         button->setEnabled(false);
 
-    map->redrawTrack();
+    mapModel->redrawTrack();
 }
 
 void MainWindow::enableTrackButtons(){

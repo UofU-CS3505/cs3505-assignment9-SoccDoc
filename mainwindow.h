@@ -1,17 +1,17 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "mapmodel.h"
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QLabel>
-#include "QtWidgets/qradiobutton.h"
-#include "mapmodel.h"
 #include <QQueue>
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include <QButtonGroup>
 
 /**
- * @brief The MainWindow class
+ * @brief The MainWindow class displays all of the information that MapModel asks it to
  * @authors Benjamin Sidwell, Alex Fraser, Jason Lopex, Andy Liu, and Ryan Nip
  */
 class MainWindow : public QMainWindow
@@ -23,7 +23,7 @@ public:
     ~MainWindow();
 
 private:
-    MapModel *map;
+    MapModel *mapModel;
 
     // Docks for managing train details
     QVBoxLayout* trainLayout;
