@@ -102,6 +102,3 @@ double Train::getDistance(QPoint p1, QPoint p2) {
 
     return std::sqrt(xCord + yCord);
 }
-int Train::getCurrentOccupancy(){
-    return passengers.size();
-}

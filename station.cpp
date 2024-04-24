@@ -82,26 +82,22 @@ void Station::updateTrainPassengers(Train* trainToLoad){
 }
 
 int Station::loadPassengers(Train* trainToLoad, Passenger type) {
-    int x = 0;
-    while(trainToLoad->getCurrentOccupancy() <= trainToLoad->CAPACITY){
-        waitingPassengers.removeOne(type);
+    int numberOfPassengersLoaded = 0;
+    while(true) {
+        // Check if there are any more passengers of this type
+        if (!waitingPassengers.removeOne(type))
+            break;
 
+        // Try to board a passenger onto the train
         if (!trainToLoad->boardPassenger(type))
             break;
 
-        x++;
+        numberOfPassengersLoaded++;
     }
+
+    // Redraw passengers
     redraw = true;
-
-
-    // // Load the passengers onto the train
-    // for (int i = 0; i < x; i++)
-    //     // Check if we succeed to load a passenger
-    //     if (!trainToLoad->boardPassenger(type))
-    //         return i; // we failed, stop loading
-    // redraw = true;
-    // All passengers successfully loaded
-    return x;
+    return numberOfPassengersLoaded;
 }
 
 Passenger Station::getStationType(){

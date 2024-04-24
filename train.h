@@ -28,9 +28,11 @@ public:
      */
     void startTravel();
 
+    /**
+     * @brief stops the train animation and deletes its label
+     */
     void stopTravel();
 
-    int getCurrentOccupancy();
     /**
      * @brief Returns a list of all of this train's connected stations
      * @return a list of all of this train's connected stations
@@ -57,8 +59,6 @@ public:
      */
     QColor getLineColor();
 
-    const int CAPACITY = 6; // Max number of passengers the train can hold
-
 private:
     Station* pastStation; // station train is departing from
     Station* nextStation; // station train is heading towards
@@ -67,6 +67,8 @@ private:
     QColor lineColor; // The color of this trains line
 
     QList<Passenger> passengers; // list of current passengers on this train
+    const int CAPACITY = 6; // Max number of passengers the train can hold
+
     QList<Station*> connectedStations; // list of all stations train is connected to
     bool trainIsGoingBackwards; // Whether the train is going backwards or not
 
