@@ -53,6 +53,7 @@ private:
     QMessageBox* thirdTip;
     QMessageBox* fourthTip;
     QMessageBox* fifthTip;
+    QMessageBox* sixthTip;
 
 public slots:
     /**
@@ -114,5 +115,6 @@ signals:
     void thirdTipSignal();
     void fourthTipSignal();
     void fifthTipSignal();
+    void sixthTipSignal();
 };
 #endif // MAINWINDOW_H

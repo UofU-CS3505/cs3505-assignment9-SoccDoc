@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     createTipPopups();
 
     // Title and resize the window
-    setWindowTitle("Train");
+    setWindowTitle("Train Education App");
     resize(1150, 700);
 
     // Connect updating detail dock widgets
@@ -372,6 +372,22 @@ void MainWindow::createTipPopups() {
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
+
+
+    QPixmap sixthTipIcon;
+    sixthTipIcon.load(":/images/images/FarAwayStationExample.png");
+    sixthTipIcon = sixthTipIcon.scaled(600, 300, Qt::KeepAspectRatio);
+
+    // Setup sixth tip
+    sixthTip = new QMessageBox(this);
+    sixthTip->setWindowTitle("Track Length");
+    sixthTip->setText("Just like in real life, the farther away stations are from each other the longer \nit will take the train to arrive to that station.");
+    sixthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    sixthTip->setStandardButtons(QMessageBox::Ok);
+    sixthTip->setIconPixmap(sixthTipIcon);
+
+    connect(this, &MainWindow::sixthTipSignal, sixthTip, &QMessageBox::exec);
+    tipMessageBoxQueue.enqueue(sixthTip);
 }
 
 void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){
