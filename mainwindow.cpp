@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Execute the popup for the start window.
     startPrompt->exec();
 
-
     // Set our canvas as the central widget
     setCentralWidget(mapModel->getDrawer());
 
@@ -72,20 +71,20 @@ void MainWindow::drawStationPassenger(Station* station){
         // Load the proper passenger icon
         switch (p) {
         case Square:
-            shapeImage.load(":/images/images/Square.png") ;
+            newImage.load(":/images/images/Square.png") ;
             break;
         case Circle:
-            shapeImage.load(":/images/images/Circle.png") ;
+            newImage.load(":/images/images/Circle.png") ;
             break;
         case Triangle:
-            shapeImage.load(":/images/images/Triangle.png") ;
+            newImage.load(":/images/images/Triangle.png") ;
             break;
         case Last:
             break; // Here to account for all cases
         }
 
         // Finish setting up the label
-        newImage = shapeImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
+        newImage = newImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
         label->setPixmap(newImage);
 
         // Set the location of the icon
@@ -108,7 +107,6 @@ void MainWindow::createDockWindows() {
 }
 
 void MainWindow::createLeftDockWindow() {
-
     // Create train layout and add initial radio button
     QRadioButton* greenButton = new QRadioButton("");
     QPixmap LineImage;
@@ -148,45 +146,38 @@ void MainWindow::createLeftDockWindow() {
 }
 
 void MainWindow::createRightDockWindow() {
-
-    // Setup progress bar
-    progressBar = new QProgressBar();
-    progressBar->setMaximum(100);
-    progressBar->setValue(0);
-
-    // Setup data
-    throughput = new QLabel("Passengers/Second: ");
-    waitTime = new QLabel("WaitTime: ");
-    numberOfPassengers = new QLabel("Number Of Passengers Waiting: ");
-
-    // Put the data into a layout
-    QVBoxLayout* dataLayout = new QVBoxLayout();
-    QHBoxLayout* throughputLayout = new QHBoxLayout();
-    throughputLayout->setAlignment(Qt::AlignLeft);
-
-
+    // Setup throughput
     QLabel* throughputImg = new QLabel();
     throughputImg->setPixmap(QPixmap(":/images/images/throughput.png").scaled(30,30));
+    throughput = new QLabel("Passengers/Second: ");
+
+    QHBoxLayout* throughputLayout = new QHBoxLayout();
+    throughputLayout->setAlignment(Qt::AlignLeft);
     throughputLayout->addWidget(throughputImg);
     throughputLayout->addWidget(throughput);
 
-    QHBoxLayout* waitTimeLayout = new QHBoxLayout();
-    waitTimeLayout->setAlignment(Qt::AlignLeft);
-
+    // Setup wait time
     QLabel* waitTimeImg = new QLabel();
     waitTimeImg->setPixmap(QPixmap(":/images/images/WaitTime.png").scaled(30, 30));
+    waitTime = new QLabel("WaitTime: ");
+
+    QHBoxLayout* waitTimeLayout = new QHBoxLayout();
+    waitTimeLayout->setAlignment(Qt::AlignLeft);
     waitTimeLayout->addWidget(waitTimeImg);
     waitTimeLayout->addWidget(waitTime);
 
-    QHBoxLayout* passengersWaitingLayout = new QHBoxLayout();
-    passengersWaitingLayout->setAlignment(Qt::AlignLeft);
-
+    // Setup number of passengers waiting
     QLabel* passengerWaiting = new QLabel();
     passengerWaiting->setPixmap(QPixmap(":/images/images/waitingPassengers.png").scaled(30, 30));
+    numberOfPassengers = new QLabel("Number Of Passengers Waiting: ");
+
+    QHBoxLayout* passengersWaitingLayout = new QHBoxLayout();
+    passengersWaitingLayout->setAlignment(Qt::AlignLeft);
     passengersWaitingLayout->addWidget(passengerWaiting);
     passengersWaitingLayout->addWidget(numberOfPassengers);
 
-
+    // Put all of the data to a vertical layout
+    QVBoxLayout* dataLayout = new QVBoxLayout();
     dataLayout->addLayout(throughputLayout);
     dataLayout->addLayout(waitTimeLayout);
     dataLayout->addLayout(passengersWaitingLayout);
@@ -212,21 +203,27 @@ void MainWindow::createBottomDockWindow() {
     QPushButton* tip = new QPushButton("Fill progress bar");
     connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
 
-    QVBoxLayout* tipOrganizer = new QVBoxLayout();
-    // Put the tips into a layout
+    // Put the tips into a horizontal layout
+    tipLayout = new QHBoxLayout();
     tipLayout->addWidget(tip);
 
+    // Setup progress bar
+    progressBar = new QProgressBar();
+    progressBar->setMaximum(100);
+    progressBar->setValue(0);
+
+    // Put the tips and progress bar into a vertical layout
+    QVBoxLayout* libraryLayout = new QVBoxLayout();
+    libraryLayout->addWidget(progressBar);
+    libraryLayout->addLayout(tipLayout);
+
     // Put the tips into a widget
-    QWidget* tipWidget = new QWidget();
-    tipOrganizer->addWidget(progressBar);
-    tipOrganizer->addLayout(tipLayout);
+    QWidget* libraryWidget = new QWidget();
+    libraryWidget->setLayout(libraryLayout);
 
-    tipWidget->setLayout(tipOrganizer);
-
-
-    // Dock the tab widget
+    // Dock the library widget
     QDockWidget* bottomDock = new QDockWidget("Library", this);
-    bottomDock->setWidget(tipWidget);
+    bottomDock->setWidget(libraryWidget);
 
     // Dock the frame buttons on the left side and set alignment
     tipLayout->setAlignment(Qt::AlignLeft);
@@ -266,9 +263,10 @@ void MainWindow::createTipPopups() {
     firstTip = new QMessageBox(this);
 
     // Define the message box details
-    firstTip->setWindowTitle("Drawing Tracks");
-    firstTip->setText("Select a train then click the 'Redraw Track' "
-                      "button to \ndraw a new track for the selected train.");
+    firstTip->setWindowTitle("Passenger Needs");
+    firstTip->setText("Each passenger has a different request and "
+                      "needs to go \nto a specific station. Be sure your trains "
+                      "can get to every\n type of station! This will increase the efficiency of your network!");
     firstTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     firstTip->setStandardButtons(QMessageBox::Ok);
 
@@ -280,10 +278,9 @@ void MainWindow::createTipPopups() {
 
     // Setup second tip
     secondTip = new QMessageBox(this);
-    secondTip->setWindowTitle("Passenger Needs");
-    secondTip->setText("Each passenger has a different request and "
-                       "needs to go \nto a specific station. Be sure each station "
-                       "type can \nget to every type of station! This will increase the efficiency \nof each line!");
+    secondTip->setWindowTitle("Drawing Tracks");
+    secondTip->setText("Select a train then click the 'Redraw Track' "
+                       "button to \ndraw a new track for the selected train.");
     secondTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     secondTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::secondTipSignal, secondTip, &QMessageBox::exec);
@@ -292,9 +289,9 @@ void MainWindow::createTipPopups() {
     // Setup third tip
     thirdTip = new QMessageBox(this);
     thirdTip->setWindowTitle("Tracking Data");
-    thirdTip->setText("Each station tracks data that can be seen "
-                      "when that \ntrain is selected. Try optimising your Train Lines "
-                      "to minimise \nthese numbers!");
+    thirdTip->setText("Clicking on a station will show data about it on the right side of the window.\n"
+                      "Try your best to optimize your Train Lines "
+                      "to minimise these numbers!");
     thirdTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     thirdTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::thirdTipSignal, thirdTip, &QMessageBox::exec);
@@ -315,8 +312,8 @@ void MainWindow::createTipPopups() {
     fifthTip = new QMessageBox(this);
     fifthTip->setWindowTitle("Max Capacity");
     fifthTip->setText("Just like in real life, these trains can only hold \na certain "
-                      "amount of people. be sure passengers "
-                      "dont get too \nbacked up! nobody likes an over flowing train!");
+                      "amount of people. Be sure passengers "
+                      "don't get too \ncroweded! Nobody likes an over crowded train!");
     fifthTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
     fifthTip->setStandardButtons(QMessageBox::Ok);
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
@@ -326,15 +323,16 @@ void MainWindow::createTipPopups() {
 void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){
     QString throughputStr = QString::number(newThroughput, 'f', 3);
     QString waitTimeStr = QString::number(newWaitTime, 'f', 3);
-     QString numOfPassengersStr = QString::number(numOfPassengers, 'f', 1);
+    QString numOfPassengersStr = QString::number(numOfPassengers, 'f', 1);
 
+    // Display current data
     throughput->setText(("Passengers/Second: " + throughputStr ));
     waitTime->setText(("WaitTime: " + waitTimeStr + " Seconds"));
-    //waitTime->setPixmap(QPixmap(":/images/images/WaitTime.png").scaled(30,30));
     numberOfPassengers->setText(("Passengers Waiting: " + numOfPassengersStr));
+
+    // Update data
     throughput->update();
     waitTime->update();
-
     numberOfPassengers->update();
 }
 
