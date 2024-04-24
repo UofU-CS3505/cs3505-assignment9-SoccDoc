@@ -186,9 +186,27 @@ private:
         b2Fixture *fixture;
     };
 
+    ///
+    /// \brief createConfetti creates confetti at a specific location.
+    /// \param pos the position to create the confetti at
+    /// \return returns the confetti struct
+    ///
     struct confetti createConfetti(const b2Vec2& pos);
+
+    ///
+    /// \brief drawConfetti draws the confetti at a specific location
+    /// \param p the painter object to draw into
+    /// \param confetti the confetti object to be drawn
+    ///
     void drawConfetti(QPainter *p, const struct TrainDrawer::confetti& confetti);
+
+    ///
+    /// \brief allConfetti the list of all confetti currently being drawn by the painter
+    ///
     QVector<struct confetti> allConfetti;
+    ///
+    /// \brief _world the world to simulate the confetti physics
+    ///
     b2World* _world;
 
     ///
