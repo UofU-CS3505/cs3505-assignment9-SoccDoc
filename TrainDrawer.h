@@ -10,173 +10,173 @@ class TrainDrawer: public QWidget
 {
     Q_OBJECT
 public:
-    ///
-    /// \brief TrainDrawer - constructor
-    /// \param parent - the qwidget that owns traindrawer
-    ///
+    /**
+    * @brief TrainDrawer - constructor
+    * @param parent - the qwidget that owns traindrawer
+    **/
     TrainDrawer(QWidget *parent = nullptr);
 
-    ///
-    /// \brief getWidth - returns the width of a station
-    /// \return - the width of a station
-    ///
+    /**
+    * @brief getWidth - returns the width of a station
+    * @return - the width of a station
+    **/
     int getWidth();
 
-    ///
-    /// \brief confetti - creates confetti using box2D
-    ///
+    /**
+    * @brief confetti - creates confetti using box2D
+    **/
     void confetti();
 
-    ///
-    /// \brief updateImage - updates the entire canvas
-    ///
+    /**
+    * @brief updateImage - updates the entire canvas
+    **/
     void updateImage();
 
-    ///
-    /// \brief size - returns the size of the canvas
-    /// \return - size of the canvas
-    ///
+    /**
+    * @brief size - returns the size of the canvas
+    * @return - size of the canvas
+    **/
     QSize size();
 
-    ///
-    /// \brief STATION_WIDTH - a constant variable that holds the width of stations
-    ///
+    /**
+    * @brief STATION_WIDTH - a constant variable that holds the width of stations
+    **/
     const int STATION_WIDTH = 30;
 
-    ///
-    /// \brief setPenColor - sets the pen color
-    /// \param newPenColor - the color the pen will be set to
-    ///
+    /**
+    * @brief setPenColor - sets the pen color
+    * @param newPenColor - the color the pen will be set to
+    **/
     void setPenColor(QColor newPenColor);
 
-    ///
-    /// \brief selectStation - highlights the station that is currently selected
-    /// \param selectedStation - the station that is currently selected
-    ///
+    /**
+    * @brief selectStation - highlights the station that is currently selected
+    * @param selectedStation - the station that is currently selected
+    **/
     void selectStation(Station* selectedStation);
 
-    ///
-    /// \brief drawLineTo - This method draws a line between the startPoint and endPoint given. This is used to draw a straight line between stations.
-    /// \param startPoint - The start point to begin drawing the line.
-    /// \param endPoint  - The end point to end drawing the line.
-    ///
+    /**
+    * @brief drawLineTo - This method draws a line between the startPoint and endPoint given. This is used to draw a straight line between stations.
+    * @param startPoint - The start point to begin drawing the line.
+    * @param endPoint  - The end point to end drawing the line.
+    **/
     void drawLineBetweenStations(const QPoint &startPoint, const QPoint &endPoint);
 
-    ///
-    /// \brief redrawTrack - erases all the previous track lines of the selected track line and allows the user to draw track lines
-    ///
+    /**
+    * @brief redrawTrack - erases all the previous track lines of the selected track line and allows the user to draw track lines
+    **/
     void redrawTrack();
 
 protected:
-    ///
-    /// \brief paintEvent - event that gets called every update
-    /// \param event - a paint event
-    ///
+    /**
+    * @brief paintEvent - event that gets called every update
+    * @param event - a paint event
+    **/
     void paintEvent(QPaintEvent *event) override;
 
-    ///
-    /// \brief mousePressEvent - event that gets called when the user clicks their mouse
-    /// \param event - a qmouse event
-    ///
+    /**
+    * @brief mousePressEvent - event that gets called when the user clicks their mouse
+    * @param event - a qmouse event
+    **/
     void mousePressEvent(QMouseEvent *event) override;
 
-    ///
-    /// \brief mouseMoveEvent - event that gets called when the user is moving their mouse
-    /// \param event - a qmouse event
-    ///
+    /**
+    * @brief mouseMoveEvent - event that gets called when the user is moving their mouse
+    * @param event - a qmouse event
+    **/
     void mouseMoveEvent(QMouseEvent *event) override;
 
-    ///
-    /// \brief mouseReleaseEvent - event that gets called when the user releases the mouse
-    /// \param event - a qmouse event
-    ///
+    /**
+    * @brief mouseReleaseEvent - event that gets called when the user releases the mouse
+    * @param event - a qmouse event
+    **/
     void mouseReleaseEvent(QMouseEvent *event) override;
 private:
-    ///
-    /// \brief resizeImage - resizes the canvas with the given QSize and fills the canvas with the given color value
-    /// \param image - the canvas
-    /// \param newSize - the size of the canvas
-    /// \param colorValue - the color of the canvas
-    ///
+    /**
+    * @brief resizeImage - resizes the canvas with the given QSize and fills the canvas with the given color value
+    * @param image - the canvas
+    * @param newSize - the size of the canvas
+    * @param colorValue - the color of the canvas
+    **/
     void resizeImage(QImage *image, const QSize &newSize, int colorValue);
 
-    ///
-    /// \brief drawLineTo - This method draws a line between the last point recieved and the current point. It is used for drawing a line.
-    /// \param endPoint - The current point to be drawn to.
-    ///
+    /**
+    * @brief drawLineTo - This method draws a line between the last point recieved and the current point. It is used for drawing a line.
+    * @param endPoint - The current point to be drawn to.
+    **/
     void drawLineTo(const QPoint &endPoint);
 
-    ///
-    /// \brief distanceXIsGreater - checks if the distance of the x value between two points is greater than the distance of the y value between two points
-    /// \param startPoint - the first point
-    /// \param endPoint - the second point
-    /// \return - true if the distance between the x values is greater than the y values
-    ///
+    /**
+    * @brief distanceXIsGreater - checks if the distance of the x value between two points is greater than the distance of the y value between two points
+    * @param startPoint - the first point
+    * @param endPoint - the second point
+    * @return - true if the distance between the x values is greater than the y values
+    **/
     bool distanceXIsGreater(const QPoint &startPoint, const QPoint &endPoint);
 
-    ///
-    /// \brief overlayImage - the image to be displayed when the user is drawing
-    ///
+    /**
+    * @brief overlayImage - the image to be displayed when the user is drawing
+    **/
     QImage overlayImage;
 
-    ///
-    /// \brief baseImage - the image that holds all the stations and lines, and is the image to be displayed when the user is not drawing
-    ///
+    /**
+    * @brief baseImage - the image that holds all the stations and lines, and is the image to be displayed when the user is not drawing
+    **/
     QImage baseImage;
 
-    ///
-    /// \brief redLine - the image that holds only the red track lines
-    ///
+    /**
+    * @brief redLine - the image that holds only the red track lines
+    **/
     QImage redLine;
 
-    ///
-    /// \brief blueLine - the image that holds only the blue track lines
-    ///
+    /**
+    * @brief blueLine - the image that holds only the blue track lines
+    **/
     QImage blueLine;
 
-    ///
-    /// \brief greenLine - the image that holds only the green track lines
-    ///
+    /**
+    * @brief greenLine - the image that holds only the green track lines
+    **/
     QImage greenLine;
 
-    ///
-    /// \brief stationDrawings - the image that holds only the stations
-    ///
+    /**
+    * @brief stationDrawings - the image that holds only the stations
+    **/
     QImage stationDrawings;
 
-    ///
-    /// \brief lastPoint - holds the last point of the user's mouse movement
-    ///
+    /**
+    * @brief lastPoint - holds the last point of the user's mouse movement
+    **/
     QPoint lastPoint;
 
-    ///
-    /// \brief points - a list of points where the user's mouse hits a station
-    ///
+    /**
+    * @brief points - a list of points where the user's mouse hits a station
+    **/
     QList<QPoint> *points;
 
-    ///
-    /// \brief scribbling - a boolean value that checks if the user is drawing or not
-    ///
+    /**
+    * @brief scribbling - a boolean value that checks if the user is drawing or not
+    **/
     bool scribbling;
 
-    ///
-    /// \brief penColor - the color of the pen
-    ///
+    /**
+    * @brief penColor - the color of the pen
+    **/
     QColor penColor = Qt::green;
 
-    ///
-    /// \brief hitBlack - boolean value that determines if the user's mouse hits a station
-    ///
+    /**
+    * @brief hitBlack - boolean value that determines if the user's mouse hits a station
+    **/
     bool hitBlack = false;
 
-    ///
-    /// \brief previousSelectedStation - holds the selected station
-    ///
+    /**
+    * @brief previousSelectedStation - holds the selected station
+    **/
     Station* previousSelectedStation = nullptr;
 
-    ///
-    /// \brief rand - a random number generator
-    ///
+    /**
+    * @brief rand - a random number generator
+    **/
     QRandomGenerator rand;
 
     struct confetti
@@ -186,55 +186,55 @@ private:
         b2Fixture *fixture;
     };
 
-    ///
-    /// \brief createConfetti creates confetti at a specific location.
-    /// \param pos the position to create the confetti at
-    /// \return returns the confetti struct
-    ///
+    /**
+    * @brief createConfetti creates confetti at a specific location.
+    * @param pos the position to create the confetti at
+    * @return returns the confetti struct
+    **/
     struct confetti createConfetti(const b2Vec2& pos);
 
-    ///
-    /// \brief drawConfetti draws the confetti at a specific location
-    /// \param p the painter object to draw into
-    /// \param confetti the confetti object to be drawn
-    ///
+    /**
+    * @brief drawConfetti draws the confetti at a specific location
+    * @param p the painter object to draw into
+    * @param confetti the confetti object to be drawn
+    **/
     void drawConfetti(QPainter *p, const struct TrainDrawer::confetti& confetti);
 
-    ///
-    /// \brief allConfetti the list of all confetti currently being drawn by the painter
-    ///
+    /**
+    * @brief allConfetti the list of all confetti currently being drawn by the painter
+    **/
     QVector<struct confetti> allConfetti;
-    ///
-    /// \brief _world the world to simulate the confetti physics
-    ///
+    /**
+    * @brief _world the world to simulate the confetti physics
+    **/
     b2World* _world;
 
-    ///
-    /// \brief redrawLine - a boolean value that determines if the user wants to redraw a line
-    ///
+    /**
+    * @brief redrawLine - a boolean value that determines if the user wants to redraw a line
+    **/
     bool redrawLine;
 public slots:
-    ///
-    /// \brief drawStations - draw stations
-    /// \param station - the station to be drawn
-    ///
+    /**
+    * @brief drawStations - draw stations
+    * @param station - the station to be drawn
+    **/
     void drawStations(Station* station);
 
 signals:
-    ///
-    /// \brief checkForStations - sends a signal that checks which station was hit during the user's mouse movement
-    ///
+    /**
+    * @brief checkForStations - sends a signal that checks which station was hit during the user's mouse movement
+    **/
     void checkForStations(QList<QPoint>);
 
-    ///
-    /// \brief enableTrackButtonSignal - sends a signal to enable the track button signals
-    ///
+    /**
+    * @brief enableTrackButtonSignal - sends a signal to enable the track button signals
+    **/
     void enableTrackButtonSignal();
 
-    ///
-    /// \brief updateSelectStation - signal that sends the point of the selected station
-    /// \param point - the point of the selected station
-    ///
+    /**
+    * @brief updateSelectStation - signal that sends the point of the selected station
+    * @param point - the point of the selected station
+    **/
     void updateSelectStation(QPoint point);
 };
 
