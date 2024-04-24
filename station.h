@@ -18,6 +18,11 @@ class Station : public QObject
     Q_OBJECT
 
 public:
+    /**
+     * @param parent this objects parent
+     * @param _location the location on the canvas of this station
+     * @param passenger the type of passenger that this station accepts
+     */
     Station(QObject *parent = nullptr,
             QPoint _location = QPoint(0,0),
             Passenger passenger = Passenger(0));

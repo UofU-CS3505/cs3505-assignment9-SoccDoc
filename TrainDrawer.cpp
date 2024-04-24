@@ -7,8 +7,6 @@
 #include <QDebug>
 #include <QtMath>
 
-
-
 TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     //create the world with correct gravity
     b2Vec2 gravity(0.0f, 10.0f);
@@ -25,7 +23,6 @@ TrainDrawer::TrainDrawer(QWidget *parent) : QWidget(parent) {
     overlayImage = baseImage;
     redrawLine = false;
     points = new QList<QPoint>{};
-
 }
 
 void TrainDrawer::paintEvent(QPaintEvent *event)
@@ -39,7 +36,6 @@ void TrainDrawer::paintEvent(QPaintEvent *event)
     }else{
         painter.drawImage(dirtyRect, overlayImage, dirtyRect);
     }
-
     
     //steps the world so the physics can move and redraw all the confetti from the list of confetti objects
     _world->Step(1.0f/10.0f, 8, 3);
@@ -157,6 +153,7 @@ void TrainDrawer::drawLineBetweenStations(const QPoint &startPoint, const QPoint
     //start drawimg the line just outside of the station, and finish just outside of the station
     QPoint newStartPoint(startPoint.x()+(STATION_WIDTH/2), startPoint.y()+(STATION_WIDTH/2));
     QPoint newEndPoint(endPoint.x()+(STATION_WIDTH/2), endPoint.y()+(STATION_WIDTH/2));
+
     //code to draw multiple lines to a station and make them all appear nicely
     //offsets each color by a certain amount of pixels to make sure they dont overlap
     if(distanceXIsGreater(startPoint, endPoint) && penColor != Qt::green){
