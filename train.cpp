@@ -92,6 +92,7 @@ void Train::endTravel() {
 }
 
 void Train::stopTravel() {
+    clearPassengerIcons();
     animation->stop();
     delete trainImage;
 }
