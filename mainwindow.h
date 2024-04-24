@@ -41,14 +41,14 @@ private:
     QHBoxLayout* tipLayout = new QHBoxLayout();
     int tipNum = 1;
 
+    const int PASSENGER_ICON_WIDTH = 5; // size of passenger icons
+
     void createLeftDockWindow();
     void createRightDockWindow();
     void createBottomDockWindow();
     void createDockWindows();
     void createTipPopups();
     void deleteTrain(QLabel* image);
-    void drawStationPassenger(Station* station);
-    void redrawStation(Station* station);
 
     QProgressBar* progressBar;
     /**
@@ -72,6 +72,7 @@ private:
     QMessageBox* fifthTip;
 
 public slots:
+    void drawStationPassenger(Station* station);
     void addTrainButton();
     void updateData(double, double, double);
     void showTip();

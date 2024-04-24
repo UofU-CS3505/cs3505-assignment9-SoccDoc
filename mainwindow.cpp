@@ -54,66 +54,51 @@ MainWindow::MainWindow(QWidget *parent)
     connect(map, &MapModel::drawStationPassenger, this, &MainWindow::drawStationPassenger);
     connect(map, &MapModel::updateProgressBar, this, &MainWindow::updateProgressBar);
     connect(map, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
-    connect(map, &MapModel::redraw, this, &MainWindow::redrawStation);
     connect(map, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
 
 }
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::redrawStation(Station* station){
+void MainWindow::drawStationPassenger(Station* station){
+    // Remove all of the passenger icons
     foreach (QLabel* ql, station->passengerIcons){
         delete ql;
     }
     station->passengerIcons.clear();
 
+    // Redraw all of the passenger icons
+    QPixmap newImage;
     foreach (Passenger p, station->getPassengers()){
-        QPixmap newImage;
-        QLabel* label = new QLabel(map->getDrawer()); // Create a new QLabel object for each passenger
+        QLabel* label = new QLabel(map->getDrawer());
 
-        if (p == Circle){
-            shapeImage.load(":/images/images/Circle.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-        else if (p == Square){
-            shapeImage.load(":/images/images/Square.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-        else if (p == Triangle){
-            shapeImage.load(":/images/images/Triangle.png");
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
+        // Load the proper passenger icon
+        switch (p) {
+        case Square:
+            shapeImage.load(":/images/images/Square.png") ;
+            break;
+        case Circle:
+            shapeImage.load(":/images/images/Circle.png") ;
+            break;
+        case Triangle:
+            shapeImage.load(":/images/images/Triangle.png") ;
+            break;
+        case Last:
+            break; // Here to account for all cases
         }
 
+        // Finish setting up the label
+        newImage = shapeImage.scaled(PASSENGER_ICON_WIDTH, PASSENGER_ICON_WIDTH, Qt::KeepAspectRatio);
         label->setPixmap(newImage);
-        label->setGeometry(station->getLocation().x() + (station->passengerIcons.size() * 10) - 30, station->getLocation().y() - 10, 10, 5);
+
+        int iconWidthBuffer = station->passengerIcons.size() * (PASSENGER_ICON_WIDTH * 2);
+        label->setGeometry(station->getLocation().x() + iconWidthBuffer - (PASSENGER_ICON_WIDTH * 6), // x coordinate of icon
+                           station->getLocation().y() - (PASSENGER_ICON_WIDTH * 2),                   // y coordinate of icon (looks better double)
+                           (PASSENGER_ICON_WIDTH * 2),                                                // width of icon (looks better doubled)
+                           PASSENGER_ICON_WIDTH);                                                     // height of icon
         label->show();
         station->passengerIcons.append(label);
     }
-}
-void MainWindow::drawStationPassenger(Station* station){
-    QPixmap newImage;
-    QLabel* label = new QLabel(map->getDrawer());
-
-    foreach (Passenger p, station->getPassengers()){
-        if (p == Circle){
-            shapeImage.load(":/images/images/Circle.png") ;
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-        else if (p == Square){
-            shapeImage.load(":/images/images/Square.png") ;
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-
-        }
-        else if (p == Triangle){
-            shapeImage.load(":/images/images/Triangle.png") ;
-            newImage = shapeImage.scaled(5, 5, Qt::KeepAspectRatio);
-        }
-    }
-
-    label->setPixmap(newImage);
-    label->setGeometry(station->getLocation().x() + (station->returnWaitingSize() * 10) - 30, station->getLocation().y() - 10, 10, 5);
-    label->show();
-    station->passengerIcons.append(label);
 }
 
 void MainWindow::createDockWindows() {
@@ -121,7 +106,6 @@ void MainWindow::createDockWindows() {
     createRightDockWindow();
     createBottomDockWindow();
 }
-
 
 void MainWindow::createLeftDockWindow() {
 

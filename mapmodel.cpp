@@ -41,14 +41,13 @@ void MapModel::updateFrame() {
     // Update all of the stations
     foreach (Station* station, stations)
     {
-        // If the station has added a passenger, update how many are drawn
-        if (station->update()){
-            emit drawStationPassenger(station);
-        }
+        // Update the station
+        station->update();
 
-        if (station->redraw == true){
+        // If the station has added/removed passengers, update how many are drawn
+        if (station->redraw){
             station->redraw = false;
-            emit redraw(station);
+            emit drawStationPassenger(station);
         }
     }
 

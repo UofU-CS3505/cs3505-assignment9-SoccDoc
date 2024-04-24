@@ -35,34 +35,71 @@ public:
      */
     Station& operator=(const Station& that);
 
-    bool update();
-    Passenger getStationType();
-    QPoint getLocation();
-    const int GENERATE_PASSENGER_PROBABILITY = 8;
+    /**
+     * @brief Randomly decides whether or not to add a passenger to this station
+     */
+    void update();
 
+    /**
+     * @brief Returns the passenger type this station accepts
+     * @return the passenger type this station accepts
+     */
+    Passenger getStationType();
+
+    /**
+     * @brief Returns the location of this station on the canvas
+     * @return this station's location
+     */
+    QPoint getLocation();
+
+    /**
+     * @return The current throughput of this station
+     */
     double getThroughput();
+
+    /**
+     * @return The average wait time of this station
+     */
     double getWaitTime();
     
+    /**
+     * @brief Loads/unloads passengers to/from the given train
+     * @param trainToLoad the train to load/unload passengers
+     */
     void updateTrainPassengers(Train* trainToLoad);
+
+    /**
+     * @brief Helper for updateTrainPassengers that does the loading of passengers
+     * @param trainToLoad the train to load passengers onto
+     * @param type the type of passenger to load
+     * @return the number of passengers loaded
+     */
     int loadPassengers(Train* trainToLoad, Passenger type);
 
+    /**
+     * @return The number of passengers waiting at this station
+     */
     int returnWaitingSize();
-    QList<Passenger> getPassengers();
-    QList<QLabel*> passengerIcons;
-    bool redraw = false;
+    QList<Passenger> getPassengers(); // List of passengers at this station
+    QList<QLabel*> passengerIcons; // List of icons to display this stations passengers
+    bool redraw = false; // Whether station has been edited or not
 
 private:
-    QList<Passenger> waitingPassengers;
-    Passenger stationType;
-    QPoint location;
-    QRandomGenerator rand;
-    void generatePassenger();
-    int amountOfUnloadedPassengers;
+    QList<Passenger> waitingPassengers; // List of passengers at this station
+    Passenger stationType; // The type of passenger this station is accepting
+    QPoint location; // The location of this station
 
-    QElapsedTimer elapsedTimer;
-    double numberOfPassengerOffloaded = -1;
-    double waitTime = -1;
-    double throughput = 0;
+    QElapsedTimer elapsedTimer; // Time since last train unloaded passengers
+    double numberOfPassengerOffloaded = -1; // The number of passengers off loaded on the last train
+    double waitTime = -1; // Average wait time of this statino
+    double throughput = 0; // Current throughput of this station
+    const int GENERATE_PASSENGER_PROBABILITY = 8; // The chance of generating a passenger (out of 10)
+    QRandomGenerator rand; // This stations random generator (for generating passengers)
+
+    /**
+     * @brief Generates a random passenger type at this station
+     */
+    void generatePassenger();
 
 signals:
     void passengerDelivered(int);
