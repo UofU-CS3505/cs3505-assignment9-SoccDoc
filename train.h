@@ -119,7 +119,7 @@ private:
     QPropertyAnimation* animation; // animates the train moving between stations
     QLabel* trainImage; // The image for the train
     const double SPEED = 0.15; // speed of the train
-    const int STATION_DELAY = 1000; // Ms delay for train when it reaches a station
+    const int STATION_DELAY = 500; // Ms delay for train when it reaches a station
 
     /**
      * @brief gets the distance between two given points

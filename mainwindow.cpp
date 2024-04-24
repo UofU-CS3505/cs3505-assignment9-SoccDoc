@@ -44,6 +44,14 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Train Education App");
     resize(1150, 700);
 
+    //Call Default popup
+    QMessageBox* tutorialPopup = new QMessageBox(this);
+    tutorialPopup->setWindowTitle("Drawing Tracks");
+    tutorialPopup->setText("Select a train then click the 'Redraw Track' "
+                       "button to \ndraw a new track for the selected train.");
+    tutorialPopup->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    tutorialPopup->setStandardButtons(QMessageBox::Ok);
+
     // Connect updating detail dock widgets
     connect(mapModel, &MapModel::updateData, this, &MainWindow::updateData);
     connect(progressBar, &QProgressBar::valueChanged, mapModel, &MapModel::checkProgressBar);
@@ -55,6 +63,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mapModel, &MapModel::enableTrackButtonsSignal, this, &MainWindow::enableTrackButtons);
     connect(mapModel, &MapModel::addTrainType, this, &MainWindow::addTrainButton);
     connect(mapModel, &MapModel::drawTrainPassenger, this, &MainWindow::drawTrainPassenger);
+
+    this -> show();
+
+    // Execute the popup for the start window.
+    tutorialPopup->exec();
 }
 
 MainWindow::~MainWindow() {}
@@ -373,7 +386,7 @@ void MainWindow::createTipPopups() {
     connect(this, &MainWindow::fifthTipSignal, fifthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(fifthTip);
 
-
+    // Setup Sixth Tip Image
     QPixmap sixthTipIcon;
     sixthTipIcon.load(":/images/images/FarAwayStationExample.png");
     sixthTipIcon = sixthTipIcon.scaled(600, 300, Qt::KeepAspectRatio);
@@ -388,6 +401,23 @@ void MainWindow::createTipPopups() {
 
     connect(this, &MainWindow::sixthTipSignal, sixthTip, &QMessageBox::exec);
     tipMessageBoxQueue.enqueue(sixthTip);
+
+    //Setup Seventh tip image
+    QPixmap seventhTipIcon;
+    seventhTipIcon.load(":/images/images/TrainWaitTimeExample.png");
+    seventhTipIcon = seventhTipIcon.scaled(600, 300, Qt::KeepAspectRatio);
+
+    // Setup seventh tip
+    seventhTip = new QMessageBox(this);
+    seventhTip->setWindowTitle("Wait Time Clarification");
+    seventhTip->setText("Wait times represent the amount of time until a train arrival for that station.");
+    seventhTip->setStyleSheet("QLabel{min-width: 400px; min-height: 300px;}");
+    seventhTip->setStandardButtons(QMessageBox::Ok);
+    seventhTip->setIconPixmap(seventhTipIcon);
+
+    connect(this, &MainWindow::seventhTipSignal, seventhTip, &QMessageBox::exec);
+    tipMessageBoxQueue.enqueue(seventhTip);
+
 }
 
 void MainWindow::updateData(double newThroughput, double newWaitTime, double numOfPassengers){

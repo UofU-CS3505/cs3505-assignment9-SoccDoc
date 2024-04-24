@@ -32,6 +32,7 @@ MapModel::MapModel(QWidget *parent) :
     passengerGoals.enqueue(50);
     passengerGoals.enqueue(100);
     passengerGoals.enqueue(150);
+    passengerGoals.enqueue(200);
 
     // Set first goal
     numberOfPassengersDelivered = 0;
