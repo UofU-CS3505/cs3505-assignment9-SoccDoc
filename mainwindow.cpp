@@ -264,13 +264,8 @@ void MainWindow::createRightDockWindow() {
 }
 
 void MainWindow::createBottomDockWindow() {
-    // Setup a tip popup
-    QPushButton* tip = new QPushButton("Fill progress bar");
-    connect(tip, &QPushButton::clicked, this, &MainWindow::fillProgressBar);
-
     // Put the tips into a horizontal layout
     tipLayout = new QHBoxLayout();
-    tipLayout->addWidget(tip);
 
     // Setup progress bar
     progressBar = new QProgressBar();
