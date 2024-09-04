@@ -21,7 +21,7 @@ This application can be used to introduce anyone to the simplicity of desigining
 
 ## Credits
 
-This project was collectively made by [Benjamin Sidwell](https://github.com/SoccDoc), [Alexander Fraser](https://github.com/SlateComet67768), [Ryan Nip](https://github.com/Ghskljd), [Jason Lopez](https://github.com/University136), and [Andy Liu](https://github.com/projectmaker1234).
+This project was collectively made by [Benjamin Sidwell](https://github.com/bensidwell), [Alexander Fraser](https://github.com/SlateComet67768), [Ryan Nip](https://github.com/Ghskljd), [Jason Lopez](https://github.com/University136), and [Andy Liu](https://github.com/projectmaker1234).
 
 To code our GUI for this project we used C++ with [Qt](https://www.qt.io).
 
